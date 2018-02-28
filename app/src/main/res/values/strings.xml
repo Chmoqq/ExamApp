@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ExamApp</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="learn_tickets_rus">Учить билеты</string>
+    <string name="symbol_learn_tickets"><![CDATA[>]]></string>
+    <string name="completed_questions_text">вопроса\nсдано из</string>
+    <string name="ready_to_exam_text">Готовность\nк экзамену</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>
