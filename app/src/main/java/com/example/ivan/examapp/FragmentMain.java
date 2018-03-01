@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 public class FragmentMain extends Fragment {
 
-    private final String namedSharedPrefsKey = "namedPrefs";
+    private static final String namedSharedPrefsKey = "namedPrefs";
 
-    SharedPreferences namedPrefs;
+    static SharedPreferences namedPrefs;
     TextView percents_done;
     TextView completed_questions;
     TextView total_questions;
@@ -24,6 +24,10 @@ public class FragmentMain extends Fragment {
     CardView learnTickets;
     CardView testYourself;
     CardView chooseTopic;
+
+    public static String getNamedSharedPrefsKey() {
+        return namedSharedPrefsKey;
+    }
 
     @Override
     public void onStart() {
@@ -33,6 +37,7 @@ public class FragmentMain extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+
     }
 
     @Nullable
@@ -61,7 +66,7 @@ public class FragmentMain extends Fragment {
                 String completed_questions_data = preferences.getString("completed_questions_math", "0");
                 completed_questions.setText(completed_questions_data);
 
-                total_questions.setText("823");
+                total_questions.setText("833");
                 break;
             }
             case "english": {
@@ -71,7 +76,7 @@ public class FragmentMain extends Fragment {
                 String completed_questions_data = preferences.getString("completed_questions_eng", "0");
                 completed_questions.setText(completed_questions_data);
 
-                total_questions.setText("582");
+                total_questions.setText("925");
                 break;
             }
             case "ukrainian": {
@@ -81,8 +86,89 @@ public class FragmentMain extends Fragment {
                 String completed_questions_data = preferences.getString("completed_questions_ukr", "0");
                 completed_questions.setText(completed_questions_data);
 
-                total_questions.setText("854");
+                total_questions.setText("1995");
                 break;
+            }
+            case "history": {
+                String percents_done_data = preferences.getString("percents_done_history", "0");
+                percents_done.setText(percents_done_data);
+
+                String completed_questions_data = preferences.getString("completed_questions_history", "0");
+                completed_questions.setText(completed_questions_data);
+
+                total_questions.setText("1468");
+            }
+            case "geography": {
+                String percents_done_data = preferences.getString("percents_done_geography", "0");
+                percents_done.setText(percents_done_data);
+
+                String completed_questions_data = preferences.getString("completed_questions_geography", "0");
+                completed_questions.setText(completed_questions_data);
+
+                total_questions.setText("1098");
+            }
+            case "biology": {
+                String percents_done_data = preferences.getString("percents_done_biology", "0");
+                percents_done.setText(percents_done_data);
+
+                String completed_questions_data = preferences.getString("completed_questions_biology", "0");
+                completed_questions.setText(completed_questions_data);
+
+                total_questions.setText("1092");
+            }
+            case "physics": {
+                String percents_done_data = preferences.getString("percents_done_physics", "0");
+                percents_done.setText(percents_done_data);
+
+                String completed_questions_data = preferences.getString("completed_questions_physics", "0");
+                completed_questions.setText(completed_questions_data);
+
+                total_questions.setText("730");
+            }
+            case "chemistry": {
+                String percents_done_data = preferences.getString("percents_done_chemistry", "0");
+                percents_done.setText(percents_done_data);
+
+                String completed_questions_data = preferences.getString("completed_questions_chemistry", "0");
+                completed_questions.setText(completed_questions_data);
+
+                total_questions.setText("1062");
+            }
+            case "deutsch": {
+                String percents_done_data = preferences.getString("percents_done_deutsch", "0");
+                percents_done.setText(percents_done_data);
+
+                String completed_questions_data = preferences.getString("completed_questions_deutsch", "0");
+                completed_questions.setText(completed_questions_data);
+
+                total_questions.setText("533");
+            }
+            case "french": {
+                String percents_done_data = preferences.getString("percents_done_french", "0");
+                percents_done.setText(percents_done_data);
+
+                String completed_questions_data = preferences.getString("completed_questions_french", "0");
+                completed_questions.setText(completed_questions_data);
+
+                total_questions.setText("533");
+            }
+            case "spanish": {
+                String percents_done_data = preferences.getString("percents_done_spanish", "0");
+                percents_done.setText(percents_done_data);
+
+                String completed_questions_data = preferences.getString("completed_questions_spanish", "0");
+                completed_questions.setText(completed_questions_data);
+
+                total_questions.setText("718");
+            }
+            case "human_rights": {
+                String percents_done_data = preferences.getString("percents_done_human_rights", "0");
+                percents_done.setText(percents_done_data);
+
+                String completed_questions_data = preferences.getString("completed_questions_human_rights", "0");
+                completed_questions.setText(completed_questions_data);
+
+                total_questions.setText("210");
             }
         }
     }

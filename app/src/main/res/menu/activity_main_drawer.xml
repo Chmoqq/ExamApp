@@ -26,17 +26,14 @@
 
                 <item
                     android:id="@+id/subject1"
-                    android:icon="@drawable/ic_book_ukr"
-                    android:title="Украинский язык" />
+                    android:title="" />
                 <item
                     android:id="@+id/subject2"
-                    android:icon="@drawable/ic_english_language"
-                    android:title="Английский язык" />
+                    android:title="" />
 
                 <item
                     android:id="@+id/subject3"
-                    android:icon="@drawable/ic_rulers"
-                    android:title="Математика" />
+                    android:title="" />
 
                 <item
                     android:id="@+id/subject4"

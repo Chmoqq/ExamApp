@@ -15,10 +15,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.example.ivan.examapp.RecyclerView.AlertListAdapter;
 
@@ -62,28 +60,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.subject1) {
-            subject = "ukrainian";
+            subject = FragmentMain.namedPrefs.getString("subject1_favourites", "");
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             ft.detach(currentFragment);
             ft.attach(currentFragment);
             ft.commit();
         } else if (id == R.id.subject2) {
-            subject = "english";
+            subject = FragmentMain.namedPrefs.getString("subject2_favourites", "");
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             ft.detach(currentFragment);
             ft.attach(currentFragment);
             ft.commit();
         } else if (id == R.id.subject3) {
-            subject = "math";
+            subject = FragmentMain.namedPrefs.getString("subject3_favourites", "");
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             ft.detach(currentFragment);
             ft.attach(currentFragment);
             ft.commit();
         } else if (id == R.id.subject4) {
-
+            subject = FragmentMain.namedPrefs.getString("subject4_favourites", "");
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            ft.detach(currentFragment);
+            ft.attach(currentFragment);
+            ft.commit();
         } else if (id == R.id.share) {
 
         } else if (id == R.id.settings) {
@@ -127,17 +130,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setView(R.layout.alert_add_menu_layout);
         final AlertDialog ad = builder.show();
-//        DisplayMetrics displayMetrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-//        int displayWidth = displayMetrics.widthPixels;
-//        int displayHeight = displayMetrics.heightPixels;
-//        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-//        layoutParams.copyFrom(ad.getWindow().getAttributes());
-//        int dialogWindowWidth = (int) (displayWidth * 0.85f);
-//        int dialogWindowHeight = (int) (displayHeight * 0.85f);
-//        layoutParams.width = dialogWindowWidth;
-//        layoutParams.height = dialogWindowHeight;
-//        ad.getWindow().setAttributes(layoutParams);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
         alertListAdapter = new AlertListAdapter(getApplicationContext());
         recyclerView = ad.findViewById(R.id.recycler_view);
