@@ -1,7 +1,5 @@
 package com.example.ivan.examapp;
 
-import android.content.DialogInterface;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -14,18 +12,20 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.ListView;
+
+import com.example.ivan.examapp.RecyclerView.AlertListAdapter;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    ListView listView;
+    private RecyclerView recyclerView;
     AlertListAdapter alertListAdapter;
 
     FragmentMain fragmentMain;
@@ -105,24 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setView(R.layout.alert_add_menu_layout);
-                alertListAdapter = new AlertListAdapter(getApplicationContext());
-                final AlertDialog ad = builder.show();
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                int displayWidth = displayMetrics.widthPixels;
-                int displayHeight = displayMetrics.heightPixels;
-                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-                layoutParams.copyFrom(ad.getWindow().getAttributes());
-                int dialogWindowWidth = (int) (displayWidth * 0.85f);
-                int dialogWindowHeight = (int) (displayHeight * 0.85f);
-                layoutParams.width = dialogWindowWidth;
-                layoutParams.height = dialogWindowHeight;
-                ad.getWindow().setAttributes(layoutParams);
-                listView = ad.findViewById(R.id.list_view);
-                listView.setAdapter(alertListAdapter);
-                listView.getLastVisiblePosition();
+                initAlertList();
             }
         });
 
@@ -138,5 +121,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentMain = new FragmentMain();
         manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.fragment_container, fragmentMain).commit();
+    }
+
+    private void initAlertList() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setView(R.layout.alert_add_menu_layout);
+        final AlertDialog ad = builder.show();
+//        DisplayMetrics displayMetrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//        int displayWidth = displayMetrics.widthPixels;
+//        int displayHeight = displayMetrics.heightPixels;
+//        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+//        layoutParams.copyFrom(ad.getWindow().getAttributes());
+//        int dialogWindowWidth = (int) (displayWidth * 0.85f);
+//        int dialogWindowHeight = (int) (displayHeight * 0.85f);
+//        layoutParams.width = dialogWindowWidth;
+//        layoutParams.height = dialogWindowHeight;
+//        ad.getWindow().setAttributes(layoutParams);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+        alertListAdapter = new AlertListAdapter(getApplicationContext());
+        recyclerView = ad.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(alertListAdapter);
     }
 }

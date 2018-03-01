@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:id="@+id/recycler_view_frame_item"
+        android:background="@color/white"
         android:layout_margin="4dp"
         android:layout_width="match_parent"
         android:layout_height="45dp">
@@ -14,12 +17,14 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:layout_margin="3dp"
                 android:id="@+id/subject_icon_list"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2" />
 
             <TextView
+                android:layout_margin="3dp"
                 android:id="@+id/subject_name_text_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -27,11 +32,12 @@
                 android:fontFamily="@font/open_sans_bold"
                 android:gravity="start|center_vertical"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <ImageView
+                android:id="@+id/subject_add_list_btn"
                 android:layout_margin="3dp"
-                android:src="@drawable/ic_rulers"
+                android:src="@drawable/ic_add_list_to_favourites"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2" />
