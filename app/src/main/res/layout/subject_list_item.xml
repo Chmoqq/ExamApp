@@ -6,12 +6,12 @@
 
     <FrameLayout
         android:id="@+id/recycler_view_frame_item"
-        android:background="@color/white"
-        android:layout_margin="4dp"
+        android:background="@color/blue_nav_bar"
         android:layout_width="match_parent"
         android:layout_height="45dp">
 
         <LinearLayout
+            android:background="@color/blue_nav_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -28,19 +28,11 @@
                 android:id="@+id/subject_name_text_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.65"
+                android:layout_weight="0.8"
                 android:fontFamily="@font/open_sans_bold"
                 android:gravity="start|center_vertical"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/subject_add_list_btn"
-                android:layout_margin="3dp"
-                android:src="@drawable/ic_add_list_to_favourites"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2" />
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
         </LinearLayout>
 

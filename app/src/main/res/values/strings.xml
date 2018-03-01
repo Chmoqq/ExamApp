@@ -10,4 +10,6 @@
     <string name="completed_questions_text">вопроса\nсдано из</string>
     <string name="ready_to_exam_text">Готовность\nк экзамену</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="share_menu_title">Рассказать другу</string>
+    <string name="settings_menu_title">Настройки</string>
 </resources>

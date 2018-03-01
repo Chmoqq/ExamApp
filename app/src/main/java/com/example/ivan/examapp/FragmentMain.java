@@ -25,10 +25,6 @@ public class FragmentMain extends Fragment {
     CardView testYourself;
     CardView chooseTopic;
 
-    public static String getNamedSharedPrefsKey() {
-        return namedSharedPrefsKey;
-    }
-
     @Override
     public void onStart() {
         super.onStart();

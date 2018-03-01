@@ -4,45 +4,16 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/subjects"
-            android:icon="@drawable/ic_studying"
-            android:title="Предметы" />
+
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
-            android:title="Настройки" />
+            android:title="@string/settings_menu_title" />
         <item
             android:id="@+id/share"
-            android:icon="@drawable/ic_settings"
-            android:title="Рассказать другу" />
+            android:icon="@drawable/ic_share"
+            android:title="@string/share_menu_title" />
 
     </group>
-
-    <item android:title="Избранное">
-        <menu>
-
-            <group android:checkableBehavior="single">
-
-                <item
-                    android:id="@+id/subject1"
-                    android:title="" />
-                <item
-                    android:id="@+id/subject2"
-                    android:title="" />
-
-                <item
-                    android:id="@+id/subject3"
-                    android:title="" />
-
-                <item
-                    android:id="@+id/subject4"
-                    android:title="" />
-
-            </group>
-
-        </menu>
-
-    </item>
 
 </menu>
