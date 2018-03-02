@@ -19,6 +19,8 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <Spinner
+                android:backgroundTint="@color/white"
+                android:dropDownSelector="@color/white"
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:spinnerMode="dropdown"
