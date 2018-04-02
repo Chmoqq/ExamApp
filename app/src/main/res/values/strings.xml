@@ -12,4 +12,17 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="share_menu_title">Рассказать другу</string>
     <string name="settings_menu_title">Настройки</string>
+    <string name="share_with_friends">Поделиться</string>
+    <string name="total_questions_math">833</string>
+    <string name="total_questions_english">925</string>
+    <string name="total_questions_ukrainian">1995</string>
+    <string name="total_questions_history">1468</string>
+    <string name="total_questions_geography">1098</string>
+    <string name="total_questions_biology">1092</string>
+    <string name="total_questions_physics">730</string>
+    <string name="total_questions_chemistry">1062</string>
+    <string name="total_questions_deutsch">533</string>
+    <string name="total_questions_french">533</string>
+    <string name="total_questions_spanish">718</string>
+    <string name="total_questions_human_rights">210</string>
 </resources>

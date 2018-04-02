@@ -1,7 +1,10 @@
 package com.example.ivan.examapp;
 
+import android.app.FragmentTransaction;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,32 +12,51 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import com.example.ivan.examapp.DataBase.NoteDataDelegate;
 import com.example.ivan.examapp.Spinner.SpinnerAdapter;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private List<String> elements = Arrays.asList("Английский язык", "Математика", "Украинский язык", "Биология",
+    private List<String> elements = Arrays.asList("Украинский язык", "Математика", "Английский язык", "Биология",
             "География", "Право", "Физика", "Химия", "Немемцкий язык",
             "Французский язык", "Испанский язык", "История Украины");
 
-    private List<Integer> subjectIcons = Arrays.asList(R.drawable.ic_english_language, R.drawable.ic_rulers,
-            R.drawable.ic_book_ukr, R.drawable.ic_biology, R.drawable.ic_geography, R.drawable.ic_human_rights,
+    private List<String> elementsId = Arrays.asList("ukrainian", "math", "english", "biology",
+            "geography", "human_rights", "physics", "chemistry",
+            "deutsch", "french", "spanish", "history");
+
+    private List<Integer> subjectIcons = Arrays.asList(R.drawable.ic_book_ukr, R.drawable.ic_rulers,
+            R.drawable.ic_english_language, R.drawable.ic_biology, R.drawable.ic_geography, R.drawable.ic_human_rights,
             R.drawable.ic_physics, R.drawable.ic_chemistry, R.drawable.ic_deutch, R.drawable.ic_french, R.drawable.ic_spanish, R.drawable.ic_history);
 
 
     FragmentMain fragmentMain;
     FragmentManager manager;
 
+    NoteDataDelegate noteDataDelegate;
+
     Spinner spinner;
 
-    public static String subject;
+    public static String subject = "ukrainian";
 
     public static String getSubject() {
         return subject;
@@ -45,6 +67,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
+
+        //=======Code For copying Existing Database file to system folder for use====//
+        // Copying Existing Database into system folder
+        try {
+
+            String destPath = "/data/data/" + getPackageName()
+                    + "/databases/answers";
+
+            File f = new File(destPath);
+            if(!f.exists() || true){
+                InputStream in = getAssets().open("answers");
+                OutputStream out = new FileOutputStream(destPath);
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+                in.close();
+                out.close();
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.v("TAG","ioexeption");
+            e.printStackTrace();
+        }
+
+        noteDataDelegate = new NoteDataDelegate(this);
+        noteDataDelegate.open();
+        noteDataDelegate.getAllNotes();
     }
 
     @Override
@@ -86,6 +140,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         spinner = findViewById(R.id.spinner);
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getApplicationContext(), subjectIcons, elements);
         spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                subject = elementsId.get(i);
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.detach(currentFragment);
+                fragmentTransaction.attach(currentFragment);
+                fragmentTransaction.commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
