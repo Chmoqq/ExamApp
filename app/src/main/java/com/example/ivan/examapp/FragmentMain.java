@@ -13,13 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.ivan.examapp.DataBase.NoteDataDelegate;
+
 
 public class FragmentMain extends Fragment {
 
     private static final String namedSharedPrefsKey = "namedPrefs";
 
-    FragmentWebView fragmentWebView;
+    LearnTicketsFragment learnTicketsFragment;
     FragmentManager fragmentManager;
+
 
     static SharedPreferences namedPrefs;
     TextView percents_done;
@@ -50,9 +53,9 @@ public class FragmentMain extends Fragment {
         learnTickets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragmentWebView = new FragmentWebView();
+                learnTicketsFragment = new LearnTicketsFragment();
                 fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentWebView).addToBackStack("main_fragment").commit();
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, learnTicketsFragment).addToBackStack("main_fragment").commit();
             }
         });
         percents_done = root.findViewById(R.id.percentage_done);

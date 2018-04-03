@@ -67,38 +67,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUI();
-
-        //=======Code For copying Existing Database file to system folder for use====//
-        // Copying Existing Database into system folder
         try {
-
-            String destPath = "/data/data/" + getPackageName()
-                    + "/databases/answers";
-
-            File f = new File(destPath);
-            if(!f.exists() || true){
-                InputStream in = getAssets().open("answers");
-                OutputStream out = new FileOutputStream(destPath);
-
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, length);
-                }
-                in.close();
-                out.close();
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            copyDB();
         } catch (IOException e) {
-            Log.v("TAG","ioexeption");
             e.printStackTrace();
         }
-
-        noteDataDelegate = new NoteDataDelegate(this);
-        noteDataDelegate.open();
-        noteDataDelegate.getAllNotes();
     }
 
     @Override
@@ -163,6 +136,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentMain = new FragmentMain();
         manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.fragment_container, fragmentMain).commit();
+    }
+
+    private void copyDB() throws IOException {
+
+        String destPath = "/data/data/" + getPackageName()
+                + "/databases/answers";
+
+        File f = new File(destPath);
+        InputStream in = getAssets().open("answers");
+        OutputStream out = new FileOutputStream(destPath);
+
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = in.read(buffer)) > 0) {
+            out.write(buffer, 0, length);
+        }
+        in.close();
+        out.close();
+
     }
 
 }
