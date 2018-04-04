@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class NoteDataDelegate {
 
     private DataBaseHelper dbHelper;
@@ -34,15 +35,26 @@ public class NoteDataDelegate {
     }
 
     public String getAllNotes(String select) {
-        dbHelper.query("answers", null,  null, null, null, null, null);
-
-        List<Note> notes = new ArrayList<>();
+        //dbHelper.query("answers", null,  null, null, null, null, null);
 
         Cursor cursor = database.rawQuery(select, null);
 
         cursor.moveToFirst();
         String super_answer = cursor.getString(0);
         return super_answer;
+    }
+
+    public List<Integer> getValues(String select) {
+        List<Integer> values = new ArrayList<>();
+        Cursor cursor = database.rawQuery(select, null);
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                int currentValue = Integer.parseInt(cursor.getString(cursor.getColumnIndex("test_id")));
+                values.add(currentValue);
+                cursor.moveToNext();
+            }
+        }
+        return values;
     }
 
 }

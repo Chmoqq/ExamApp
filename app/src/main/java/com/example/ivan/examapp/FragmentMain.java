@@ -10,17 +10,14 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.example.ivan.examapp.DataBase.NoteDataDelegate;
 
 
 public class FragmentMain extends Fragment {
 
     private static final String namedSharedPrefsKey = "namedPrefs";
 
-    LearnTicketsFragment learnTicketsFragment;
+    FragmentLearnTickets fragmentLearnTickets;
     FragmentManager fragmentManager;
 
 
@@ -53,9 +50,9 @@ public class FragmentMain extends Fragment {
         learnTickets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                learnTicketsFragment = new LearnTicketsFragment();
+                fragmentLearnTickets = new FragmentLearnTickets();
                 fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragment_container, learnTicketsFragment).addToBackStack("main_fragment").commit();
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentLearnTickets).addToBackStack("main_fragment").commit();
             }
         });
         percents_done = root.findViewById(R.id.percentage_done);
