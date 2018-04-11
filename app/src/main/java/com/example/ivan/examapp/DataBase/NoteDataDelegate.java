@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.ivan.examapp.Ticket;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,13 +46,15 @@ public class NoteDataDelegate {
         return super_answer;
     }
 
-    public List<Integer> getValues(String select) {
-        List<Integer> values = new ArrayList<>();
+    public List<Ticket> getTicket(String select) {
+        List<Ticket> values = new ArrayList<>();
         Cursor cursor = database.rawQuery(select, null);
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                int currentValue = Integer.parseInt(cursor.getString(cursor.getColumnIndex("test_id")));
-                values.add(currentValue);
+                String subjectName = cursor.getString(cursor.getColumnIndex("name"));
+                int currentValue = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
+                Ticket currentTicket = new Ticket(subjectName, currentValue);
+                values.add(currentTicket);
                 cursor.moveToNext();
             }
         }

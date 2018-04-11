@@ -36,27 +36,30 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private List<String> elements = Arrays.asList("Украинский язык", "Математика", "Английский язык", "Биология",
-            "География", "Право", "Физика", "Химия", "Немемцкий язык",
-            "Французский язык", "Испанский язык", "История Украины");
+    private List<String> elements = Arrays.asList("Украинский язык", "Математика", "История Украины", "География",
+            "Биология", "Физика", "Химия", "Английский язык", "Немемцкий язык",
+            "Французский язык", "Испанский язык");
 
-    private List<String> elementsId = Arrays.asList("ukrainian", "math", "english", "biology",
-            "geography", "human_rights", "physics", "chemistry",
-            "deutsch", "french", "spanish", "history");
+    private List<String> elementsId = Arrays.asList("ukrainian", "math", "history", "geography",
+            "biology", "physics", "chemistry",  "english", "dutch",
+            "french", "spanish");
 
-    private List<Integer> subjectIcons = Arrays.asList(R.drawable.ic_book_ukr, R.drawable.ic_rulers,
-            R.drawable.ic_english_language, R.drawable.ic_biology, R.drawable.ic_geography, R.drawable.ic_human_rights,
-            R.drawable.ic_physics, R.drawable.ic_chemistry, R.drawable.ic_deutch, R.drawable.ic_french, R.drawable.ic_spanish, R.drawable.ic_history);
+    private List<Integer> subjectIcons = Arrays.asList(R.drawable.ic_book_ukr, R.drawable.ic_rulers, R.drawable.ic_history,  R.drawable.ic_geography,
+            R.drawable.ic_biology, R.drawable.ic_physics, R.drawable.ic_chemistry, R.drawable.ic_english_language, R.drawable.ic_deutch,
+            R.drawable.ic_french, R.drawable.ic_spanish);
 
 
     FragmentMain fragmentMain;
     FragmentManager manager;
 
-    NoteDataDelegate noteDataDelegate;
-
     Spinner spinner;
 
     public static String subject = "ukrainian";
+    public static int curSubjectId = 1;
+
+    public static int getCurSubjectId() {
+        return curSubjectId;
+    }
 
     public static String getSubject() {
         return subject;
@@ -117,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 subject = elementsId.get(i);
+                curSubjectId = i + 1;
                 Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.detach(currentFragment);

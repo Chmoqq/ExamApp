@@ -65,6 +65,7 @@ public class FragmentMain extends Fragment {
     }
 
     private void readFromPreference(SharedPreferences preferences, String subject) {
+        //FIXME
         String percents_done_data = preferences.getString("percents_done_" + subject, "0");
         percents_done.setText(percents_done_data);
 
