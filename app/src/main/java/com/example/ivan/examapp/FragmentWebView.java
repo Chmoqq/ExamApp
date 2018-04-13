@@ -8,23 +8,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class FragmentWebView extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        StringBuilder stringBuilder = new StringBuilder();
         final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment, container, false);
-        String html = "<p align=\"center\"><strong>Hören</strong></p>\n" +
-                "\n" +
-                "<p align=\"center\"><strong>Teil 1</strong></p>\n" +
-                "\n" +
-                "<p align=\"center\"><strong>Sie hören nun sechs kurze Texte. Sie hören jeden Text zweimal.</strong><br>\n" +
-                "<strong>Zu jedem Text lösen Sie eine Aufgabe.</strong><br>\n" +
-                "<strong>Wählen Sie bei jeder Aufgabe die richtige Lösung, A, B oder C.</strong></p>\n" +
-                "\n" +
-                "<p>Was wollte Andreas mitteilen?</p>\n" +
-                "\n" +
-                "<p><iframe allowfullscreen=\"\" frameborder=\"0\" height=\"315\" src=\"https://www.youtube.com/embed/SiXSfyePaPM\" width=\"620\"></iframe></p>";
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(getContext().getAssets().open("6.html"), "UTF-8"));
+            String contents;
+            while ((contents = reader.readLine()) != null) {
+                stringBuilder.append(contents);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String html = stringBuilder.toString();
         String mime = "text/html";
         String encoding = "utf-8";
         WebView webView = root.findViewById(R.id.webview);

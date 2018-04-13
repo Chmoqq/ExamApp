@@ -11,7 +11,7 @@
         android:id="@+id/cardview_1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
+
         android:layout_marginEnd="7.5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="7.5dp"

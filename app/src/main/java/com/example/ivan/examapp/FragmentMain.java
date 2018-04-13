@@ -12,16 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.ivan.examapp.DataBase.NoteDataDelegate;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class FragmentMain extends Fragment {
 
-    private static final String namedSharedPrefsKey = "namedPrefs";
-
     FragmentLearnTickets fragmentLearnTickets;
     FragmentManager fragmentManager;
+    NoteDataDelegate noteDataDelegate;
 
-
-    static SharedPreferences namedPrefs;
     TextView percents_done;
     TextView completed_questions;
     TextView total_questions;
@@ -58,21 +60,27 @@ public class FragmentMain extends Fragment {
         percents_done = root.findViewById(R.id.percentage_done);
         completed_questions = root.findViewById(R.id.completed_questions_exam);
         total_questions = root.findViewById(R.id.total_questions);
-        namedPrefs = getActivity().getSharedPreferences(namedSharedPrefsKey, Context.MODE_PRIVATE);
+        noteDataDelegate = new NoteDataDelegate(getContext());
+        noteDataDelegate.open();
 
-        readFromPreference(namedPrefs, MainActivity.getSubject());
+        readFromPreference();
         return root;
     }
 
-    private void readFromPreference(SharedPreferences preferences, String subject) {
-        //FIXME
-        String percents_done_data = preferences.getString("percents_done_" + subject, "0");
-        percents_done.setText(percents_done_data);
+    private void readFromPreference() {
+        String dbRequest = "SELECT questions_complete FROM user_answers WHERE subject_id=" + MainActivity.getCurSubjectId();
+        String subjectIds = "SELECT id FROM tests WHERE subject_id=" + MainActivity.getCurSubjectId();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < noteDataDelegate.getList(subjectIds).size(); i++) {
+            stringBuilder.append("'" + noteDataDelegate.getList(subjectIds).get(i)+ "'" + ", ");
+        }
+        stringBuilder.setLength(stringBuilder.length() - 2);
+        String questionsCount = "SELECT COUNT(question_id) FROM answers WHERE test_id in (" + stringBuilder.toString() + ")";
+        String percentQuestionsDone = String.valueOf(Integer.parseInt(noteDataDelegate.getAllNotes(questionsCount)) / 100 * Integer.parseInt(noteDataDelegate.getAllNotes(dbRequest)));
+        percents_done.setText(percentQuestionsDone);
 
-        String completed_questions_data = preferences.getString("completed_questions_" + subject, "0");
-        completed_questions.setText(completed_questions_data);
+        completed_questions.setText(noteDataDelegate.getAllNotes(dbRequest));
 
-        int resourceId = this.getResources().getIdentifier("total_questions_" + subject, "string", getActivity().getPackageName());
-        total_questions.setText(resourceId);
+        total_questions.setText(noteDataDelegate.getAllNotes(questionsCount));
     }
 }

@@ -41,10 +41,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             "Французский язык", "Испанский язык");
 
     private List<String> elementsId = Arrays.asList("ukrainian", "math", "history", "geography",
-            "biology", "physics", "chemistry",  "english", "dutch",
+            "biology", "physics", "chemistry", "english", "dutch",
             "french", "spanish");
 
-    private List<Integer> subjectIcons = Arrays.asList(R.drawable.ic_book_ukr, R.drawable.ic_rulers, R.drawable.ic_history,  R.drawable.ic_geography,
+    private List<Integer> subjectIcons = Arrays.asList(R.drawable.ic_book_ukr, R.drawable.ic_rulers, R.drawable.ic_history, R.drawable.ic_geography,
             R.drawable.ic_biology, R.drawable.ic_physics, R.drawable.ic_chemistry, R.drawable.ic_english_language, R.drawable.ic_deutch,
             R.drawable.ic_french, R.drawable.ic_spanish);
 

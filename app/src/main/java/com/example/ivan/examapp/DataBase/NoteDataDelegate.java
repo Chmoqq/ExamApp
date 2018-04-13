@@ -1,6 +1,5 @@
 package com.example.ivan.examapp.DataBase;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -17,8 +16,6 @@ public class NoteDataDelegate {
     private DataBaseHelper dbHelper;
     private SQLiteDatabase database;
 
-    static final String TABLE_NOTES = "answers";
-
     public NoteDataDelegate(Context context) {
         dbHelper = new DataBaseHelper(context);
     }
@@ -27,22 +24,20 @@ public class NoteDataDelegate {
         database = dbHelper.getReadableDatabase();
     }
 
-     public void close() {
+    public void close() {
         dbHelper.close();
     }
 
-    public void insert(String name, String desc) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TABLE_NOTES, name);
-    }
-
     public String getAllNotes(String select) {
-        //dbHelper.query("answers", null,  null, null, null, null, null);
-
+        String super_answer;
         Cursor cursor = database.rawQuery(select, null);
-
         cursor.moveToFirst();
-        String super_answer = cursor.getString(0);
+        if (cursor.getCount() != 0) {
+            super_answer = cursor.getString(0);
+        } else {
+            super_answer = "0";
+        }
+
         return super_answer;
     }
 
@@ -55,6 +50,19 @@ public class NoteDataDelegate {
                 int currentValue = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
                 Ticket currentTicket = new Ticket(subjectName, currentValue);
                 values.add(currentTicket);
+                cursor.moveToNext();
+            }
+        }
+        return values;
+    }
+
+    public List<String> getList(String select) {
+        List<String> values = new ArrayList<>();
+        Cursor cursor = database.rawQuery(select, null);
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String subjectName = cursor.getString(cursor.getColumnIndex("id"));
+                values.add(subjectName);
                 cursor.moveToNext();
             }
         }

@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,14 +25,11 @@ public class FragmentLearnTickets extends Fragment {
     FragmentManager fragmentManager;
     FragmentWebView fragmentWebView;
 
-    NoteDataDelegate noteDataDelegate;
     RecyclerView ticketsList;
     TicketListAdapter adapter;
 
-    int textidHelper;
-    int ticketsCount;
-    int ticketsCount2;
     List<Ticket> ticketList = new ArrayList<>();
+    NoteDataDelegate noteDataDelegate;
 
     @Override
     public void onStart() {
@@ -47,42 +43,13 @@ public class FragmentLearnTickets extends Fragment {
         final View root = inflater.from(getContext()).inflate(R.layout.fragment_learn_tickets, container, false);
         noteDataDelegate = new NoteDataDelegate(getActivity());
         noteDataDelegate.open();
-//        ticketsCount = Integer.parseInt(noteDataDelegate.getAllNotes("SELECT COUNT(DISTINCT id) FROM tests WHERE test_id=" + ));
         ticketList = noteDataDelegate.getTicket("SELECT * FROM tests WHERE subject_id=" + MainActivity.getCurSubjectId());
         ticketsList = root.findViewById(R.id.list_tickets);
-        adapter = new TicketListAdapter(ticketsCount);
+        adapter = new TicketListAdapter();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         ticketsList.setLayoutManager(gridLayoutManager);
         ticketsList.setAdapter(adapter);
         return root;
-    }
-
-    private static class ListTicketsViewHolder1 extends RecyclerView.ViewHolder {
-
-        CardView cardView1;
-        CardView cardView2;
-        TextView textView1;
-        TextView textView2;
-        ImageView imageView1_1;
-        ImageView imageView1_2;
-        ImageView imageView1_3;
-        ImageView imageView2_1;
-        ImageView imageView2_2;
-        ImageView imageView2_3;
-
-        public ListTicketsViewHolder1(View itemView) {
-            super(itemView);
-            cardView1 = itemView.findViewById(R.id.cardview_1);
-            cardView2 = itemView.findViewById(R.id.cardview_2);
-            textView1 = itemView.findViewById(R.id.textview_1);
-            textView2 = itemView.findViewById(R.id.textview_2);
-            imageView1_1 = itemView.findViewById(R.id.imageview_1_1);
-            imageView1_2 = itemView.findViewById(R.id.imageview_1_2);
-            imageView1_3 = itemView.findViewById(R.id.imageview_1_3);
-            imageView2_1 = itemView.findViewById(R.id.imageview_2_1);
-            imageView2_2 = itemView.findViewById(R.id.imageview_2_2);
-            imageView2_3 = itemView.findViewById(R.id.imageview_2_3);
-        }
     }
 
     private static class ListTicketsViewHolder2 extends RecyclerView.ViewHolder {
@@ -105,10 +72,8 @@ public class FragmentLearnTickets extends Fragment {
 
     private class TicketListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        int ticketsCount;
 
-        public TicketListAdapter(int ticketsCount) {
-            this.ticketsCount = ticketsCount;
+        public TicketListAdapter() {
         }
 
         @Override
@@ -127,34 +92,6 @@ public class FragmentLearnTickets extends Fragment {
         @Override
         public int getItemCount() {
             return ticketList.size();
-        }
-
-        private void viewHolder1(RecyclerView.ViewHolder holder, int position) {
-            ListTicketsViewHolder1 listTicketsViewHolder1 = (ListTicketsViewHolder1) holder;
-            listTicketsViewHolder1.textView1.setText(ticketList.get(position * 2).getName());
-            listTicketsViewHolder1.textView2.setText(ticketList.get(position * 2 + 1).getName());
-            listTicketsViewHolder1.imageView1_1.setImageResource(R.drawable.ic_star_filled);
-            listTicketsViewHolder1.imageView1_2.setImageResource(R.drawable.ic_star_filled);
-            listTicketsViewHolder1.imageView1_3.setImageResource(R.drawable.ic_star_empty);
-            listTicketsViewHolder1.imageView2_1.setImageResource(R.drawable.ic_star_filled);
-            listTicketsViewHolder1.imageView2_2.setImageResource(R.drawable.ic_star_empty);
-            listTicketsViewHolder1.imageView2_3.setImageResource(R.drawable.ic_star_empty);
-            listTicketsViewHolder1.cardView1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    fragmentWebView = new FragmentWebView();
-                    fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentWebView).addToBackStack("Tickets List").commit();
-                }
-            });
-            listTicketsViewHolder1.cardView2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    fragmentWebView = new FragmentWebView();
-                    fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentWebView).addToBackStack("Tickets List").commit();
-                }
-            });
         }
 
         private void viewHolder2(RecyclerView.ViewHolder holder, int position) {
