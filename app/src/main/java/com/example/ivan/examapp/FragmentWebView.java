@@ -68,11 +68,17 @@ public class FragmentWebView extends Fragment {
             String[] files = new String[fileList.length];
             for (int i = 0; i < fileList.length; i++) {
                 InputStream inputStream = getContext().getAssets().open(test_id + "/" + fileList[i]);
-                files[i] = "<style>* { font-size: 1.5rem; } img { width: 100%; }</style>" + getStringFromIS(inputStream);
+                files[i] = "<style>* { font-size: 1.1rem; } .q-number { background: #eeeeee; line-height: 27px; width: 27px;\n" +
+                        "height: 27px;\n" +
+                        "display: inline-block;\n" +
+                        "margin-top: 5px;\n" +
+                        "margin-right: 10px;\n" +
+                        "text-align: center;\n" +
+                        "font-weight: 700; padding: 8px;} img { width: 100%; }</style>" + getStringFromIS(inputStream);
             }
             String mime = "text/html";
             String encoding = "utf-8";
-            webView.loadDataWithBaseURL("https://zno.osvita.ua", files[0], mime, encoding, null);
+            webView.loadDataWithBaseURL("https://zno.osvita.ua", files[1], mime, encoding, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
