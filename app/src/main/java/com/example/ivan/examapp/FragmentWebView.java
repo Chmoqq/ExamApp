@@ -1,5 +1,8 @@
 package com.example.ivan.examapp;
 
+import android.annotation.SuppressLint;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,33 +13,69 @@ import android.webkit.WebView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class FragmentWebView extends Fragment {
 
+    WebView webView;
+
+    @SuppressLint("SetJavaScriptEnabled")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        StringBuilder stringBuilder = new StringBuilder();
         final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment, container, false);
-        BufferedReader reader = null;
+        webView = root.findViewById(R.id.webview);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webViewContent();
+        return root;
+    }
+
+    private static String getStringFromIS(InputStream is) {
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
+
+        String line;
         try {
-            reader = new BufferedReader(
-                    new InputStreamReader(getContext().getAssets().open("6.html"), "UTF-8"));
-            String contents;
-            while ((contents = reader.readLine()) != null) {
-                stringBuilder.append(contents);
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
             }
+        } catch (IOException e) {
+
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    private void webViewContent() {
+        try {
+            int test_id;
+            Bundle testId = this.getArguments();
+            if (testId != null) {
+                test_id = testId.getInt("test_id");
+            } else {
+                test_id = 0;
+            }
+            String[] fileList = getContext().getAssets().list(String.valueOf(test_id));
+            String[] files = new String[fileList.length];
+            for (int i = 0; i < fileList.length; i++) {
+                InputStream inputStream = getContext().getAssets().open(test_id + "/" + fileList[i]);
+                files[i] = "<style>* { font-size: 1.5rem; } img { width: 100%; }</style>" + getStringFromIS(inputStream);
+            }
+            String mime = "text/html";
+            String encoding = "utf-8";
+            webView.loadDataWithBaseURL("https://zno.osvita.ua", files[0], mime, encoding, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String html = stringBuilder.toString();
-        String mime = "text/html";
-        String encoding = "utf-8";
-        WebView webView = root.findViewById(R.id.webview);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadDataWithBaseURL(null, html, mime, encoding, null);
-        return root;
     }
 
     @Override
