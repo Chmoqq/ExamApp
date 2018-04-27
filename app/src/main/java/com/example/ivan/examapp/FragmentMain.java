@@ -62,7 +62,6 @@ public class FragmentMain extends Fragment {
         total_questions = root.findViewById(R.id.total_questions);
         noteDataDelegate = new NoteDataDelegate(getContext());
         noteDataDelegate.open();
-
         readFromPreference();
         return root;
     }

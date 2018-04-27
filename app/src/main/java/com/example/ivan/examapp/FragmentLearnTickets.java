@@ -108,7 +108,7 @@ public class FragmentLearnTickets extends Fragment {
                     testId.putInt("test_id", ticketList.get(position).getId());
                     fragmentWebView.setArguments(testId);
                     fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentWebView).addToBackStack("Tickets List").commit();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentWebView, "webview").addToBackStack("Tickets List").commit();
                 }
             });
         }
