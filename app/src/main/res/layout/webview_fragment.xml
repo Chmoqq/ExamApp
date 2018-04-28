@@ -1,30 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/webview_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/webview_fragment"
     android:orientation="vertical">
 
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.75" />
+        android:layout_weight="0.35" />
 
-    <RelativeLayout
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:fontFamily="@font/open_sans_bold"
+        android:gravity="center"
+        android:text="Выберите правильный ответ"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textColor="@color/black" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.25">
+        android:layout_marginTop="5dp"
+        android:layout_weight="0.25"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/next_quest_but"
-            android:layout_width="140dp"
-            android:layout_height="50dp"
-            android:fontFamily="@font/open_sans_bold"
-            android:text="След задание"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-    </RelativeLayout>
+            <ToggleButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/checkbox_rounded"
+                android:fontFamily="@font/open_sans_bold"
+                android:textColor="@color/black"
+                android:textOff="А"
+                android:textOn="А"
+                android:textSize="30sp" />
+
+            <ToggleButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_rounded"
+                android:fontFamily="@font/open_sans_bold"
+                android:textOff="Б"
+                android:textOn="Б"
+                android:textSize="30sp" />
+
+            <ToggleButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_rounded"
+                android:fontFamily="@font/open_sans_bold"
+                android:textOff="В"
+                android:textOn="В"
+                android:textSize="30sp" />
+
+            <ToggleButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_rounded"
+                android:fontFamily="@font/open_sans_bold"
+                android:textOff="Г"
+                android:textOn="Г"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ad_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            ads:adSize="FULL_BANNER"
+            ads:adUnitId="ca-app-pub-1703600089536161/6916382165" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/prev_quest_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/rounded_corners_top_red">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:gravity="center"
+                    android:text="Назад"
+                    android:textColor="@color/white"
+                    android:textSize="27sp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/next_quest_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/rounded_corners_top_orange">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:gravity="center"
+                    android:text="Ответить"
+                    android:textColor="@color/white"
+                    android:textSize="27sp" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

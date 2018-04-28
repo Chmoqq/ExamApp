@@ -1,8 +1,6 @@
 package com.example.ivan.examapp;
 
 import android.annotation.SuppressLint;
-import android.content.res.AssetManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.Button;
+import android.widget.FrameLayout;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,9 +26,11 @@ import java.util.Comparator;
 public class FragmentWebView extends Fragment {
 
     WebView webView;
-    Button nextQuest;
+    FrameLayout nextQuest;
+    FrameLayout prevQuest;
     Fragment currentFragment;
     FragmentTransaction fragmentTransaction;
+    private AdView adView;
 
     String[] files;
     String[] fileList;
@@ -43,12 +47,27 @@ public class FragmentWebView extends Fragment {
         final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment, container, false);
         currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
         fragmentTransaction = getFragmentManager().beginTransaction();
+        MobileAds.initialize(getActivity(), "ca-app-pub-1703600089536161~4090197835");
+        adView = root.findViewById(R.id.ad_view);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("").build();
+        adView.loadAd(adRequest);
         webView = root.findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
-        nextQuest = root.findViewById(R.id.next_quest_but);
+        nextQuest = root.findViewById(R.id.next_quest_btn);
+        prevQuest = root.findViewById(R.id.prev_quest_btn);
         nextQuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                questNum += 1;
+                fragmentTransaction.detach(currentFragment);
+                fragmentTransaction.attach(currentFragment);
+                fragmentTransaction.commit();
+            }
+        });
+        prevQuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                questNum -= 1;
                 fragmentTransaction.detach(currentFragment);
                 fragmentTransaction.attach(currentFragment);
                 fragmentTransaction.commit();
@@ -114,7 +133,6 @@ public class FragmentWebView extends Fragment {
                         "font-weight: 700; padding: 8px;} img { width: 100%; }</style>" + getStringFromIS(inputStream);
             }
             webView.loadDataWithBaseURL("https://zno.osvita.ua", files[questNum], mime, encoding, null);
-            questNum += 1;
         } catch (IOException e) {
             e.printStackTrace();
         }
