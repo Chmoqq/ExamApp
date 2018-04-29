@@ -99,10 +99,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_corners_top_red">
+                android:background="@drawable/rounded_corners_land_left">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -122,10 +120,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="5dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_corners_top_orange">
+                android:background="@drawable/rounded_corners_land_right">
 
                 <TextView
                     android:id="@+id/end_test_btn"
