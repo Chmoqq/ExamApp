@@ -1,6 +1,7 @@
 package com.example.ivan.examapp;
 
 import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -46,6 +47,8 @@ public class FragmentWebView extends Fragment {
     private int questNum;
     private int test_id;
 
+    private boolean orientationCheck = false;
+
     private String mime = "text/html";
     private String encoding = "utf-8";
 
@@ -73,6 +76,27 @@ public class FragmentWebView extends Fragment {
         super.onActivityCreated(savedInstanceState);
         webViewContent(savedInstanceState);
         btnsInit();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        for (String i : files) {
+            if (i.contains("img")) {
+                orientationCheck = true;
+            }
+        }
+        if (orientationCheck) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (orientationCheck) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 
     @Override
