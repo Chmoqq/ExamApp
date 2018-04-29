@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -32,6 +33,8 @@ public class FragmentWebView extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private AdView adView;
 
+    private TextView endTest;
+
     private String[] files;
     private String[] fileList;
 
@@ -45,17 +48,23 @@ public class FragmentWebView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment, container, false);
+        adView = root.findViewById(R.id.ad_view);
+        webView = root.findViewById(R.id.webview);
+        endTest = root.findViewById(R.id.end_test_btn);
+        nextQuest = root.findViewById(R.id.next_quest_btn);
+        prevQuest = root.findViewById(R.id.prev_quest_btn);
         currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
         fragmentTransaction = getFragmentManager().beginTransaction();
         MobileAds.initialize(getActivity(), "ca-app-pub-1703600089536161~4090197835");
-        adView = root.findViewById(R.id.ad_view);
         AdRequest adRequest = new AdRequest.Builder().addTestDevice("").addTestDevice("1234567").build();
         adView.loadAd(adRequest);
-        webView = root.findViewById(R.id.webview);
-        webView.getSettings().setJavaScriptEnabled(true);
-        nextQuest = root.findViewById(R.id.next_quest_btn);
-        prevQuest = root.findViewById(R.id.prev_quest_btn);
         webViewContent();
+        webView.getSettings().setJavaScriptEnabled(true);
+        if (questNum != fileList.length - 1) {
+            endTest.setText("Ответить");
+        } else {
+            endTest.setText("Завершить");
+        }
         nextQuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +83,8 @@ public class FragmentWebView extends Fragment {
             public void onClick(View view) {
                 if (questNum != 0) {
                     questNum -= 1;
-                } else {}
+                } else {
+                }
                 fragmentTransaction.detach(currentFragment);
                 fragmentTransaction.attach(currentFragment);
                 fragmentTransaction.commit();
