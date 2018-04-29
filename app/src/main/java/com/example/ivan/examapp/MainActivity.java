@@ -1,37 +1,30 @@
 package com.example.ivan.examapp;
 
-import android.app.FragmentTransaction;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
-import com.example.ivan.examapp.DataBase.NoteDataDelegate;
 import com.example.ivan.examapp.Spinner.SpinnerAdapter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private FragmentMain fragmentMain;
     private FragmentManager manager;
+    private FragmentTransaction fragmentTransaction;
 
     private Spinner spinner;
 
@@ -69,12 +63,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         initUI();
         try {
             copyDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        FragmentWebView fragmentWebView = (FragmentWebView) getSupportFragmentManager().findFragmentByTag("webView");
+        fragmentWebView.setArguments(savedInstanceState);
     }
 
     @Override
@@ -119,13 +121,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 subject = elementsId.get(i);
                 curSubjectId = i + 1;
                 Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.detach(currentFragment);
-                fragmentTransaction.attach(currentFragment);
-                fragmentTransaction.commit();
+                ft.detach(currentFragment);
+                ft.attach(currentFragment);
+                ft.commit();
             }
 
             @Override

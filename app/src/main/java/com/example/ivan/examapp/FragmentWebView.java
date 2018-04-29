@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -38,12 +39,13 @@ public class FragmentWebView extends Fragment {
     private String[] files;
     private String[] fileList;
 
-    int questNum = 0;
+    int questNum;
+    int test_id;
 
     private String mime = "text/html";
     private String encoding = "utf-8";
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "CommitTransaction"})
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,27 +57,55 @@ public class FragmentWebView extends Fragment {
         prevQuest = root.findViewById(R.id.prev_quest_btn);
         currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
         fragmentTransaction = getFragmentManager().beginTransaction();
-        MobileAds.initialize(getActivity(), "ca-app-pub-1703600089536161~4090197835");
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("").addTestDevice("1234567").build();
-        adView.loadAd(adRequest);
-        webViewContent();
         webView.getSettings().setJavaScriptEnabled(true);
+        adMobInit();
+        return root;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        webViewContent(savedInstanceState);
+        btnsInit();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("questNum", questNum);
+        outState.putInt("test_id", test_id);
+    }
+
+
+    private void btnsInit() {
         if (questNum != fileList.length - 1) {
             endTest.setText("Ответить");
         } else {
             endTest.setText("Завершить");
         }
         nextQuest.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onClick(View view) {
                 if (questNum != fileList.length - 1) {
                     questNum += 1;
-                } else {
 
+                    fragmentTransaction.detach(currentFragment);
+                    fragmentTransaction.attach(currentFragment);
+                    fragmentTransaction.commit();
+                } else if (questNum == fileList.length - 1) {
+                    long endTime = System.currentTimeMillis();
+                    endTime -= FragmentLearnTickets.getTimeStart();
+
+                    long second = (endTime / 1000) % 60;
+                    long minute = (endTime / (1000 * 60)) % 60;
+                    long hour = (endTime / (1000 * 60 * 60)) % 24;
+
+                    String time = String.format("%02d:%02d:%02d", hour, minute, second);
+                    Toast toast = Toast.makeText(getContext(), time, Toast.LENGTH_SHORT);
+                    toast.show();
                 }
-                fragmentTransaction.detach(currentFragment);
-                fragmentTransaction.attach(currentFragment);
-                fragmentTransaction.commit();
+
             }
         });
         prevQuest.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +120,12 @@ public class FragmentWebView extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-        return root;
+    }
+
+    private void adMobInit() {
+        MobileAds.initialize(getActivity(), "ca-app-pub-1703600089536161~4090197835");
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("").addTestDevice("1234567").build();
+        adView.loadAd(adRequest);
     }
 
     private static String getStringFromIS(InputStream is) {
@@ -115,15 +150,20 @@ public class FragmentWebView extends Fragment {
         return sb.toString();
     }
 
-    private void webViewContent() {
+    private void webViewContent(Bundle arguments) {
         try {
-            int test_id;
-            Bundle testId = this.getArguments();
-            if (testId != null) {
-                test_id = testId.getInt("test_id");
+            Bundle args;
+            if (arguments != null) {
+                args = arguments;
             } else {
-                test_id = 0;
+                args = getArguments();
             }
+            if (args.containsKey("test_id"))
+                test_id = args.getInt("test_id");
+
+            if (args.containsKey("questNum"))
+                questNum = args.getInt("questNum");
+
             fileList = getContext().getAssets().list(String.valueOf(test_id));
             files = new String[fileList.length];
             Collections.sort(Arrays.asList(fileList), new Comparator<String>() {

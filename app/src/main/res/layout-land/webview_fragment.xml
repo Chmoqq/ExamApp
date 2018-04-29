@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/webview_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.15" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:fontFamily="@font/open_sans_bold"
+        android:gravity="center"
+        android:text="Выберите правильный ответ"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
+        android:layout_weight="0.25"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ToggleButton
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/checkbox_rounded"
+                android:fontFamily="@font/open_sans_bold"
+                android:textColor="@color/black"
+                android:textOff="А"
+                android:textOn="А"
+                android:textSize="30sp" />
+
+            <ToggleButton
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_rounded"
+                android:fontFamily="@font/open_sans_bold"
+                android:textOff="Б"
+                android:textOn="Б"
+                android:textSize="30sp" />
+
+            <ToggleButton
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_rounded"
+                android:fontFamily="@font/open_sans_bold"
+                android:textOff="В"
+                android:textOn="В"
+                android:textSize="30sp" />
+
+            <ToggleButton
+                android:layout_width="47dp"
+                android:layout_height="47dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_rounded"
+                android:fontFamily="@font/open_sans_bold"
+                android:textOff="Г"
+                android:textOn="Г"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ad_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            ads:adSize="FULL_BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+
+        <LinearLayout
+            android:baselineAligned="false"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/prev_quest_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/rounded_corners_top_red">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:gravity="center"
+                    android:text="Назад"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/next_quest_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/rounded_corners_top_orange">
+
+                <TextView
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:id="@+id/end_test_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
