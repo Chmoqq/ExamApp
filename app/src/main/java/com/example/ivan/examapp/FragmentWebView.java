@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class FragmentWebView extends Fragment {
     private Fragment currentFragment;
     private FragmentTransaction fragmentTransaction;
     private AdView adView;
+
 
     private TextView endTest;
 
@@ -85,6 +88,17 @@ public class FragmentWebView extends Fragment {
             endTest.setText("Ответить");
         } else {
             endTest.setText("Завершить");
+        }
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int width = displayMetrics.widthPixels / 4;
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, RelativeLayout.LayoutParams.MATCH_PARENT);
+            prevQuest.setLayoutParams(layoutParams);
+            RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(width, RelativeLayout.LayoutParams.MATCH_PARENT);
+            layoutParams1.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
+            layoutParams1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+            nextQuest.setLayoutParams(layoutParams1);
         }
         nextQuest.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("DefaultLocale")

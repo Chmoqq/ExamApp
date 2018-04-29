@@ -9,8 +9,12 @@
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="3dp"
         android:layout_weight="0.35" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,9 +22,10 @@
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/open_sans_bold"
         android:gravity="center"
+        android:layout_marginBottom="3dp"
         android:text="Выберите правильный ответ"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        android:textColor="@color/black" />
+        android:textColor="@color/black_spec" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,7 +50,7 @@
                 android:layout_marginRight="30dp"
                 android:background="@drawable/checkbox_rounded"
                 android:fontFamily="@font/open_sans_bold"
-                android:textColor="@color/black"
+                android:textColor="@color/black_spec"
                 android:textOff="А"
                 android:textOn="А"
                 android:textSize="30sp" />
@@ -57,6 +62,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="27dp"
                 android:layout_marginStart="15dp"
+                android:textColor="@color/black_spec"
                 android:background="@drawable/checkbox_rounded"
                 android:fontFamily="@font/open_sans_bold"
                 android:textOff="Б"
@@ -70,6 +76,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginStart="15dp"
+                android:textColor="@color/black_spec"
                 android:background="@drawable/checkbox_rounded"
                 android:fontFamily="@font/open_sans_bold"
                 android:textOff="В"
@@ -81,6 +88,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="35dp"
                 android:layout_marginStart="35dp"
+                android:textColor="@color/black_spec"
                 android:background="@drawable/checkbox_rounded"
                 android:fontFamily="@font/open_sans_bold"
                 android:textOff="Г"
@@ -89,19 +97,28 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
+
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ad_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="3dp"
-            android:layout_weight="0.3"
-            ads:adSize="FULL_BANNER"
+            android:layout_weight="0.22"
+            ads:adSize="SMART_BANNER"
             ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
             android:layout_weight="0.2"
             android:baselineAligned="false"
             android:orientation="horizontal">
@@ -159,6 +176,12 @@
             </FrameLayout>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="3dp"
+            android:background="@color/gray" />
 
     </LinearLayout>
 

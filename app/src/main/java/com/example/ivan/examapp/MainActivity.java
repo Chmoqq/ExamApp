@@ -64,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        initUI();
+        if (savedInstanceState == null) {
+            initUI();
+        }
         try {
             copyDB();
         } catch (IOException e) {

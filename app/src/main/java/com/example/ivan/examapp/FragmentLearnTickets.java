@@ -1,6 +1,9 @@
 package com.example.ivan.examapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,6 +32,19 @@ public class FragmentLearnTickets extends Fragment {
     private TicketListAdapter adapter;
 
     private List<Ticket> ticketList = new ArrayList<>();
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+    }
+
     private NoteDataDelegate noteDataDelegate;
 
     private static long timeStart;
