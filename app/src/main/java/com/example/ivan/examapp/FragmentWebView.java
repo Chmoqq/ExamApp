@@ -25,20 +25,20 @@ import java.util.Comparator;
 
 public class FragmentWebView extends Fragment {
 
-    WebView webView;
-    FrameLayout nextQuest;
-    FrameLayout prevQuest;
-    Fragment currentFragment;
-    FragmentTransaction fragmentTransaction;
+    private WebView webView;
+    private FrameLayout nextQuest;
+    private FrameLayout prevQuest;
+    private Fragment currentFragment;
+    private FragmentTransaction fragmentTransaction;
     private AdView adView;
 
-    String[] files;
-    String[] fileList;
+    private String[] files;
+    private String[] fileList;
 
     int questNum = 0;
 
-    String mime = "text/html";
-    String encoding = "utf-8";
+    private String mime = "text/html";
+    private String encoding = "utf-8";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Nullable
@@ -49,16 +49,21 @@ public class FragmentWebView extends Fragment {
         fragmentTransaction = getFragmentManager().beginTransaction();
         MobileAds.initialize(getActivity(), "ca-app-pub-1703600089536161~4090197835");
         adView = root.findViewById(R.id.ad_view);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("").build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("").addTestDevice("1234567").build();
         adView.loadAd(adRequest);
         webView = root.findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         nextQuest = root.findViewById(R.id.next_quest_btn);
         prevQuest = root.findViewById(R.id.prev_quest_btn);
+        webViewContent();
         nextQuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                questNum += 1;
+                if (questNum != fileList.length - 1) {
+                    questNum += 1;
+                } else {
+
+                }
                 fragmentTransaction.detach(currentFragment);
                 fragmentTransaction.attach(currentFragment);
                 fragmentTransaction.commit();
@@ -67,13 +72,14 @@ public class FragmentWebView extends Fragment {
         prevQuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                questNum -= 1;
+                if (questNum != 0) {
+                    questNum -= 1;
+                } else {}
                 fragmentTransaction.detach(currentFragment);
                 fragmentTransaction.attach(currentFragment);
                 fragmentTransaction.commit();
             }
         });
-        webViewContent();
         return root;
     }
 
@@ -88,13 +94,11 @@ public class FragmentWebView extends Fragment {
                 sb.append(line);
             }
         } catch (IOException e) {
-
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-
                 }
             }
         }

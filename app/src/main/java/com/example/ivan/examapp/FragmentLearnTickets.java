@@ -31,6 +31,12 @@ public class FragmentLearnTickets extends Fragment {
     List<Ticket> ticketList = new ArrayList<>();
     NoteDataDelegate noteDataDelegate;
 
+    private static long timeStart;
+
+    public static long getTimeStart() {
+        return timeStart;
+    }
+
     @Override
     public void onStart() {
         (this.getActivity().findViewById(R.id.spinner)).setEnabled(false);
@@ -39,6 +45,7 @@ public class FragmentLearnTickets extends Fragment {
 
     @Nullable
     @Override
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.from(getContext()).inflate(R.layout.fragment_learn_tickets, container, false);
         noteDataDelegate = new NoteDataDelegate(getActivity());
@@ -49,6 +56,7 @@ public class FragmentLearnTickets extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         ticketsList.setLayoutManager(gridLayoutManager);
         ticketsList.setAdapter(adapter);
+        noteDataDelegate.close();
         return root;
     }
 
@@ -108,7 +116,8 @@ public class FragmentLearnTickets extends Fragment {
                     testId.putInt("test_id", ticketList.get(position).getId());
                     fragmentWebView.setArguments(testId);
                     fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentWebView, "webview").addToBackStack("Tickets List").commit();
+                    timeStart = System.currentTimeMillis();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentWebView).addToBackStack("Tickets List").commit();
                 }
             });
         }
