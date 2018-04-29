@@ -1,6 +1,7 @@
 package com.example.ivan.examapp;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -58,7 +59,9 @@ public class FragmentWebView extends Fragment {
         currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
         fragmentTransaction = getFragmentManager().beginTransaction();
         webView.getSettings().setJavaScriptEnabled(true);
-        adMobInit();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            adMobInit();
+        }
         return root;
     }
 

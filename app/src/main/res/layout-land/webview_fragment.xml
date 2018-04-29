@@ -9,7 +9,7 @@
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.15" />
+        android:layout_weight="0.3" />
 
     <TextView
         android:layout_width="match_parent"
@@ -23,20 +23,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="2dp"
-        android:layout_weight="0.25"
+        android:layout_marginTop="1dp"
+        android:layout_weight="0.17"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.3"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ToggleButton
-                android:layout_width="47dp"
-                android:layout_height="47dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/checkbox_rounded"
@@ -47,8 +47,8 @@
                 android:textSize="30sp" />
 
             <ToggleButton
-                android:layout_width="47dp"
-                android:layout_height="47dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="20dp"
@@ -60,8 +60,8 @@
                 android:textSize="30sp" />
 
             <ToggleButton
-                android:layout_width="47dp"
-                android:layout_height="47dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="20dp"
@@ -73,8 +73,8 @@
                 android:textSize="30sp" />
 
             <ToggleButton
-                android:layout_width="47dp"
-                android:layout_height="47dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:background="@drawable/checkbox_rounded"
@@ -85,19 +85,11 @@
 
         </LinearLayout>
 
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/ad_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"
-            ads:adSize="FULL_BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
-
         <LinearLayout
-            android:baselineAligned="false"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.35"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <FrameLayout
@@ -105,11 +97,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/rounded_corners_top_red">
 
@@ -129,22 +121,22 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5dp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="25dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginEnd="35dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/rounded_corners_top_orange">
 
                 <TextView
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginRight="3dp"
-                    android:layout_marginEnd="3dp"
                     android:id="@+id/end_test_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginStart="3dp"
                     android:fontFamily="@font/open_sans_bold"
                     android:gravity="center"
                     android:textColor="@color/white"
