@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             R.drawable.ic_french, R.drawable.ic_spanish);
 
 
-    FragmentMain fragmentMain;
-    FragmentManager manager;
+    private FragmentMain fragmentMain;
+    private FragmentManager manager;
 
-    Spinner spinner;
+    private Spinner spinner;
 
     public static String subject = "ukrainian";
     public static int curSubjectId = 1;

@@ -22,14 +22,14 @@ import java.util.List;
 
 public class FragmentLearnTickets extends Fragment {
 
-    FragmentManager fragmentManager;
-    FragmentWebView fragmentWebView;
+    private FragmentManager fragmentManager;
+    private FragmentWebView fragmentWebView;
 
-    RecyclerView ticketsList;
-    TicketListAdapter adapter;
+    private RecyclerView ticketsList;
+    private TicketListAdapter adapter;
 
-    List<Ticket> ticketList = new ArrayList<>();
-    NoteDataDelegate noteDataDelegate;
+    private List<Ticket> ticketList = new ArrayList<>();
+    private NoteDataDelegate noteDataDelegate;
 
     private static long timeStart;
 
