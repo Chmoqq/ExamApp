@@ -40,8 +40,8 @@ public class FragmentWebView extends Fragment {
     private String[] files;
     private String[] fileList;
 
-    int questNum;
-    int test_id;
+    private int questNum;
+    private int test_id;
 
     private String mime = "text/html";
     private String encoding = "utf-8";

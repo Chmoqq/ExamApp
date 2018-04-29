@@ -16,17 +16,17 @@ import com.example.ivan.examapp.DataBase.NoteDataDelegate;
 
 public class FragmentMain extends Fragment {
 
-    FragmentLearnTickets fragmentLearnTickets;
-    FragmentManager fragmentManager;
-    NoteDataDelegate noteDataDelegate;
+    private FragmentLearnTickets fragmentLearnTickets;
+    private FragmentManager fragmentManager;
+    private NoteDataDelegate noteDataDelegate;
 
-    TextView percents_done;
-    TextView completed_questions;
-    TextView total_questions;
+    private TextView percents_done;
+    private TextView completed_questions;
+    private TextView total_questions;
 
-    CardView learnTickets;
-    CardView testYourself;
-    CardView chooseTopic;
+    private CardView learnTickets;
+    private CardView testYourself;
+    private CardView chooseTopic;
 
     @Override
     public void onStart() {
