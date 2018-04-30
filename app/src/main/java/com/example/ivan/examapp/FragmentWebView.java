@@ -75,6 +75,7 @@ public class FragmentWebView extends Fragment {
         webView = root.findViewById(R.id.webview);
         endTest = root.findViewById(R.id.end_test_btn);
         nextQuest = root.findViewById(R.id.next_quest_btn);
+        prevQuest = root.findViewById(R.id.prev_quest_btn);
         button1 = root.findViewById(R.id.tg_btn_1);
         button2 = root.findViewById(R.id.tg_btn_2);
         button3 = root.findViewById(R.id.tg_btn_3);
@@ -98,7 +99,7 @@ public class FragmentWebView extends Fragment {
     public void onResume() {
         super.onResume();
         for (String i : files) {
-            if (i.contains("img")) {
+            if (i.contains("src")) {
                 orientationCheck = true;
             }
         }
