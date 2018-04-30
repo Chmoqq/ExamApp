@@ -11,10 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -31,12 +35,21 @@ import java.util.Comparator;
 public class FragmentWebView extends Fragment {
 
     private WebView webView;
+
     private FrameLayout nextQuest;
     private FrameLayout prevQuest;
+
     private Fragment currentFragment;
     private FragmentTransaction fragmentTransaction;
-    private AdView adView;
 
+    private AdView adViewPort;
+    private AdView adViewLand;
+
+    private RadioButton button1;
+    private RadioButton button2;
+    private RadioButton button3;
+    private RadioButton button4;
+    private RadioGroup radioGroup;
 
     private TextView endTest;
 
@@ -54,17 +67,19 @@ public class FragmentWebView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment, container, false);
-        adView = root.findViewById(R.id.ad_view);
+        adViewPort = root.findViewById(R.id.ad_webView_port);
+        adViewLand = root.findViewById(R.id.ad_webView_land);
         webView = root.findViewById(R.id.webview);
         endTest = root.findViewById(R.id.end_test_btn);
         nextQuest = root.findViewById(R.id.next_quest_btn);
-        prevQuest = root.findViewById(R.id.prev_quest_btn);
+        button1 = root.findViewById(R.id.tg_btn_1);
+        button2 = root.findViewById(R.id.tg_btn_2);
+        button3 = root.findViewById(R.id.tg_btn_3);
+        button4 = root.findViewById(R.id.tg_btn_4);
+        radioGroup = root.findViewById(R.id.radio_group);
         currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
         fragmentTransaction = getFragmentManager().beginTransaction();
         webView.getSettings().setJavaScriptEnabled(true);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            adMobInit();
-        }
         return root;
     }
 
@@ -73,11 +88,13 @@ public class FragmentWebView extends Fragment {
         super.onActivityCreated(savedInstanceState);
         webViewContent(savedInstanceState);
         btnsInit();
+        adMobInit();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        btnsSetCheck();
         outState.putInt("questNum", questNum);
         outState.putInt("test_id", test_id);
     }
@@ -93,20 +110,34 @@ public class FragmentWebView extends Fragment {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             int width = displayMetrics.widthPixels / 4;
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width, RelativeLayout.LayoutParams.MATCH_PARENT);
-            prevQuest.setLayoutParams(layoutParams);
             RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(width, RelativeLayout.LayoutParams.MATCH_PARENT);
             layoutParams1.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
             layoutParams1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
             nextQuest.setLayoutParams(layoutParams1);
         }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                button1.setTextColor(getResources().getColor(R.color.black_spec));
+                button2.setTextColor(getResources().getColor(R.color.black_spec));
+                button3.setTextColor(getResources().getColor(R.color.black_spec));
+                button4.setTextColor(getResources().getColor(R.color.black_spec));
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    rBtnChecked(i);
+                    adViewLand.setVisibility(View.INVISIBLE);
+                    nextQuest.setVisibility(View.VISIBLE);
+                } else {
+                    rBtnChecked(i);
+                }
+            }
+        });
         nextQuest.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("DefaultLocale")
             @Override
             public void onClick(View view) {
                 if (questNum != fileList.length - 1) {
                     questNum += 1;
-
+                    btnsSetCheck();
                     fragmentTransaction.detach(currentFragment);
                     fragmentTransaction.attach(currentFragment);
                     fragmentTransaction.commit();
@@ -125,24 +156,54 @@ public class FragmentWebView extends Fragment {
 
             }
         });
-        prevQuest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (questNum != 0) {
-                    questNum -= 1;
-                } else {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            prevQuest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (questNum != 0) {
+                        questNum -= 1;
+                    } else {
+                    }
+                    fragmentTransaction.detach(currentFragment);
+                    fragmentTransaction.attach(currentFragment);
+                    fragmentTransaction.commit();
                 }
-                fragmentTransaction.detach(currentFragment);
-                fragmentTransaction.attach(currentFragment);
-                fragmentTransaction.commit();
-            }
-        });
+            });
+        }
+    }
+
+    private void btnsSetCheck() {
+        button1.setChecked(false);
+        button2.setChecked(false);
+        button3.setChecked(false);
+        button4.setChecked(false);
+    }
+
+    private void rBtnChecked(int i) {
+        switch (i) {
+            case R.id.tg_btn_1:
+                button1.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_2:
+                button2.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_3:
+                button3.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_4:
+                button4.setTextColor(getResources().getColor(R.color.white));
+                break;
+        }
     }
 
     private void adMobInit() {
         MobileAds.initialize(getActivity(), "ca-app-pub-1703600089536161~4090197835");
         AdRequest adRequest = new AdRequest.Builder().addTestDevice("").addTestDevice("1234567").build();
-        adView.loadAd(adRequest);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            adViewPort.loadAd(adRequest);
+        } else {
+            adViewLand.loadAd(adRequest);
+        }
     }
 
     private static String getStringFromIS(InputStream is) {

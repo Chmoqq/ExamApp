@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.example.ivan.examapp.Spinner.SpinnerAdapter;
@@ -58,6 +59,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String getSubject() {
         return subject;
     }
+
+//    public void onRBClicked(View v) {
+//        RadioButton button1 = findViewById(R.id.tg_btn_1);
+//
+//        boolean checked = ((RadioButton) v).isChecked();
+//
+//        switch (v.getId()) {
+//            case R.id.tg_btn_1:
+//                if (checked) {
+//                    button1.setTextColor(getResources().getColor(R.color.white));
+//                }
+//        }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

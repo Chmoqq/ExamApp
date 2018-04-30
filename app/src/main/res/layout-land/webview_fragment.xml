@@ -28,27 +28,30 @@
         android:layout_weight="0.17"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RadioGroup
+            android:id="@+id/radio_group"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.3"
-            android:gravity="center"
             android:orientation="horizontal">
 
-            <ToggleButton
+            <RadioButton
+                android:id="@+id/tg_btn_1"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginEnd="40dp"
                 android:layout_marginRight="40dp"
                 android:background="@drawable/checkbox_rounded"
+                android:button="@null"
                 android:fontFamily="@font/open_sans_bold"
+                android:gravity="center"
+                android:text="А"
                 android:textColor="@color/black"
-                android:textOff="А"
-                android:textOn="А"
                 android:textSize="30sp" />
 
-            <ToggleButton
+            <RadioButton
+                android:id="@+id/tg_btn_2"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginEnd="27.5dp"
@@ -56,12 +59,14 @@
                 android:layout_marginRight="27.5dp"
                 android:layout_marginStart="15dp"
                 android:background="@drawable/checkbox_rounded"
+                android:button="@null"
                 android:fontFamily="@font/open_sans_bold"
-                android:textOff="Б"
-                android:textOn="Б"
+                android:gravity="center"
+                android:text="Б"
                 android:textSize="30sp" />
 
-            <ToggleButton
+            <RadioButton
+                android:id="@+id/tg_btn_3"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginEnd="20dp"
@@ -69,53 +74,65 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginStart="27.5dp"
                 android:background="@drawable/checkbox_rounded"
+                android:button="@null"
                 android:fontFamily="@font/open_sans_bold"
-                android:textOff="В"
-                android:textOn="В"
+                android:gravity="center"
+                android:text="В"
                 android:textSize="30sp" />
 
-            <ToggleButton
+            <RadioButton
+                android:id="@+id/tg_btn_4"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginLeft="35dp"
                 android:layout_marginStart="35dp"
                 android:background="@drawable/checkbox_rounded"
+                android:button="@null"
                 android:fontFamily="@font/open_sans_bold"
-                android:textOff="Г"
-                android:textOn="Г"
+                android:gravity="center"
+                android:text="Г"
                 android:textSize="30sp" />
 
-        </LinearLayout>
+        </RadioGroup>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.35">
 
-            <FrameLayout
-                android:id="@+id/prev_quest_btn"
-                android:layout_width="120sp"
+            <!--<FrameLayout-->
+            <!--android:id="@+id/prev_quest_btn"-->
+            <!--android:layout_width="120sp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:background="@drawable/rounded_corners_land_left">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:fontFamily="@font/open_sans_bold"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Назад"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="22sp" />-->
+
+            <!--</FrameLayout>-->
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ad_webView_land"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_corners_land_left">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/open_sans_bold"
-                    android:gravity="center"
-                    android:text="Назад"
-                    android:textColor="@color/white"
-                    android:textSize="22sp" />
-
-            </FrameLayout>
+                ads:adSize="SMART_BANNER"
+                android:visibility="visible"
+                ads:adUnitId="ca-app-pub-1703600089536161/6928377499" />
 
             <FrameLayout
                 android:id="@+id/next_quest_btn"
                 android:layout_width="120sp"
+                android:visibility="invisible"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
