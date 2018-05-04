@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/test_info_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:fontFamily="@font/open_sans_regular"
+            android:gravity="center"
+            android:text="Поздравляем!"
+            android:textColor="@color/black_spec"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:fontFamily="@font/open_sans_regular"
+            android:gravity="center"
+            android:text="Вы решили тест"
+            android:textColor="@color/black_spec"
+            android:textSize="23sp" />
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:fontFamily="@font/open_sans_regular"
+            android:gravity="center"
+            android:text="За 25 минут, 3 секунды"
+            android:textColor="@color/black_spec"
+            android:textSize="23sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="154dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/right_quests_of_final_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:gravity="bottom"
+            android:textColor="@color/red_test_info"
+            android:textSize="140sp" />
+
+        <TextView
+            android:id="@+id/final_page_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/right_quests_of_final_page"
+            android:layout_marginBottom="38dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/right_quests_of_final_page"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="из"
+            android:textColor="@color/black_spec"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/total_quest_final_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/right_quests_of_final_page"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/final_page_from"
+            android:layout_toRightOf="@id/final_page_from"
+            android:fontFamily="@font/open_sans_bold"
+            android:gravity="bottom"
+            android:textColor="@color/orange_test_info"
+            android:textSize="100sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/star1_final_page"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/star2_final_page"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/star3_final_page"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/rounded_corners_blue">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/open_sans_bold"
+            android:gravity="center"
+            android:text="На главную"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+    </FrameLayout>
+
+</LinearLayout>
