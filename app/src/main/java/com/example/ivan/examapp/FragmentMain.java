@@ -78,10 +78,11 @@ public class FragmentMain extends Fragment {
         }
         stringBuilder.setLength(stringBuilder.length() - 2);
         String questionsCount = "SELECT COUNT(question_id) FROM answers WHERE test_id in (" + stringBuilder.toString() + ")";
-        String percentQuestionsDone = String.valueOf(Integer.parseInt(noteDataDelegate.getAllNotes(questionsCount)) / 100 * Integer.parseInt(noteDataDelegate.getAllNotes(dbRequest)));
-        percents_done.setText(percentQuestionsDone);
+        //String percentQuestionsDone = String.valueOf(Integer.parseInt(noteDataDelegate.getAllNotes(questionsCount)) / 100 * Integer.parseInt(noteDataDelegate.getAllNotes(dbRequest)));
+        percents_done.setText("0");
 
-        completed_questions.setText(noteDataDelegate.getAllNotes(dbRequest));
+//        completed_questions.setText(noteDataDelegate.getAllNotes(dbRequest));
+        completed_questions.setText("0");
 
         total_questions.setText(noteDataDelegate.getAllNotes(questionsCount));
     }

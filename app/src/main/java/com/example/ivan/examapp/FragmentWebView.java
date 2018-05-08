@@ -3,6 +3,7 @@ package com.example.ivan.examapp;
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,8 +17,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import java.io.BufferedReader;
@@ -34,6 +37,8 @@ public class FragmentWebView extends Fragment {
 
     private FragmentTestInfo fragmentTestInfo;
     private FragmentManager fragmentManager;
+
+    private InterstitialAd interstitialAd;
 
     private FrameLayout nextQuest;
     private FrameLayout prevQuest;
@@ -86,6 +91,7 @@ public class FragmentWebView extends Fragment {
         super.onActivityCreated(savedInstanceState);
         webViewContent(savedInstanceState);
         btnsInit();
+        pageAdSetter();
         adMobInit();
     }
 
@@ -145,11 +151,8 @@ public class FragmentWebView extends Fragment {
                     args.putString("hours", String.valueOf(hour));
                     args.putString("mins", String.valueOf(minute));
                     args.putString("secs", String.valueOf(second));
-
-                    fragmentTestInfo = new FragmentTestInfo();
-                    fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentTestInfo.setArguments(args);
-                    fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentTestInfo).commit();
+                    interstitialAd.show();
                 }
 
             }
@@ -163,6 +166,20 @@ public class FragmentWebView extends Fragment {
                 fragmentTransaction.detach(currentFragment);
                 fragmentTransaction.attach(currentFragment);
                 fragmentTransaction.commit();
+            }
+        });
+    }
+
+    private void pageAdSetter() {
+        fragmentTestInfo = new FragmentTestInfo();
+        fragmentManager = getActivity().getSupportFragmentManager();
+        interstitialAd = new InterstitialAd(getActivity());
+        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentTestInfo).commit();
             }
         });
     }
