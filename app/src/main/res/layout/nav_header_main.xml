@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:text="Settings"
         android:textSize="30sp"
-        android:fontFamily="@font/open_sans_bold"
+        android:fontFamily="@font/roboto_bold"
         android:gravity="center"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:textColor="@color/white"/>

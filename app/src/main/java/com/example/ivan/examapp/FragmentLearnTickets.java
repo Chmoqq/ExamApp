@@ -1,9 +1,7 @@
 package com.example.ivan.examapp;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -102,7 +100,7 @@ public class FragmentLearnTickets extends Fragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ListTicketsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ticket_list_content1, parent, false));
+            return new ListTicketsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ticket_list_content, parent, false));
         }
 
 

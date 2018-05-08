@@ -118,6 +118,7 @@ public class FragmentWebView extends Fragment {
                 button2.setTextColor(getResources().getColor(R.color.black_spec));
                 button3.setTextColor(getResources().getColor(R.color.black_spec));
                 button4.setTextColor(getResources().getColor(R.color.black_spec));
+                rBtnChecked(i);
             }
         });
         nextQuest.setOnClickListener(new View.OnClickListener() {
@@ -137,12 +138,13 @@ public class FragmentWebView extends Fragment {
                     long second = (endTime / 1000) % 60;
                     long minute = (endTime / (1000 * 60)) % 60;
                     long hour = (endTime / (1000 * 60 * 60)) % 24;
-                    String time = String.format("%02d:%02d:%02d", hour, minute, second);
 
                     Bundle args = new Bundle();
-                    args.putString("time", time);
                     args.putString("total", String.valueOf(fileList.length - 1));
                     args.putString("right", "0");
+                    args.putString("hours", String.valueOf(hour));
+                    args.putString("mins", String.valueOf(minute));
+                    args.putString("secs", String.valueOf(second));
 
                     fragmentTestInfo = new FragmentTestInfo();
                     fragmentManager = getActivity().getSupportFragmentManager();

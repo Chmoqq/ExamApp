@@ -60,19 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return subject;
     }
 
-//    public void onRBClicked(View v) {
-//        RadioButton button1 = findViewById(R.id.tg_btn_1);
-//
-//        boolean checked = ((RadioButton) v).isChecked();
-//
-//        switch (v.getId()) {
-//            case R.id.tg_btn_1:
-//                if (checked) {
-//                    button1.setTextColor(getResources().getColor(R.color.white));
-//                }
-//        }
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

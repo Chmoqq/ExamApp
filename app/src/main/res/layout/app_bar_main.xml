@@ -19,12 +19,12 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <Spinner
-                android:backgroundTint="@color/white"
-                android:dropDownSelector="@color/white"
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
-                android:spinnerMode="dropdown"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/white"
+                android:dropDownSelector="@color/white"
+                android:spinnerMode="dropdown" />
 
         </android.support.v7.widget.Toolbar>
 
