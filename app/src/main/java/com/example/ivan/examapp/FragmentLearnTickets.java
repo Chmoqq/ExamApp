@@ -31,6 +31,14 @@ public class FragmentLearnTickets extends Fragment {
 
     private List<Ticket> ticketList = new ArrayList<>();
 
+    private NoteDataDelegate noteDataDelegate;
+
+    private static long timeStart;
+
+    public static long getTimeStart() {
+        return timeStart;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -41,14 +49,6 @@ public class FragmentLearnTickets extends Fragment {
     public void onPause() {
         super.onPause();
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-    }
-
-    private NoteDataDelegate noteDataDelegate;
-
-    private static long timeStart;
-
-    public static long getTimeStart() {
-        return timeStart;
     }
 
     @Override

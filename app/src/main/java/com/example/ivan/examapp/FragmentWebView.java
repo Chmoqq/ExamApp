@@ -3,7 +3,6 @@ package com.example.ivan.examapp;
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.ivan.examapp.DataBase.NoteDataDelegate;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -37,6 +37,7 @@ public class FragmentWebView extends Fragment {
 
     private FragmentTestInfo fragmentTestInfo;
     private FragmentManager fragmentManager;
+    private NoteDataDelegate noteDataDelegate;
 
     private InterstitialAd interstitialAd;
 
@@ -48,11 +49,33 @@ public class FragmentWebView extends Fragment {
 
     private AdView adViewPort;
 
-    private RadioButton button1;
-    private RadioButton button2;
-    private RadioButton button3;
-    private RadioButton button4;
-    private RadioGroup radioGroup;
+    private RadioButton button1_1;
+    private RadioButton button1_2;
+    private RadioButton button1_3;
+    private RadioButton button1_4;
+    private RadioButton button1_5;
+    private RadioGroup radioGroup1;
+
+    private RadioButton button2_2;
+    private RadioButton button2_1;
+    private RadioButton button2_3;
+    private RadioButton button2_4;
+    private RadioButton button2_5;
+    private RadioGroup radioGroup2;
+
+    private RadioButton button3_1;
+    private RadioButton button3_2;
+    private RadioButton button3_3;
+    private RadioButton button3_4;
+    private RadioButton button3_5;
+    private RadioGroup radioGroup3;
+
+    private RadioButton button4_1;
+    private RadioButton button4_2;
+    private RadioButton button4_3;
+    private RadioButton button4_4;
+    private RadioButton button4_5;
+    private RadioGroup radioGroup4;
 
     private TextView endTest;
 
@@ -69,21 +92,74 @@ public class FragmentWebView extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment, container, false);
-        adViewPort = root.findViewById(R.id.ad_webView_port);
-        webView = root.findViewById(R.id.webview);
-        endTest = root.findViewById(R.id.end_test_btn);
-        nextQuest = root.findViewById(R.id.next_quest_btn);
-        prevQuest = root.findViewById(R.id.prev_quest_btn);
-        button1 = root.findViewById(R.id.tg_btn_1);
-        button2 = root.findViewById(R.id.tg_btn_2);
-        button3 = root.findViewById(R.id.tg_btn_3);
-        button4 = root.findViewById(R.id.tg_btn_4);
-        radioGroup = root.findViewById(R.id.radio_group);
-        currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
-        fragmentTransaction = getFragmentManager().beginTransaction();
-        webView.getSettings().setJavaScriptEnabled(true);
-        return root;
+        final View root = layoutSetter(inflater, container);
+        if (root != null) return root;
+        return null;
+    }
+
+    @Nullable
+    private View layoutSetter(LayoutInflater inflater, @Nullable ViewGroup container) {
+        noteDataDelegate = new NoteDataDelegate(getContext());
+        noteDataDelegate.open();
+        Bundle args = getArguments();
+        int subjId = args.getInt("test_id");
+        String request = "SELECT answer_2 FROM answers WHERE test_id=" + subjId + " AND question_id=" + (questNum + 1);
+        if (noteDataDelegate.getNote(request) == null) {
+            final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment, container, false);
+            adViewPort = root.findViewById(R.id.ad_webView_port);
+            webView = root.findViewById(R.id.webview);
+            endTest = root.findViewById(R.id.end_test_btn);
+            nextQuest = root.findViewById(R.id.next_quest_btn);
+            prevQuest = root.findViewById(R.id.prev_quest_btn);
+            button1_1 = root.findViewById(R.id.tg_btn_1);
+            button1_2 = root.findViewById(R.id.tg_btn_2);
+            button1_3 = root.findViewById(R.id.tg_btn_3);
+            button1_4 = root.findViewById(R.id.tg_btn_4);
+            button1_5 = root.findViewById(R.id.tg_btn_5);
+            radioGroup1 = root.findViewById(R.id.radio_group);
+            currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+            fragmentTransaction = getFragmentManager().beginTransaction();
+            webView.getSettings().setJavaScriptEnabled(true);
+            return root;
+        } else {
+            final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment_grid, container, false);
+            adViewPort = root.findViewById(R.id.ad_webView_port);
+            webView = root.findViewById(R.id.webview);
+            endTest = root.findViewById(R.id.end_test_btn);
+            nextQuest = root.findViewById(R.id.next_quest_btn);
+            prevQuest = root.findViewById(R.id.prev_quest_btn);
+            button1_1 = root.findViewById(R.id.tg_btn_1);
+            button1_2 = root.findViewById(R.id.tg_btn_2);
+            button1_3 = root.findViewById(R.id.tg_btn_3);
+            button1_4 = root.findViewById(R.id.tg_btn_4);
+            button1_5 = root.findViewById(R.id.tg_btn_5);
+            radioGroup1 = root.findViewById(R.id.radio_group1);
+
+            button2_1 = root.findViewById(R.id.tg_btn_2_1);
+            button2_2 = root.findViewById(R.id.tg_btn_2_2);
+            button2_3 = root.findViewById(R.id.tg_btn_2_3);
+            button2_4 = root.findViewById(R.id.tg_btn_2_4);
+            button2_5 = root.findViewById(R.id.tg_btn_2_5);
+            radioGroup2 = root.findViewById(R.id.radio_group2);
+
+            button3_1 = root.findViewById(R.id.tg_btn_3_1);
+            button3_2 = root.findViewById(R.id.tg_btn_3_2);
+            button3_3 = root.findViewById(R.id.tg_btn_3_3);
+            button3_4 = root.findViewById(R.id.tg_btn_3_4);
+            button3_5 = root.findViewById(R.id.tg_btn_3_5);
+            radioGroup3 = root.findViewById(R.id.radio_group3);
+
+            button4_1 = root.findViewById(R.id.tg_btn_4_1);
+            button4_2 = root.findViewById(R.id.tg_btn_4_2);
+            button4_3 = root.findViewById(R.id.tg_btn_4_3);
+            button4_4 = root.findViewById(R.id.tg_btn_4_4);
+            button4_5 = root.findViewById(R.id.tg_btn_4_5);
+            radioGroup4 = root.findViewById(R.id.radio_group4);
+            currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+            fragmentTransaction = getFragmentManager().beginTransaction();
+            webView.getSettings().setJavaScriptEnabled(true);
+            return root;
+        }
     }
 
     @Override
@@ -117,13 +193,14 @@ public class FragmentWebView extends Fragment {
         } else {
             endTest.setText("Завершить");
         }
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                button1.setTextColor(getResources().getColor(R.color.black_spec));
-                button2.setTextColor(getResources().getColor(R.color.black_spec));
-                button3.setTextColor(getResources().getColor(R.color.black_spec));
-                button4.setTextColor(getResources().getColor(R.color.black_spec));
+                button1_1.setTextColor(getResources().getColor(R.color.black_spec));
+                button1_2.setTextColor(getResources().getColor(R.color.black_spec));
+                button1_3.setTextColor(getResources().getColor(R.color.black_spec));
+                button1_4.setTextColor(getResources().getColor(R.color.black_spec));
+                button1_5.setTextColor(getResources().getColor(R.color.black_spec));
                 rBtnChecked(i);
             }
         });
@@ -185,25 +262,29 @@ public class FragmentWebView extends Fragment {
     }
 
     private void btnsSetCheck() {
-        button1.setChecked(false);
-        button2.setChecked(false);
-        button3.setChecked(false);
-        button4.setChecked(false);
+        button1_1.setChecked(false);
+        button1_2.setChecked(false);
+        button1_3.setChecked(false);
+        button1_4.setChecked(false);
+        button1_5.setChecked(false);
     }
 
     private void rBtnChecked(int i) {
         switch (i) {
             case R.id.tg_btn_1:
-                button1.setTextColor(getResources().getColor(R.color.white));
+                button1_1.setTextColor(getResources().getColor(R.color.white));
                 break;
             case R.id.tg_btn_2:
-                button2.setTextColor(getResources().getColor(R.color.white));
+                button1_2.setTextColor(getResources().getColor(R.color.white));
                 break;
             case R.id.tg_btn_3:
-                button3.setTextColor(getResources().getColor(R.color.white));
+                button1_3.setTextColor(getResources().getColor(R.color.white));
                 break;
             case R.id.tg_btn_4:
-                button4.setTextColor(getResources().getColor(R.color.white));
+                button1_4.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_5:
+                button1_5.setTextColor(getResources().getColor(R.color.white));
                 break;
         }
     }

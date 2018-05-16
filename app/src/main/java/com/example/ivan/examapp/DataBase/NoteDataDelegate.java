@@ -28,7 +28,7 @@ public class NoteDataDelegate {
         dbHelper.close();
     }
 
-    public String getAllNotes(String select) {
+    public String getNote(String select) {
         String super_answer;
         Cursor cursor = database.rawQuery(select, null);
         cursor.moveToFirst();
