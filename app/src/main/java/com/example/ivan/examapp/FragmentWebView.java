@@ -1,7 +1,6 @@
 package com.example.ivan.examapp;
 
 import android.annotation.SuppressLint;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -47,7 +46,7 @@ public class FragmentWebView extends Fragment {
     private Fragment currentFragment;
     private FragmentTransaction fragmentTransaction;
 
-    private AdView adViewPort;
+    private AdView adView;
 
     private RadioButton button1_1;
     private RadioButton button1_2;
@@ -108,7 +107,7 @@ public class FragmentWebView extends Fragment {
         if (noteDataDelegate.getNote(request) == null) {
             answerTYPE = true;
             final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment, container, false);
-            adViewPort = root.findViewById(R.id.ad_webView_port);
+            adView = root.findViewById(R.id.ad_webView_port);
             webView = root.findViewById(R.id.webview);
             endTest = root.findViewById(R.id.end_test_btn);
             nextQuest = root.findViewById(R.id.next_quest_btn);
@@ -126,7 +125,7 @@ public class FragmentWebView extends Fragment {
         } else {
             answerTYPE = false;
             final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment_grid, container, false);
-            adViewPort = root.findViewById(R.id.ad_webView_port);
+            adView = root.findViewById(R.id.ad_webView_port);
             webView = root.findViewById(R.id.webview);
             endTest = root.findViewById(R.id.end_test_btn);
             nextQuest = root.findViewById(R.id.next_quest_btn);
@@ -415,9 +414,7 @@ public class FragmentWebView extends Fragment {
     private void adMobInit() {
         MobileAds.initialize(getActivity(), "ca-app-pub-1703600089536161~4090197835");
         AdRequest adRequest = new AdRequest.Builder().addTestDevice("1234567").build();
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            adViewPort.loadAd(adRequest);
-        }
+        adView.loadAd(adRequest);
     }
 
     private static String getStringFromIS(InputStream is) {

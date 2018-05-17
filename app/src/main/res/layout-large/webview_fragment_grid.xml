@@ -472,7 +472,7 @@
                     android:gravity="center"
                     android:text="Назад"
                     android:textColor="@color/white"
-                    android:textSize="25sp" />
+                    android:textSize="32sp" />
 
             </FrameLayout>
 
@@ -500,7 +500,7 @@
                     android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="25sp" />
+                    android:textSize="32sp" />
 
             </FrameLayout>
 

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
 
@@ -28,6 +29,8 @@ public class FragmentTestInfo extends Fragment {
     TextView rightQuests;
     TextView totalTestQuests;
     TextView timeSpent;
+
+    private AdView adView;
 
     ImageView star1;
     ImageView star2;
