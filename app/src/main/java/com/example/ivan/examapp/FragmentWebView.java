@@ -87,6 +87,7 @@ public class FragmentWebView extends Fragment {
 
     private String mime = "text/html";
     private String encoding = "utf-8";
+    private boolean answerTYPE;
 
     @SuppressLint({"SetJavaScriptEnabled", "CommitTransaction"})
     @Nullable
@@ -105,6 +106,7 @@ public class FragmentWebView extends Fragment {
         int subjId = args.getInt("test_id");
         String request = "SELECT answer_2 FROM answers WHERE test_id=" + subjId + " AND question_id=" + (questNum + 1);
         if (noteDataDelegate.getNote(request) == null) {
+            answerTYPE = true;
             final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment, container, false);
             adViewPort = root.findViewById(R.id.ad_webView_port);
             webView = root.findViewById(R.id.webview);
@@ -122,6 +124,7 @@ public class FragmentWebView extends Fragment {
             webView.getSettings().setJavaScriptEnabled(true);
             return root;
         } else {
+            answerTYPE = false;
             final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment_grid, container, false);
             adViewPort = root.findViewById(R.id.ad_webView_port);
             webView = root.findViewById(R.id.webview);
@@ -168,7 +171,9 @@ public class FragmentWebView extends Fragment {
         webViewContent(savedInstanceState);
         btnsInit();
         pageAdSetter();
-        adMobInit();
+        if (answerTYPE) {
+            adMobInit();
+        }
     }
 
     @Override
@@ -193,17 +198,64 @@ public class FragmentWebView extends Fragment {
         } else {
             endTest.setText("Завершить");
         }
-        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                button1_1.setTextColor(getResources().getColor(R.color.black_spec));
-                button1_2.setTextColor(getResources().getColor(R.color.black_spec));
-                button1_3.setTextColor(getResources().getColor(R.color.black_spec));
-                button1_4.setTextColor(getResources().getColor(R.color.black_spec));
-                button1_5.setTextColor(getResources().getColor(R.color.black_spec));
-                rBtnChecked(i);
-            }
-        });
+        if (answerTYPE) {
+            radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    button1_1.setTextColor(getResources().getColor(R.color.black_spec));
+                    button1_2.setTextColor(getResources().getColor(R.color.black_spec));
+                    button1_3.setTextColor(getResources().getColor(R.color.black_spec));
+                    button1_4.setTextColor(getResources().getColor(R.color.black_spec));
+                    button1_5.setTextColor(getResources().getColor(R.color.black_spec));
+                    rBtnChecked(i);
+                }
+            });
+        } else {
+            radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    button1_1.setTextColor(getResources().getColor(R.color.black_spec));
+                    button1_2.setTextColor(getResources().getColor(R.color.black_spec));
+                    button1_3.setTextColor(getResources().getColor(R.color.black_spec));
+                    button1_4.setTextColor(getResources().getColor(R.color.black_spec));
+                    button1_5.setTextColor(getResources().getColor(R.color.black_spec));
+                    rBtnChecked(i);
+                }
+            });
+            radioGroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    button2_1.setTextColor(getResources().getColor(R.color.black_spec));
+                    button2_2.setTextColor(getResources().getColor(R.color.black_spec));
+                    button2_3.setTextColor(getResources().getColor(R.color.black_spec));
+                    button2_4.setTextColor(getResources().getColor(R.color.black_spec));
+                    button2_5.setTextColor(getResources().getColor(R.color.black_spec));
+                    rBtnChecked(i);
+                }
+            });
+            radioGroup3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    button3_1.setTextColor(getResources().getColor(R.color.black_spec));
+                    button3_2.setTextColor(getResources().getColor(R.color.black_spec));
+                    button3_3.setTextColor(getResources().getColor(R.color.black_spec));
+                    button3_4.setTextColor(getResources().getColor(R.color.black_spec));
+                    button3_5.setTextColor(getResources().getColor(R.color.black_spec));
+                    rBtnChecked(i);
+                }
+            });
+            radioGroup4.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    button4_1.setTextColor(getResources().getColor(R.color.black_spec));
+                    button4_2.setTextColor(getResources().getColor(R.color.black_spec));
+                    button4_3.setTextColor(getResources().getColor(R.color.black_spec));
+                    button4_4.setTextColor(getResources().getColor(R.color.black_spec));
+                    button4_5.setTextColor(getResources().getColor(R.color.black_spec));
+                    rBtnChecked(i);
+                }
+            });
+        }
         nextQuest.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("DefaultLocale")
             @Override
@@ -262,11 +314,37 @@ public class FragmentWebView extends Fragment {
     }
 
     private void btnsSetCheck() {
-        button1_1.setChecked(false);
-        button1_2.setChecked(false);
-        button1_3.setChecked(false);
-        button1_4.setChecked(false);
-        button1_5.setChecked(false);
+        if (answerTYPE) {
+            button1_1.setChecked(false);
+            button1_2.setChecked(false);
+            button1_3.setChecked(false);
+            button1_4.setChecked(false);
+            button1_5.setChecked(false);
+        } else {
+            button1_1.setChecked(false);
+            button1_2.setChecked(false);
+            button1_3.setChecked(false);
+            button1_4.setChecked(false);
+            button1_5.setChecked(false);
+
+            button2_1.setChecked(false);
+            button2_2.setChecked(false);
+            button2_3.setChecked(false);
+            button2_4.setChecked(false);
+            button2_5.setChecked(false);
+
+            button3_1.setChecked(false);
+            button3_2.setChecked(false);
+            button3_3.setChecked(false);
+            button3_4.setChecked(false);
+            button3_5.setChecked(false);
+
+            button4_1.setChecked(false);
+            button4_2.setChecked(false);
+            button4_3.setChecked(false);
+            button4_4.setChecked(false);
+            button4_5.setChecked(false);
+        }
     }
 
     private void rBtnChecked(int i) {
@@ -285,6 +363,51 @@ public class FragmentWebView extends Fragment {
                 break;
             case R.id.tg_btn_5:
                 button1_5.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_2_1:
+                button2_1.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_2_2:
+                button2_2.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_2_3:
+                button2_3.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_2_4:
+                button2_4.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_2_5:
+                button2_5.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_3_1:
+                button3_1.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_3_2:
+                button3_2.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_3_3:
+                button3_3.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_3_4:
+                button3_4.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_3_5:
+                button3_5.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_4_1:
+                button4_1.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_4_2:
+                button4_2.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_4_3:
+                button4_3.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_4_4:
+                button4_4.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case R.id.tg_btn_4_5:
+                button4_5.setTextColor(getResources().getColor(R.color.white));
                 break;
         }
     }
