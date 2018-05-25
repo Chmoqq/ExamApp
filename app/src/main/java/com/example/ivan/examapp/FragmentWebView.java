@@ -26,9 +26,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class FragmentWebView extends Fragment {
 
@@ -47,6 +49,9 @@ public class FragmentWebView extends Fragment {
     private FragmentTransaction fragmentTransaction;
 
     private AdView adView;
+
+    private List<List<Integer>> userAnswersList = new ArrayList<>();
+    private List<RadioGroup> radioGroups = new ArrayList<>();
 
     private RadioButton button1_1;
     private RadioButton button1_2;
@@ -157,6 +162,10 @@ public class FragmentWebView extends Fragment {
             button4_4 = root.findViewById(R.id.tg_btn_4_4);
             button4_5 = root.findViewById(R.id.tg_btn_4_5);
             radioGroup4 = root.findViewById(R.id.radio_group4);
+            radioGroups.add(radioGroup1);
+            radioGroups.add(radioGroup2);
+            radioGroups.add(radioGroup3);
+            radioGroups.add(radioGroup4);
             currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
             fragmentTransaction = getFragmentManager().beginTransaction();
             webView.getSettings().setJavaScriptEnabled(true);
@@ -259,12 +268,30 @@ public class FragmentWebView extends Fragment {
             @SuppressLint("DefaultLocale")
             @Override
             public void onClick(View view) {
+                List<Integer> answers = new ArrayList<>();
                 if (questNum != fileList.length - 1) {
                     questNum += 1;
                     btnsSetCheck();
                     fragmentTransaction.detach(currentFragment);
                     fragmentTransaction.attach(currentFragment);
                     fragmentTransaction.commit();
+                    if (answerTYPE) {
+                        int radioButtonID = radioGroup1.getCheckedRadioButtonId();
+                        View radioButton = radioGroup1.findViewById(radioButtonID);
+                        int idx = radioGroup1.indexOfChild(radioButton);
+                        answers.add(idx);
+                        userAnswersList.set(questNum, answers);
+                    } else {
+                        for (int i = 0; i < radioGroups.size(); i++) {
+                            RadioGroup radioGroup = radioGroups.get(i);
+                            int radioButtonID = radioGroup.getCheckedRadioButtonId();
+                            View radioButton = radioGroup.findViewById(radioButtonID);
+                            int idx = radioGroup.indexOfChild(radioButton);
+                            answers.add(idx);
+
+                        }
+                        userAnswersList.set(questNum, answers);
+                    }
                 } else if (questNum == fileList.length - 1) {
                     long endTime = System.currentTimeMillis();
                     endTime -= FragmentLearnTickets.getTimeStart();
