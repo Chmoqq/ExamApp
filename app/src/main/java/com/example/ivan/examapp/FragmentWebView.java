@@ -15,7 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.ivan.examapp.DataBase.NoteDataDelegate;
+import com.example.ivan.examapp.DataBase.DataBase;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -38,7 +38,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
 
     private FragmentTestInfo fragmentTestInfo;
     private FragmentManager fragmentManager;
-    private NoteDataDelegate noteDataDelegate;
+    private DataBase dataBase;
 
     private InterstitialAd interstitialAd;
 
@@ -50,32 +50,9 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
 
     private AdView adView;
 
-    private RadioButton button1_1;
-    private RadioButton button1_2;
-    private RadioButton button1_3;
-    private RadioButton button1_4;
-    private RadioButton button1_5;
     private RadioGroup radioGroup1;
-
-    private RadioButton button2_2;
-    private RadioButton button2_1;
-    private RadioButton button2_3;
-    private RadioButton button2_4;
-    private RadioButton button2_5;
     private RadioGroup radioGroup2;
-
-    private RadioButton button3_1;
-    private RadioButton button3_2;
-    private RadioButton button3_3;
-    private RadioButton button3_4;
-    private RadioButton button3_5;
     private RadioGroup radioGroup3;
-
-    private RadioButton button4_1;
-    private RadioButton button4_2;
-    private RadioButton button4_3;
-    private RadioButton button4_4;
-    private RadioButton button4_5;
     private RadioGroup radioGroup4;
 
     private List<List<Integer>> userAnswersList = new ArrayList<>();
@@ -104,71 +81,94 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         return null;
     }
 
+    static final ArrayList<Integer> buttons_list = new ArrayList<>(Arrays.asList(
+        R.id.tg_btn_1,
+        R.id.tg_btn_2,
+        R.id.tg_btn_3,
+        R.id.tg_btn_4,
+        R.id.tg_btn_5,
+        R.id.tg_btn_2_1,
+        R.id.tg_btn_2_2,
+        R.id.tg_btn_2_3,
+        R.id.tg_btn_2_4,
+        R.id.tg_btn_2_5,
+        R.id.tg_btn_3_1,
+        R.id.tg_btn_3_2,
+        R.id.tg_btn_3_3,
+        R.id.tg_btn_3_4,
+        R.id.tg_btn_3_5,
+        R.id.tg_btn_4_1,
+        R.id.tg_btn_4_2,
+        R.id.tg_btn_4_3,
+        R.id.tg_btn_4_4,
+        R.id.tg_btn_4_5
+    ));
+
+    private int getButtonID(int row, int cell) {
+        return buttons_list.get(row * 5 + cell);
+    }
+
+    private class ButtonPosition {
+        public int row;
+        public int cell;
+
+        public ButtonPosition(int row, int cell) {
+            this.row = row;
+            this.cell = cell;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof ButtonPosition)) {
+                return false;
+            }
+
+            ButtonPosition that = (ButtonPosition) obj;
+            return this.row == that.row && this.cell == that.cell;
+        }
+    }
+
+    private ButtonPosition getButtonPosition(int btn_id) {
+        int btn_index = buttons_list.indexOf(btn_id);
+        return new ButtonPosition(Math.round(Math.max(1, btn_index) / 5), btn_index % 5);
+    }
+
+    private RadioButton getButtonView(int row, int cell) {
+        return this.getView().findViewById(this.getButtonID(row, cell));
+    }
+
     @Nullable
     private View layoutSetter(LayoutInflater inflater, @Nullable ViewGroup container) {
-        noteDataDelegate = new NoteDataDelegate(getContext());
-        noteDataDelegate.open();
+        dataBase = new DataBase(getContext());
+        dataBase.open();
         Bundle args = getArguments();
         int subjId = args.getInt("test_id");
         String request = "SELECT answer_2 FROM answers WHERE test_id=" + subjId + " AND question_id=" + (questNum + 1);
-        if (noteDataDelegate.getNote(request) == null) {
-            answerTYPE = true;
-            final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment, container, false);
-            adView = root.findViewById(R.id.ad_webView_port);
-            webView = root.findViewById(R.id.webview);
-            endTest = root.findViewById(R.id.end_test_btn);
-            nextQuest = root.findViewById(R.id.next_quest_btn);
-            prevQuest = root.findViewById(R.id.prev_quest_btn);
-            button1_1 = root.findViewById(R.id.tg_btn_1);
-            button1_2 = root.findViewById(R.id.tg_btn_2);
-            button1_3 = root.findViewById(R.id.tg_btn_3);
-            button1_4 = root.findViewById(R.id.tg_btn_4);
-            button1_5 = root.findViewById(R.id.tg_btn_5);
-            radioGroup1 = root.findViewById(R.id.radio_group1);
-            currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
-            fragmentTransaction = getFragmentManager().beginTransaction();
-            webView.getSettings().setJavaScriptEnabled(true);
-            return root;
-        } else {
-            answerTYPE = false;
-            final View root = inflater.from(getContext()).inflate(R.layout.webview_fragment_grid, container, false);
-            adView = root.findViewById(R.id.ad_webView_port);
-            webView = root.findViewById(R.id.webview);
-            endTest = root.findViewById(R.id.end_test_btn);
-            nextQuest = root.findViewById(R.id.next_quest_btn);
-            prevQuest = root.findViewById(R.id.prev_quest_btn);
-            button1_1 = root.findViewById(R.id.tg_btn_1);
-            button1_2 = root.findViewById(R.id.tg_btn_2);
-            button1_3 = root.findViewById(R.id.tg_btn_3);
-            button1_4 = root.findViewById(R.id.tg_btn_4);
-            button1_5 = root.findViewById(R.id.tg_btn_5);
-            radioGroup1 = root.findViewById(R.id.radio_group1);
 
-            button2_1 = root.findViewById(R.id.tg_btn_2_1);
-            button2_2 = root.findViewById(R.id.tg_btn_2_2);
-            button2_3 = root.findViewById(R.id.tg_btn_2_3);
-            button2_4 = root.findViewById(R.id.tg_btn_2_4);
-            button2_5 = root.findViewById(R.id.tg_btn_2_5);
+        answerTYPE = dataBase.getNote(request) == null;
+
+        final View root = inflater.from(getContext()).inflate(
+            answerTYPE ? R.layout.webview_fragment : R.layout.webview_fragment_grid ,
+            container,
+            false
+        );
+        adView = root.findViewById(R.id.ad_webView_port);
+        webView = root.findViewById(R.id.webview);
+        endTest = root.findViewById(R.id.end_test_btn);
+        nextQuest = root.findViewById(R.id.next_quest_btn);
+        prevQuest = root.findViewById(R.id.prev_quest_btn);
+        radioGroup1 = root.findViewById(R.id.radio_group1);
+
+        if (!answerTYPE) {
             radioGroup2 = root.findViewById(R.id.radio_group2);
-
-            button3_1 = root.findViewById(R.id.tg_btn_3_1);
-            button3_2 = root.findViewById(R.id.tg_btn_3_2);
-            button3_3 = root.findViewById(R.id.tg_btn_3_3);
-            button3_4 = root.findViewById(R.id.tg_btn_3_4);
-            button3_5 = root.findViewById(R.id.tg_btn_3_5);
             radioGroup3 = root.findViewById(R.id.radio_group3);
-
-            button4_1 = root.findViewById(R.id.tg_btn_4_1);
-            button4_2 = root.findViewById(R.id.tg_btn_4_2);
-            button4_3 = root.findViewById(R.id.tg_btn_4_3);
-            button4_4 = root.findViewById(R.id.tg_btn_4_4);
-            button4_5 = root.findViewById(R.id.tg_btn_4_5);
             radioGroup4 = root.findViewById(R.id.radio_group4);
-            currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
-            fragmentTransaction = getFragmentManager().beginTransaction();
-            webView.getSettings().setJavaScriptEnabled(true);
-            return root;
         }
+
+        currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+        fragmentTransaction = getFragmentManager().beginTransaction();
+        webView.getSettings().setJavaScriptEnabled(true);
+        return root;
     }
 
     @Override
@@ -228,7 +228,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                         View radioButton = radioGroup1.findViewById(radioButtonID);
                         int idx = radioGroup1.indexOfChild(radioButton);
                         answers.add(idx);
-                        if (userAnswersList.get(questNum) != null) {
+                        if (userAnswersList.size() >= questNum) {
                             userAnswersList.set(questNum, answers);
                         } else {
                             userAnswersList.add(answers);
@@ -266,9 +266,8 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         prevQuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (questNum != 0) {
-                    questNum -= 1;
-                }
+                questNum = Math.max(0, questNum - 1);
+
                 fragmentTransaction.detach(currentFragment);
                 fragmentTransaction.attach(currentFragment);
                 fragmentTransaction.commit();
@@ -291,101 +290,11 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
     }
 
     private void btnsSetCheck() {
-        if (answerTYPE) {
-            button1_1.setChecked(false);
-            button1_2.setChecked(false);
-            button1_3.setChecked(false);
-            button1_4.setChecked(false);
-            button1_5.setChecked(false);
-        } else {
-            button1_1.setChecked(false);
-            button1_2.setChecked(false);
-            button1_3.setChecked(false);
-            button1_4.setChecked(false);
-            button1_5.setChecked(false);
+        for (RadioGroup grp : new RadioGroup[]{radioGroup1, radioGroup2, radioGroup3, radioGroup4}) {
+            if (grp == null)
+                continue;
 
-            button2_1.setChecked(false);
-            button2_2.setChecked(false);
-            button2_3.setChecked(false);
-            button2_4.setChecked(false);
-            button2_5.setChecked(false);
-
-            button3_1.setChecked(false);
-            button3_2.setChecked(false);
-            button3_3.setChecked(false);
-            button3_4.setChecked(false);
-            button3_5.setChecked(false);
-
-            button4_1.setChecked(false);
-            button4_2.setChecked(false);
-            button4_3.setChecked(false);
-            button4_4.setChecked(false);
-            button4_5.setChecked(false);
-        }
-    }
-
-    private void rBtnChecked(int i) {
-        switch (i) {
-            case R.id.tg_btn_1:
-                button1_1.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_2:
-                button1_2.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_3:
-                button1_3.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_4:
-                button1_4.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_5:
-                button1_5.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_2_1:
-                button2_1.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_2_2:
-                button2_2.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_2_3:
-                button2_3.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_2_4:
-                button2_4.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_2_5:
-                button2_5.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_3_1:
-                button3_1.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_3_2:
-                button3_2.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_3_3:
-                button3_3.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_3_4:
-                button3_4.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_3_5:
-                button3_5.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_4_1:
-                button4_1.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_4_2:
-                button4_2.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_4_3:
-                button4_3.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_4_4:
-                button4_4.setTextColor(getResources().getColor(R.color.white));
-                break;
-            case R.id.tg_btn_4_5:
-                button4_5.setTextColor(getResources().getColor(R.color.white));
-                break;
+            grp.clearCheck();
         }
     }
 
@@ -466,36 +375,14 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
     }
 
     @Override
-    public void onCheckedChanged(RadioGroup radioGroup, int i) {
-        switch (radioGroup.getId()) {
-            case R.id.radio_group1:
-                button1_1.setTextColor(getResources().getColor(R.color.black_spec));
-                button1_2.setTextColor(getResources().getColor(R.color.black_spec));
-                button1_3.setTextColor(getResources().getColor(R.color.black_spec));
-                button1_4.setTextColor(getResources().getColor(R.color.black_spec));
-                button1_5.setTextColor(getResources().getColor(R.color.black_spec));
-                rBtnChecked(i);
-            case R.id.radio_group2:
-                button2_1.setTextColor(getResources().getColor(R.color.black_spec));
-                button2_2.setTextColor(getResources().getColor(R.color.black_spec));
-                button2_3.setTextColor(getResources().getColor(R.color.black_spec));
-                button2_4.setTextColor(getResources().getColor(R.color.black_spec));
-                button2_5.setTextColor(getResources().getColor(R.color.black_spec));
-                rBtnChecked(i);
-            case R.id.radio_group3:
-                button3_1.setTextColor(getResources().getColor(R.color.black_spec));
-                button3_2.setTextColor(getResources().getColor(R.color.black_spec));
-                button3_3.setTextColor(getResources().getColor(R.color.black_spec));
-                button3_4.setTextColor(getResources().getColor(R.color.black_spec));
-                button3_5.setTextColor(getResources().getColor(R.color.black_spec));
-                rBtnChecked(i);
-            case R.id.radio_group4:
-                button4_1.setTextColor(getResources().getColor(R.color.black_spec));
-                button4_2.setTextColor(getResources().getColor(R.color.black_spec));
-                button4_3.setTextColor(getResources().getColor(R.color.black_spec));
-                button4_4.setTextColor(getResources().getColor(R.color.black_spec));
-                button4_5.setTextColor(getResources().getColor(R.color.black_spec));
-                rBtnChecked(i);
+    public void onCheckedChanged(RadioGroup radioGroup, int selected_btn_id) {
+        ButtonPosition selected_btn_pos = this.getButtonPosition(selected_btn_id);
+
+        for (int cell = 0; cell < 5; cell++) {
+            RadioButton btn = this.getButtonView(selected_btn_pos.row, cell);
+            btn.setTextColor(getResources().getColor(
+                    selected_btn_pos.cell == cell ? R.color.white : R.color.black_spec
+            ));
         }
     }
 }

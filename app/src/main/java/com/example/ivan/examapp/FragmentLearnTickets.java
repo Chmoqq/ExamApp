@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ivan.examapp.DataBase.NoteDataDelegate;
+import com.example.ivan.examapp.DataBase.DataBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class FragmentLearnTickets extends Fragment {
 
     private List<Ticket> ticketList = new ArrayList<>();
 
-    private NoteDataDelegate noteDataDelegate;
+    private DataBase dataBase;
 
     private static long timeStart;
 
@@ -62,15 +62,15 @@ public class FragmentLearnTickets extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.from(getContext()).inflate(R.layout.fragment_learn_tickets, container, false);
-        noteDataDelegate = new NoteDataDelegate(getActivity());
-        noteDataDelegate.open();
-        ticketList = noteDataDelegate.getTicket("SELECT * FROM tests WHERE subject_id=" + MainActivity.getCurSubjectId());
+        dataBase = new DataBase(getActivity());
+        dataBase.open();
+        ticketList = dataBase.getTicket("SELECT * FROM tests WHERE subject_id=" + MainActivity.getCurSubjectId());
         ticketsList = root.findViewById(R.id.list_tickets);
         adapter = new TicketListAdapter();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         ticketsList.setLayoutManager(gridLayoutManager);
         ticketsList.setAdapter(adapter);
-        noteDataDelegate.close();
+        dataBase.close();
         return root;
     }
 

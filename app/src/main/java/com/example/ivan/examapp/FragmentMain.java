@@ -11,15 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.ivan.examapp.DataBase.NoteDataDelegate;
-
+import com.example.ivan.examapp.DataBase.DataBase;
 
 
 public class FragmentMain extends Fragment {
 
     private FragmentLearnTickets fragmentLearnTickets;
     private FragmentManager fragmentManager;
-    private NoteDataDelegate noteDataDelegate;
+    private DataBase dataBase;
 
     private TextView percents_done;
     private TextView completed_questions;
@@ -63,8 +62,8 @@ public class FragmentMain extends Fragment {
         percents_done = root.findViewById(R.id.percentage_done);
         completed_questions = root.findViewById(R.id.completed_questions_exam);
         total_questions = root.findViewById(R.id.total_questions);
-        noteDataDelegate = new NoteDataDelegate(getContext());
-        noteDataDelegate.open();
+        dataBase = new DataBase(getContext());
+        dataBase.open();
         readFromPreference();
         return root;
     }
@@ -73,17 +72,17 @@ public class FragmentMain extends Fragment {
         String dbRequest = "SELECT questions_complete FROM user_answers WHERE subject_id=" + MainActivity.getCurSubjectId();
         String subjectIds = "SELECT id FROM tests WHERE subject_id=" + MainActivity.getCurSubjectId();
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < noteDataDelegate.getList(subjectIds).size(); i++) {
-            stringBuilder.append("'" + noteDataDelegate.getList(subjectIds).get(i)+ "'" + ", ");
+        for (int i = 0; i < dataBase.getList(subjectIds).size(); i++) {
+            stringBuilder.append("'" + dataBase.getList(subjectIds).get(i)+ "'" + ", ");
         }
         stringBuilder.setLength(stringBuilder.length() - 2);
         String questionsCount = "SELECT COUNT(question_id) FROM answers WHERE test_id in (" + stringBuilder.toString() + ")";
-        //String percentQuestionsDone = String.valueOf(Integer.parseInt(noteDataDelegate.getNote(questionsCount)) / 100 * Integer.parseInt(noteDataDelegate.getNote(dbRequest)));
+        //String percentQuestionsDone = String.valueOf(Integer.parseInt(dataBase.getNote(questionsCount)) / 100 * Integer.parseInt(dataBase.getNote(dbRequest)));
         percents_done.setText("0");
 
-//        completed_questions.setText(noteDataDelegate.getNote(dbRequest));
+//        completed_questions.setText(dataBase.getNote(dbRequest));
         completed_questions.setText("0");
 
-        total_questions.setText(noteDataDelegate.getNote(questionsCount));
+        total_questions.setText(dataBase.getNote(questionsCount));
     }
 }

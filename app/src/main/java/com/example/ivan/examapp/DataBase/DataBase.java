@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class NoteDataDelegate {
+public class DataBase {
 
     private DataBaseHelper dbHelper;
     private SQLiteDatabase database;
 
-    public NoteDataDelegate(Context context) {
+    public DataBase(Context context) {
         dbHelper = new DataBaseHelper(context);
     }
 
