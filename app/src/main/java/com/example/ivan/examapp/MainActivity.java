@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.example.ivan.examapp.Spinner.SpinnerAdapter;
