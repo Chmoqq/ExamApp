@@ -216,13 +216,12 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                 List<Integer> answerValues = new ArrayList<>();
                 if (questNum != fileList.length - 1) {
                     questNum += 1;
-                    btnsSetCheck();
                     fragmentTransaction.detach(currentFragment);
                     fragmentTransaction.attach(currentFragment);
                     fragmentTransaction.commit();
                     if (answerTYPE) {
                         int radioButtonID = radioGroup1.getCheckedRadioButtonId();
-                        View radioButton = radioGroup1.findViewById(radioButtonID);
+                        RadioButton radioButton = radioGroup1.findViewById(radioButtonID);
                         int idx = radioGroup1.indexOfChild(radioButton);
                         answerValues.add(idx);
                         if (userAnswersList.size() >= questNum) {
@@ -235,7 +234,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                         for (int i = 0; i < radioGroups.length; i++) {
                             RadioGroup radioGroup = radioGroups[i];
                             int radioButtonID = radioGroup.getCheckedRadioButtonId();
-                            View radioButton = radioGroup.findViewById(radioButtonID);
+                            RadioButton radioButton = radioGroup.findViewById(radioButtonID);
                             int idx = radioGroup.indexOfChild(radioButton);
                             answerValues.add(idx);
                         }
@@ -246,34 +245,17 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                         }
                     }
                 } else if (questNum == fileList.length - 1) {
-                    long endTime = System.currentTimeMillis();
-                    endTime -= FragmentLearnTickets.getTimeStart();
-
-                    long second = (endTime / 1000) % 60;
-                    long minute = (endTime / (1000 * 60)) % 60;
-                    long hour = (endTime / (1000 * 60 * 60)) % 24;
-                    List<List<String>> rightAnswers = new ArrayList<>();
-                    for (int i = 0; i < fileList.length - 1; i++) {
-                        rightAnswers.add(dataBase.getAnswers(test_id, i));
-                    }
-
-                    Bundle args = new Bundle();
-                    args.putString("total", String.valueOf(fileList.length - 1));
-                    args.putString("right", "0");
-                    args.putString("hours", String.valueOf(hour));
-                    args.putString("mins", String.valueOf(minute));
-                    args.putString("secs", String.valueOf(second));
-                    fragmentTestInfo.setArguments(args);
+                    userAnswersList.add(answerValues);
+                    fragmentTestInfo.setArguments(answerControl());
                     interstitialAd.show();
                 }
-
+                btnsSetCheck();
             }
         });
         prevQuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 questNum = Math.max(0, questNum - 1);
-
                 fragmentTransaction.detach(currentFragment);
                 fragmentTransaction.attach(currentFragment);
                 fragmentTransaction.commit();
@@ -293,6 +275,43 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                 fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentTestInfo).commit();
             }
         });
+    }
+
+    private Bundle answerControl() {
+        long endTime = System.currentTimeMillis();
+        endTime -= FragmentLearnTickets.getTimeStart();
+
+        long second = (endTime / 1000) % 60;
+        long minute = (endTime / (1000 * 60)) % 60;
+        long hour = (endTime / (1000 * 60 * 60)) % 24;
+        int rightAns = 0;
+
+        Bundle args = new Bundle();
+        args.putString("hours", String.valueOf(hour));
+        args.putString("mins", String.valueOf(minute));
+        args.putString("secs", String.valueOf(second));
+        List<List<String>> rightAnswers = new ArrayList<>();
+        for (int i = 1; i <= fileList.length; i++) {
+            rightAnswers.add(dataBase.getAnswers(test_id, i));
+        }
+        for (int i = 0; i < rightAnswers.size(); i++) {
+            List<Integer> userQuestAns = userAnswersList.get(i);
+            List<String> rightQuestAns = rightAnswers.get(i);
+            for (int b = 0; b < userQuestAns.size(); b++) {
+                int helper = 0;
+                if (String.valueOf(userQuestAns.get(b)).equals(rightQuestAns.get(b))) {
+                    helper += 1;
+                }
+                if (userQuestAns.size() > 1 && helper == 4) {
+                    rightAns += 1;
+                } else if (userQuestAns.size() == 1 && helper == 1) {
+                    rightAns += 1;
+                }
+            }
+        }
+        args.putString("total", String.valueOf(fileList.length - 1));
+        args.putString("right", String.valueOf(rightAns));
+        return args;
     }
 
     private void btnsSetCheck() {
