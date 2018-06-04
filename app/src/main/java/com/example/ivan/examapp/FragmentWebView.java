@@ -56,9 +56,6 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
     private RadioGroup radioGroup4;
 
     private List<List<Integer>> userAnswersList = new ArrayList<>();
-    private List<RadioGroup> radioGroups = new ArrayList<>(Arrays.asList(
-            radioGroup1, radioGroup2, radioGroup3, radioGroup4));
-    private List<RadioButton> buttons = new ArrayList<>();
 
     private TextView endTest;
 
@@ -82,26 +79,26 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
     }
 
     static final ArrayList<Integer> buttons_list = new ArrayList<>(Arrays.asList(
-        R.id.tg_btn_1,
-        R.id.tg_btn_2,
-        R.id.tg_btn_3,
-        R.id.tg_btn_4,
-        R.id.tg_btn_5,
-        R.id.tg_btn_2_1,
-        R.id.tg_btn_2_2,
-        R.id.tg_btn_2_3,
-        R.id.tg_btn_2_4,
-        R.id.tg_btn_2_5,
-        R.id.tg_btn_3_1,
-        R.id.tg_btn_3_2,
-        R.id.tg_btn_3_3,
-        R.id.tg_btn_3_4,
-        R.id.tg_btn_3_5,
-        R.id.tg_btn_4_1,
-        R.id.tg_btn_4_2,
-        R.id.tg_btn_4_3,
-        R.id.tg_btn_4_4,
-        R.id.tg_btn_4_5
+            R.id.tg_btn_1,
+            R.id.tg_btn_2,
+            R.id.tg_btn_3,
+            R.id.tg_btn_4,
+            R.id.tg_btn_5,
+            R.id.tg_btn_2_1,
+            R.id.tg_btn_2_2,
+            R.id.tg_btn_2_3,
+            R.id.tg_btn_2_4,
+            R.id.tg_btn_2_5,
+            R.id.tg_btn_3_1,
+            R.id.tg_btn_3_2,
+            R.id.tg_btn_3_3,
+            R.id.tg_btn_3_4,
+            R.id.tg_btn_3_5,
+            R.id.tg_btn_4_1,
+            R.id.tg_btn_4_2,
+            R.id.tg_btn_4_3,
+            R.id.tg_btn_4_4,
+            R.id.tg_btn_4_5
     ));
 
     private int getButtonID(int row, int cell) {
@@ -143,14 +140,14 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         dataBase.open();
         Bundle args = getArguments();
         int subjId = args.getInt("test_id");
-        String request = "SELECT answer_2 FROM answers WHERE test_id=" + subjId + " AND question_id=" + (questNum + 1);
+        String query = "SELECT answer_2 FROM answers WHERE test_id=" + subjId + " AND question_id=" + (questNum + 1);
 
-        answerTYPE = dataBase.getNote(request) == null;
+        answerTYPE = dataBase.getNote(query) == null;
 
         final View root = inflater.from(getContext()).inflate(
-            answerTYPE ? R.layout.webview_fragment : R.layout.webview_fragment_grid ,
-            container,
-            false
+                answerTYPE ? R.layout.webview_fragment : R.layout.webview_fragment_grid,
+                container,
+                false
         );
         adView = root.findViewById(R.id.ad_webView_port);
         webView = root.findViewById(R.id.webview);
@@ -216,7 +213,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
             @SuppressLint("DefaultLocale")
             @Override
             public void onClick(View view) {
-                List<Integer> answers = new ArrayList<>();
+                List<Integer> answerValues = new ArrayList<>();
                 if (questNum != fileList.length - 1) {
                     questNum += 1;
                     btnsSetCheck();
@@ -227,21 +224,26 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                         int radioButtonID = radioGroup1.getCheckedRadioButtonId();
                         View radioButton = radioGroup1.findViewById(radioButtonID);
                         int idx = radioGroup1.indexOfChild(radioButton);
-                        answers.add(idx);
+                        answerValues.add(idx);
                         if (userAnswersList.size() >= questNum) {
-                            userAnswersList.set(questNum, answers);
+                            userAnswersList.set(questNum, answerValues);
                         } else {
-                            userAnswersList.add(answers);
+                            userAnswersList.add(answerValues);
                         }
                     } else {
-                        for (int i = 0; i < radioGroups.size(); i++) {
-                            RadioGroup radioGroup = radioGroups.get(i);
+                        RadioGroup[] radioGroups = new RadioGroup[]{radioGroup1, radioGroup2, radioGroup3, radioGroup4};
+                        for (int i = 0; i < radioGroups.length; i++) {
+                            RadioGroup radioGroup = radioGroups[i];
                             int radioButtonID = radioGroup.getCheckedRadioButtonId();
                             View radioButton = radioGroup.findViewById(radioButtonID);
                             int idx = radioGroup.indexOfChild(radioButton);
-                            answers.add(idx);
+                            answerValues.add(idx);
                         }
-                        userAnswersList.set(questNum, answers);
+                        if (userAnswersList.size() >= questNum) {
+                            userAnswersList.set(questNum, answerValues);
+                        } else {
+                            userAnswersList.add(answerValues);
+                        }
                     }
                 } else if (questNum == fileList.length - 1) {
                     long endTime = System.currentTimeMillis();
@@ -250,6 +252,10 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                     long second = (endTime / 1000) % 60;
                     long minute = (endTime / (1000 * 60)) % 60;
                     long hour = (endTime / (1000 * 60 * 60)) % 24;
+                    List<List<String>> rightAnswers = new ArrayList<>();
+                    for (int i = 0; i < fileList.length - 1; i++) {
+                        rightAnswers.add(dataBase.getAnswers(test_id, i));
+                    }
 
                     Bundle args = new Bundle();
                     args.putString("total", String.valueOf(fileList.length - 1));

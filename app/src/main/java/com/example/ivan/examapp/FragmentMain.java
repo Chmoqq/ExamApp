@@ -64,25 +64,9 @@ public class FragmentMain extends Fragment {
         total_questions = root.findViewById(R.id.total_questions);
         dataBase = new DataBase(getContext());
         dataBase.open();
-        readFromPreference();
-        return root;
-    }
-
-    private void readFromPreference() {
-        String dbRequest = "SELECT questions_complete FROM user_answers WHERE subject_id=" + MainActivity.getCurSubjectId();
-        String subjectIds = "SELECT id FROM tests WHERE subject_id=" + MainActivity.getCurSubjectId();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < dataBase.getList(subjectIds).size(); i++) {
-            stringBuilder.append("'" + dataBase.getList(subjectIds).get(i)+ "'" + ", ");
-        }
-        stringBuilder.setLength(stringBuilder.length() - 2);
-        String questionsCount = "SELECT COUNT(question_id) FROM answers WHERE test_id in (" + stringBuilder.toString() + ")";
-        //String percentQuestionsDone = String.valueOf(Integer.parseInt(dataBase.getNote(questionsCount)) / 100 * Integer.parseInt(dataBase.getNote(dbRequest)));
         percents_done.setText("0");
-
-//        completed_questions.setText(dataBase.getNote(dbRequest));
         completed_questions.setText("0");
-
-        total_questions.setText(dataBase.getNote(questionsCount));
+        total_questions.setText(dataBase.getNote(dataBase.getSubjects()));
+        return root;
     }
 }
