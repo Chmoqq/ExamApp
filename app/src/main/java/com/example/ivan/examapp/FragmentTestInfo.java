@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 
 public class FragmentTestInfo extends Fragment {
@@ -42,6 +43,10 @@ public class FragmentTestInfo extends Fragment {
         View root = inflater.from(getContext()).inflate(R.layout.total_stats, container, false);
         rightQuests = root.findViewById(R.id.right_quests_of_final_page);
         totalTestQuests = root.findViewById(R.id.total_quest_final_page);
+        adView = root.findViewById(R.id.ad_total_stats);
+        MobileAds.initialize(getActivity(), "ca-app-pub-1703600089536161~4090197835");
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("1234567").build();
+        adView.loadAd(adRequest);
         timeSpent = root.findViewById(R.id.total_time_spent);
         star1 = root.findViewById(R.id.star1_final_page);
         star2 = root.findViewById(R.id.star2_final_page);

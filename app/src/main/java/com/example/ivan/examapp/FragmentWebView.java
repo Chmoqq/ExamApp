@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class FragmentWebView extends Fragment {
+public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedChangeListener {
 
     private WebView webView;
 
@@ -49,9 +49,6 @@ public class FragmentWebView extends Fragment {
     private FragmentTransaction fragmentTransaction;
 
     private AdView adView;
-
-    private List<List<Integer>> userAnswersList = new ArrayList<>();
-    private List<RadioGroup> radioGroups = new ArrayList<>();
 
     private RadioButton button1_1;
     private RadioButton button1_2;
@@ -80,6 +77,11 @@ public class FragmentWebView extends Fragment {
     private RadioButton button4_4;
     private RadioButton button4_5;
     private RadioGroup radioGroup4;
+
+    private List<List<Integer>> userAnswersList = new ArrayList<>();
+    private List<RadioGroup> radioGroups = new ArrayList<>(Arrays.asList(
+            radioGroup1, radioGroup2, radioGroup3, radioGroup4));
+    private List<RadioButton> buttons = new ArrayList<>();
 
     private TextView endTest;
 
@@ -122,7 +124,7 @@ public class FragmentWebView extends Fragment {
             button1_3 = root.findViewById(R.id.tg_btn_3);
             button1_4 = root.findViewById(R.id.tg_btn_4);
             button1_5 = root.findViewById(R.id.tg_btn_5);
-            radioGroup1 = root.findViewById(R.id.radio_group);
+            radioGroup1 = root.findViewById(R.id.radio_group1);
             currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
             fragmentTransaction = getFragmentManager().beginTransaction();
             webView.getSettings().setJavaScriptEnabled(true);
@@ -162,10 +164,6 @@ public class FragmentWebView extends Fragment {
             button4_4 = root.findViewById(R.id.tg_btn_4_4);
             button4_5 = root.findViewById(R.id.tg_btn_4_5);
             radioGroup4 = root.findViewById(R.id.radio_group4);
-            radioGroups.add(radioGroup1);
-            radioGroups.add(radioGroup2);
-            radioGroups.add(radioGroup3);
-            radioGroups.add(radioGroup4);
             currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
             fragmentTransaction = getFragmentManager().beginTransaction();
             webView.getSettings().setJavaScriptEnabled(true);
@@ -207,62 +205,12 @@ public class FragmentWebView extends Fragment {
             endTest.setText("Завершить");
         }
         if (answerTYPE) {
-            radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    button1_1.setTextColor(getResources().getColor(R.color.black_spec));
-                    button1_2.setTextColor(getResources().getColor(R.color.black_spec));
-                    button1_3.setTextColor(getResources().getColor(R.color.black_spec));
-                    button1_4.setTextColor(getResources().getColor(R.color.black_spec));
-                    button1_5.setTextColor(getResources().getColor(R.color.black_spec));
-                    rBtnChecked(i);
-                }
-            });
+            radioGroup1.setOnCheckedChangeListener(this);
         } else {
-            radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    button1_1.setTextColor(getResources().getColor(R.color.black_spec));
-                    button1_2.setTextColor(getResources().getColor(R.color.black_spec));
-                    button1_3.setTextColor(getResources().getColor(R.color.black_spec));
-                    button1_4.setTextColor(getResources().getColor(R.color.black_spec));
-                    button1_5.setTextColor(getResources().getColor(R.color.black_spec));
-                    rBtnChecked(i);
-                }
-            });
-            radioGroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    button2_1.setTextColor(getResources().getColor(R.color.black_spec));
-                    button2_2.setTextColor(getResources().getColor(R.color.black_spec));
-                    button2_3.setTextColor(getResources().getColor(R.color.black_spec));
-                    button2_4.setTextColor(getResources().getColor(R.color.black_spec));
-                    button2_5.setTextColor(getResources().getColor(R.color.black_spec));
-                    rBtnChecked(i);
-                }
-            });
-            radioGroup3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    button3_1.setTextColor(getResources().getColor(R.color.black_spec));
-                    button3_2.setTextColor(getResources().getColor(R.color.black_spec));
-                    button3_3.setTextColor(getResources().getColor(R.color.black_spec));
-                    button3_4.setTextColor(getResources().getColor(R.color.black_spec));
-                    button3_5.setTextColor(getResources().getColor(R.color.black_spec));
-                    rBtnChecked(i);
-                }
-            });
-            radioGroup4.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    button4_1.setTextColor(getResources().getColor(R.color.black_spec));
-                    button4_2.setTextColor(getResources().getColor(R.color.black_spec));
-                    button4_3.setTextColor(getResources().getColor(R.color.black_spec));
-                    button4_4.setTextColor(getResources().getColor(R.color.black_spec));
-                    button4_5.setTextColor(getResources().getColor(R.color.black_spec));
-                    rBtnChecked(i);
-                }
-            });
+            radioGroup1.setOnCheckedChangeListener(this);
+            radioGroup2.setOnCheckedChangeListener(this);
+            radioGroup3.setOnCheckedChangeListener(this);
+            radioGroup4.setOnCheckedChangeListener(this);
         }
         nextQuest.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("DefaultLocale")
@@ -280,7 +228,11 @@ public class FragmentWebView extends Fragment {
                         View radioButton = radioGroup1.findViewById(radioButtonID);
                         int idx = radioGroup1.indexOfChild(radioButton);
                         answers.add(idx);
-                        userAnswersList.set(questNum, answers);
+                        if (userAnswersList.get(questNum) != null) {
+                            userAnswersList.set(questNum, answers);
+                        } else {
+                            userAnswersList.add(answers);
+                        }
                     } else {
                         for (int i = 0; i < radioGroups.size(); i++) {
                             RadioGroup radioGroup = radioGroups.get(i);
@@ -288,7 +240,6 @@ public class FragmentWebView extends Fragment {
                             View radioButton = radioGroup.findViewById(radioButtonID);
                             int idx = radioGroup.indexOfChild(radioButton);
                             answers.add(idx);
-
                         }
                         userAnswersList.set(questNum, answers);
                     }
@@ -512,5 +463,39 @@ public class FragmentWebView extends Fragment {
     public void onStart() {
         (this.getActivity().findViewById(R.id.spinner)).setEnabled(false);
         super.onStart();
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+        switch (radioGroup.getId()) {
+            case R.id.radio_group1:
+                button1_1.setTextColor(getResources().getColor(R.color.black_spec));
+                button1_2.setTextColor(getResources().getColor(R.color.black_spec));
+                button1_3.setTextColor(getResources().getColor(R.color.black_spec));
+                button1_4.setTextColor(getResources().getColor(R.color.black_spec));
+                button1_5.setTextColor(getResources().getColor(R.color.black_spec));
+                rBtnChecked(i);
+            case R.id.radio_group2:
+                button2_1.setTextColor(getResources().getColor(R.color.black_spec));
+                button2_2.setTextColor(getResources().getColor(R.color.black_spec));
+                button2_3.setTextColor(getResources().getColor(R.color.black_spec));
+                button2_4.setTextColor(getResources().getColor(R.color.black_spec));
+                button2_5.setTextColor(getResources().getColor(R.color.black_spec));
+                rBtnChecked(i);
+            case R.id.radio_group3:
+                button3_1.setTextColor(getResources().getColor(R.color.black_spec));
+                button3_2.setTextColor(getResources().getColor(R.color.black_spec));
+                button3_3.setTextColor(getResources().getColor(R.color.black_spec));
+                button3_4.setTextColor(getResources().getColor(R.color.black_spec));
+                button3_5.setTextColor(getResources().getColor(R.color.black_spec));
+                rBtnChecked(i);
+            case R.id.radio_group4:
+                button4_1.setTextColor(getResources().getColor(R.color.black_spec));
+                button4_2.setTextColor(getResources().getColor(R.color.black_spec));
+                button4_3.setTextColor(getResources().getColor(R.color.black_spec));
+                button4_4.setTextColor(getResources().getColor(R.color.black_spec));
+                button4_5.setTextColor(getResources().getColor(R.color.black_spec));
+                rBtnChecked(i);
+        }
     }
 }
