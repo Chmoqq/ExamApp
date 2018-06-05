@@ -2,6 +2,7 @@ package com.example.ivan.examapp;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,9 +29,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedChangeListener {
 
@@ -67,7 +71,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
 
     private String mime = "text/html";
     private String encoding = "utf-8";
-    private boolean answerTYPE;
+    private boolean isSimpleAnswer;
 
     @SuppressLint({"SetJavaScriptEnabled", "CommitTransaction"})
     @Nullable
@@ -142,10 +146,10 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         int subjId = args.getInt("test_id");
         String query = "SELECT answer_2 FROM answers WHERE test_id=" + subjId + " AND question_id=" + (questNum + 1);
 
-        answerTYPE = dataBase.getNote(query) == null;
+        isSimpleAnswer = dataBase.getNote(query) == null;
 
         final View root = inflater.from(getContext()).inflate(
-                answerTYPE ? R.layout.webview_fragment : R.layout.webview_fragment_grid,
+                isSimpleAnswer ? R.layout.webview_fragment : R.layout.webview_fragment_grid,
                 container,
                 false
         );
@@ -156,7 +160,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         prevQuest = root.findViewById(R.id.prev_quest_btn);
         radioGroup1 = root.findViewById(R.id.radio_group1);
 
-        if (!answerTYPE) {
+        if (!isSimpleAnswer) {
             radioGroup2 = root.findViewById(R.id.radio_group2);
             radioGroup3 = root.findViewById(R.id.radio_group3);
             radioGroup4 = root.findViewById(R.id.radio_group4);
@@ -174,7 +178,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         webViewContent(savedInstanceState);
         btnsInit();
         pageAdSetter();
-        if (answerTYPE) {
+        if (isSimpleAnswer) {
             adMobInit();
         }
     }
@@ -201,7 +205,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         } else {
             endTest.setText("Завершить");
         }
-        if (answerTYPE) {
+        if (isSimpleAnswer) {
             radioGroup1.setOnCheckedChangeListener(this);
         } else {
             radioGroup1.setOnCheckedChangeListener(this);
@@ -213,36 +217,32 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
             @SuppressLint("DefaultLocale")
             @Override
             public void onClick(View view) {
-                List<Integer> answerValues = new ArrayList<>();
+                List<Integer> answerValues = new ArrayList<Integer>() {{
+                    add(null);
+                    add(null);
+                    add(null);
+                    add(null);
+                }};
                 if (questNum != fileList.length - 1) {
                     questNum += 1;
                     fragmentTransaction.detach(currentFragment);
                     fragmentTransaction.attach(currentFragment);
                     fragmentTransaction.commit();
-                    if (answerTYPE) {
-                        int radioButtonID = radioGroup1.getCheckedRadioButtonId();
-                        RadioButton radioButton = radioGroup1.findViewById(radioButtonID);
-                        int idx = radioGroup1.indexOfChild(radioButton);
-                        answerValues.add(idx);
-                        if (userAnswersList.size() >= questNum) {
-                            userAnswersList.set(questNum, answerValues);
-                        } else {
-                            userAnswersList.add(answerValues);
-                        }
+
+                    RadioGroup[] radioGroups = new RadioGroup[]{radioGroup1, radioGroup2, radioGroup3, radioGroup4};
+                    for (int i = 0; i < (isSimpleAnswer ? 1 : radioGroups.length); i++) {
+                        RadioGroup radioGroup = radioGroups[i];
+                        RadioButton radioButton = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+                        if (radioGroup.indexOfChild(radioButton) == -1)
+                            continue;
+
+                        answerValues.set(i, radioGroup.indexOfChild(radioButton));
+                    }
+
+                    if (userAnswersList.size() > questNum) {
+                        userAnswersList.set(questNum, answerValues);
                     } else {
-                        RadioGroup[] radioGroups = new RadioGroup[]{radioGroup1, radioGroup2, radioGroup3, radioGroup4};
-                        for (int i = 0; i < radioGroups.length; i++) {
-                            RadioGroup radioGroup = radioGroups[i];
-                            int radioButtonID = radioGroup.getCheckedRadioButtonId();
-                            RadioButton radioButton = radioGroup.findViewById(radioButtonID);
-                            int idx = radioGroup.indexOfChild(radioButton);
-                            answerValues.add(idx);
-                        }
-                        if (userAnswersList.size() >= questNum) {
-                            userAnswersList.set(questNum, answerValues);
-                        } else {
-                            userAnswersList.add(answerValues);
-                        }
+                        userAnswersList.add(answerValues);
                     }
                 } else if (questNum == fileList.length - 1) {
                     userAnswersList.add(answerValues);
@@ -250,6 +250,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                     interstitialAd.show();
                 }
                 btnsSetCheck();
+                dataBase.close();
             }
         });
         prevQuest.setOnClickListener(new View.OnClickListener() {
@@ -290,24 +291,25 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         args.putString("hours", String.valueOf(hour));
         args.putString("mins", String.valueOf(minute));
         args.putString("secs", String.valueOf(second));
-        List<List<String>> rightAnswers = new ArrayList<>();
+        List<List<Integer>> rightAnswers = new ArrayList<>();
         for (int i = 1; i <= fileList.length; i++) {
             rightAnswers.add(dataBase.getAnswers(test_id, i));
         }
         for (int i = 0; i < rightAnswers.size(); i++) {
             List<Integer> userQuestAns = userAnswersList.get(i);
-            List<String> rightQuestAns = rightAnswers.get(i);
+            List<Integer> rightQuestAns = rightAnswers.get(i);
+
+            boolean is_wrong = false;
             for (int b = 0; b < userQuestAns.size(); b++) {
-                int helper = 0;
-                if (String.valueOf(userQuestAns.get(b)).equals(rightQuestAns.get(b))) {
-                    helper += 1;
-                }
-                if (userQuestAns.size() > 1 && helper == 4) {
-                    rightAns += 1;
-                } else if (userQuestAns.size() == 1 && helper == 1) {
-                    rightAns += 1;
+                if (userQuestAns.get(b) != rightQuestAns.get(b)) {
+                    is_wrong = true;
+                    break;
                 }
             }
+
+            if (!is_wrong)
+                rightAns += 1;
+            dataBase.userAnswerInsert(test_id, i + 1, userQuestAns);
         }
         args.putString("total", String.valueOf(fileList.length - 1));
         args.putString("right", String.valueOf(rightAns));

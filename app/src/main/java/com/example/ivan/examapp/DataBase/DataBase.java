@@ -9,8 +9,9 @@ import com.example.ivan.examapp.MainActivity;
 import com.example.ivan.examapp.Ticket;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 
 public class DataBase {
@@ -23,7 +24,7 @@ public class DataBase {
     }
 
     public void open() throws SQLException {
-        database = dbHelper.getReadableDatabase();
+        database = dbHelper.getWritableDatabase();
     }
 
     public void close() {
@@ -55,6 +56,7 @@ public class DataBase {
                 cursor.moveToNext();
             }
         }
+        cursor.close();
         return values;
     }
 
@@ -74,24 +76,34 @@ public class DataBase {
             stringBuilder.append("'" + values.get(i) + "'" + ", ");
         }
         stringBuilder.setLength(stringBuilder.length() - 2);
+        cursor.close();
         return "SELECT COUNT(question_id) FROM answers WHERE test_id in (" + stringBuilder.toString() + ")";
     }
 
-    public List<String> getAnswers(int test_id, int list_length) {
-        List<String> values = new ArrayList<>();
+    public List<Integer> getAnswers(int test_id, int list_length) {
+        List<Integer> values = new ArrayList<>();
         String query = "SELECT answer_1, answer_2, answer_3, answer_4 FROM answers WHERE test_id=" + test_id + " AND question_id=" + list_length;
         Cursor cursor = database.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                String answer_1 = cursor.getString(cursor.getColumnIndex("answer_1"));
-                String answer_2 = cursor.getString(cursor.getColumnIndex("answer_2"));
-                String answer_3 = cursor.getString(cursor.getColumnIndex("answer_3"));
-                String answer_4 = cursor.getString(cursor.getColumnIndex("answer_4"));
-                values.addAll(Arrays.asList(answer_1, answer_2, answer_3, answer_4));
+                for (int i = 1; i <= 4; i++) {
+                    int column_index = cursor.getColumnIndex(String.format("answer_%s", i));
+
+                    values.add(cursor.isNull(column_index) ? null : cursor.getInt(column_index));
+                }
+
                 cursor.moveToNext();
             }
         }
+        cursor.close();
         return values;
+    }
+
+    public void userAnswerInsert(int test_id, int question_id, List<Integer> userAns) {
+        database.execSQL(
+                "INSERT INTO user_answers (answer_id, test_id, question_id, answer_1, answer_2, answer_3, answer_4) VALUES (NULL, ?, ?, ?, ?, ?, ?)",
+                new Object[]{test_id, question_id, userAns.get(0), userAns.get(1), userAns.get(2), userAns.get(3)}
+        );
     }
 
 }
