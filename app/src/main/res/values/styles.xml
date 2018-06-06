@@ -49,4 +49,17 @@
 
     </style>
 
+    <style name="radioButton." parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:width">30dp</item>
+        <item name="android:height">30dp</item>
+        <item name="android:background">@drawable/checkbox_rectangle</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="textViewWebView" parent="TextView">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
+    </style>
+
 </resources>

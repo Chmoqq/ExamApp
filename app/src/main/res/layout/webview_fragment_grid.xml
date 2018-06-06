@@ -9,23 +9,12 @@
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.35" />
+        android:layout_weight="0.30" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="3dp"
-        android:fontFamily="@font/roboto_bold"
-        android:gravity="center"
-        android:text="Выберите правильный ответ"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        android:textColor="@color/black_spec" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,6 +31,59 @@
             android:layout_weight="0.25"
             android:gravity="center_horizontal"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textViewWebView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="35dp"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginStart="17dp"
+                    android:text="А"
+                    android:textColor="@color/black_spec" />
+
+                <TextView
+                    style="@style/textViewWebView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="37dp"
+                    android:layout_marginRight="37dp"
+                    android:text="Б"
+                    android:textColor="@color/black_spec" />
+
+                <TextView
+                    style="@style/textViewWebView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="37dp"
+                    android:layout_marginRight="37dp"
+                    android:text="В"
+                    android:textColor="@color/black_spec" />
+
+                <TextView
+                    style="@style/textViewWebView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="37dp"
+                    android:layout_marginRight="37dp"
+                    android:text="Г"
+                    android:textColor="@color/black_spec" />
+
+                <TextView
+                    style="@style/textViewWebView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Д"
+                    android:textColor="@color/black_spec" />
+
+            </LinearLayout>
 
 
             <LinearLayout
@@ -73,71 +115,32 @@
 
                     <RadioButton
                         android:id="@+id/tg_btn_1"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="А"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_2"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Б"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_3"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="B"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_4"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Г"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_5"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Д"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        style="@style/radioButton."
+                        android:background="@drawable/checkbox_rectangle" />
 
                 </RadioGroup>
 
@@ -171,71 +174,31 @@
 
                     <RadioButton
                         android:id="@+id/tg_btn_2_1"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="А"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_2_2"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Б"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_2_3"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="B"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_2_4"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Г"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_2_5"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Д"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        style="@style/radioButton." />
 
                 </RadioGroup>
 
@@ -251,7 +214,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
-                    android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
                     android:text="3"
                     android:textColor="@color/black_spec"
@@ -268,71 +230,31 @@
 
                     <RadioButton
                         android:id="@+id/tg_btn_3_1"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="А"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_3_2"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Б"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_3_3"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="B"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_3_4"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Г"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_3_5"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Д"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        style="@style/radioButton." />
 
                 </RadioGroup>
 
@@ -349,7 +271,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
-                    android:fontFamily="@font/roboto_bold"
                     android:gravity="center"
                     android:text="4"
                     android:textColor="@color/black_spec"
@@ -366,71 +287,31 @@
 
                     <RadioButton
                         android:id="@+id/tg_btn_4_1"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="А"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_4_2"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Б"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_4_3"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="B"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_4_4"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        style="@style/radioButton."
                         android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Г"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        android:layout_marginRight="15dp" />
 
                     <RadioButton
                         android:id="@+id/tg_btn_4_5"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/checkbox_rounded"
-                        android:button="@null"
-                        android:fontFamily="@font/roboto_bold"
-                        android:gravity="center"
-                        android:text="Д"
-                        android:textColor="@color/black_spec"
-                        android:textSize="22sp" />
+                        style="@style/radioButton." />
 
                 </RadioGroup>
 
