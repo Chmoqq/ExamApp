@@ -173,6 +173,12 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        dataBase.close();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         webViewContent(savedInstanceState);
@@ -246,22 +252,23 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                     }
                 } else if (questNum == fileList.length - 1) {
                     userAnswersList.add(answerValues);
-                    fragmentTestInfo.setArguments(answerControl());
                     interstitialAd.show();
+                    fragmentTestInfo.setArguments(answerControl());
                 }
                 btnsSetCheck();
-                dataBase.close();
             }
         });
-        prevQuest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                questNum = Math.max(0, questNum - 1);
-                fragmentTransaction.detach(currentFragment);
-                fragmentTransaction.attach(currentFragment);
-                fragmentTransaction.commit();
-            }
-        });
+        if (questNum != 0) {
+            prevQuest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    questNum = Math.max(0, questNum - 1);
+                    fragmentTransaction.detach(currentFragment);
+                    fragmentTransaction.attach(currentFragment);
+                    fragmentTransaction.commit();
+                }
+            });
+        }
     }
 
     private void pageAdSetter() {
@@ -301,7 +308,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
 
             boolean is_wrong = false;
             for (int b = 0; b < userQuestAns.size(); b++) {
-                if (userQuestAns.get(b) != rightQuestAns.get(b)) {
+                if (userQuestAns.get(b).equals(rightQuestAns.get(b))) {
                     is_wrong = true;
                     break;
                 }
@@ -342,11 +349,13 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                 sb.append(line);
             }
         } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }

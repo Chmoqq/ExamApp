@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ public class FragmentMain extends Fragment {
     private FragmentLearnTickets fragmentLearnTickets;
     private FragmentManager fragmentManager;
     private DataBase dataBase;
+    private Fragment currentFragment;
+    private FragmentTransaction fragmentTransaction;
 
     private TextView percents_done;
     private TextView completed_questions;
@@ -31,6 +34,10 @@ public class FragmentMain extends Fragment {
     @Override
     public void onStart() {
         (this.getActivity().findViewById(R.id.spinner)).setEnabled(true);
+        currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+        fragmentTransaction = getFragmentManager().beginTransaction();
+        completed_questions.setText(String.valueOf(dataBase.getCompletedAnswers()));
+        total_questions.setText(dataBase.getNote(dataBase.getAnswersCount()));
         super.onStart();
     }
 
@@ -65,8 +72,6 @@ public class FragmentMain extends Fragment {
         dataBase = new DataBase(getContext());
         dataBase.open();
         percents_done.setText("0");
-        completed_questions.setText("0");
-        total_questions.setText(dataBase.getNote(dataBase.getSubjects()));
         return root;
     }
 }

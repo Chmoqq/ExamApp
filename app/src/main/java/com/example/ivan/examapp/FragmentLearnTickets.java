@@ -70,7 +70,6 @@ public class FragmentLearnTickets extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         ticketsList.setLayoutManager(gridLayoutManager);
         ticketsList.setAdapter(adapter);
-        dataBase.close();
         return root;
     }
 
@@ -93,10 +92,6 @@ public class FragmentLearnTickets extends Fragment {
     }
 
     private class TicketListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-
-        public TicketListAdapter() {
-        }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

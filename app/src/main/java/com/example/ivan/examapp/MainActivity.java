@@ -41,13 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             R.drawable.ic_biology, R.drawable.ic_physics, R.drawable.ic_chemistry, R.drawable.ic_english_language, R.drawable.ic_deutch,
             R.drawable.ic_french, R.drawable.ic_spanish);
 
-
-    private FragmentMain fragmentMain;
-    private FragmentManager manager;
-    private FragmentTransaction fragmentTransaction;
-
-    private Spinner spinner;
-
     public static String subject = "ukrainian";
     public static int curSubjectId = 1;
 
@@ -63,14 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (savedInstanceState == null) {
             initUI();
-        }
-        try {
-            copyDB();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -117,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        Spinner spinner;
         spinner = findViewById(R.id.spinner);
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getApplicationContext(), subjectIcons, elements);
         spinner.setAdapter(spinnerAdapter);
@@ -141,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        FragmentMain fragmentMain;
+        FragmentManager manager;
         fragmentMain = new FragmentMain();
         manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.fragment_container, fragmentMain).commit();

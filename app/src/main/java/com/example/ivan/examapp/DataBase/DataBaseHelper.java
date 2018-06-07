@@ -2,17 +2,16 @@ package com.example.ivan.examapp.DataBase;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    Context context;
+    private Context context;
 
     private static final String DATABASE_NAME = "answers";
-     String DATABASE_PATH = null;
+    private String DATABASE_PATH = null;
     private static final int DATABASE_VERSION = 1;
     private SQLiteDatabase myDataBase;
 
@@ -38,8 +37,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public synchronized void close() {
-        //if (myDataBase != null)
-        //    myDataBase.close();
         super.close();
     }
 

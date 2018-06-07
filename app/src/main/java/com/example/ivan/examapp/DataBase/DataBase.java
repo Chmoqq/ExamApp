@@ -10,8 +10,6 @@ import com.example.ivan.examapp.Ticket;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 
 public class DataBase {
@@ -41,6 +39,7 @@ public class DataBase {
             super_answer = "0";
         }
 
+        cursor.close();
         return super_answer;
     }
 
@@ -60,7 +59,7 @@ public class DataBase {
         return values;
     }
 
-    public String getSubjects() {
+    public String getAnswersCount() {
         String query = "SELECT id FROM tests WHERE subject_id=" + MainActivity.getCurSubjectId();
         List<String> values = new ArrayList<>();
         Cursor cursor = database.rawQuery(query, null);
@@ -80,7 +79,32 @@ public class DataBase {
         return "SELECT COUNT(question_id) FROM answers WHERE test_id in (" + stringBuilder.toString() + ")";
     }
 
+    public int getCompletedAnswers() {
+        String query = "SELECT id FROM tests WHERE subject_id=" + MainActivity.getCurSubjectId();
+        List<String> values = new ArrayList<>();
+        Cursor cursor = database.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String subjectName = cursor.getString(cursor.getColumnIndex("id"));
+                values.add(subjectName);
+                cursor.moveToNext();
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < values.size(); i++) {
+            stringBuilder.append("'" + values.get(i) + "'" + ", ");
+        }
+        stringBuilder.setLength(stringBuilder.length() - 2);
+        cursor = database.rawQuery("SELECT DISTINCT(answer_id) FROM user_answers GROUP BY question_id HAVING test_id in(" + stringBuilder.toString() + ") ORDER BY answer_id LIMIT 1", null);
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        }
+        cursor.close();
+        return 0;
+    }
+
     public List<Integer> getAnswers(int test_id, int list_length) {
+        dbHelper.onOpen(database);
         List<Integer> values = new ArrayList<>();
         String query = "SELECT answer_1, answer_2, answer_3, answer_4 FROM answers WHERE test_id=" + test_id + " AND question_id=" + list_length;
         Cursor cursor = database.rawQuery(query, null);
