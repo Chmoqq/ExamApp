@@ -6,12 +6,12 @@
 
     <FrameLayout
         android:id="@+id/recycler_view_frame_item"
-        android:background="@color/blue_nav_bar"
+        android:background="@color/blue"
         android:layout_width="match_parent"
         android:layout_height="45dp">
 
         <LinearLayout
-            android:background="@color/blue_nav_bar"
+            android:background="@color/blue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">

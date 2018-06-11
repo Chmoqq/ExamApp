@@ -62,4 +62,28 @@
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
     </style>
 
+    <style name="CardViewContenMain_left" parent="CardView">
+        <item name="cardCornerRadius">14dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginLeft">63dp</item>
+        <item name="android:layout_marginRight">18dp</item>
+        <item name="android:layout_marginStart" tools:ignore="NewApi">63dp</item>
+        <item name="android:layout_marginEnd" tools:ignore="NewApi">18dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardMaxElevation">0dp</item>
+    </style>
+
+    <style name="CardViewContenMain_right" parent="CardView">
+        <item name="cardCornerRadius">14dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginLeft">18dp</item>
+        <item name="android:layout_marginRight">63dp</item>
+        <item name="android:layout_marginStart" tools:ignore="NewApi">18dp</item>
+        <item name="android:layout_marginEnd" tools:ignore="NewApi">63dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardMaxElevation">0dp</item>
+    </style>
+
 </resources>

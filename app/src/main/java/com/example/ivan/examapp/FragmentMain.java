@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ivan.examapp.DataBase.DataBase;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 
 public class FragmentMain extends Fragment {
@@ -22,6 +24,8 @@ public class FragmentMain extends Fragment {
     private DataBase dataBase;
     private Fragment currentFragment;
     private FragmentTransaction fragmentTransaction;
+
+    private AdView adView;
 
     private CardView learnTickets;
     private CardView testYourself;
@@ -60,6 +64,9 @@ public class FragmentMain extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentLearnTickets).addToBackStack("main_fragment").commit();
             }
         });
+        adView = root.findViewById(R.id.main_page_ad);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("1234567").build();
+        adView.loadAd(adRequest);
         dataBase = new DataBase(getContext());
         dataBase.open();
         return root;

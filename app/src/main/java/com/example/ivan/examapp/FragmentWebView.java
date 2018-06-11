@@ -308,7 +308,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
 
             boolean is_wrong = false;
             for (int b = 0; b < userQuestAns.size(); b++) {
-                if (userQuestAns.get(b).equals(rightQuestAns.get(b))) {
+                if (userQuestAns.get(b) != rightQuestAns.get(b)) {
                     is_wrong = true;
                     break;
                 }
@@ -397,8 +397,12 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                         "margin-right: 10px;\n" +
                         "text-align: center;\n" +
                         "font-weight: 700; padding: 8px;} img { width: 100%; }</style>" + getStringFromIS(inputStream);
+
+                files[i] = "<style>img {width: 100%;}</style><img src=\"https://i.imgur.com/HdDCOhU.png\">";
             }
+            webView.getSettings().setBuiltInZoomControls(true);
             webView.loadDataWithBaseURL("https://zno.osvita.ua", files[questNum], mime, encoding, null);
+            //webView.loadUrl("");
         } catch (IOException e) {
             e.printStackTrace();
         }
