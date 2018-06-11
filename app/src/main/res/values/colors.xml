@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="black">#FF000000</color>
     <color name="gray">#dbdbdb</color>
-    <color name="blue">#1390ec</color>
+    <color name="blue">#3b70a4</color>
     <color name="white">#f0f0f0</color>
     <color name="red">#e1303a</color>
     <color name="orange">#f16342</color>
@@ -16,4 +16,6 @@
     <color name="black_spec">#212529</color>
     <color name="orange_test_info">#f06d4b</color>
     <color name="red_test_info">#e74242</color>
+    <color name="gradient_start">#549ecd</color>
+    <color name="gradient_end">#4b7f9f</color>
 </resources>

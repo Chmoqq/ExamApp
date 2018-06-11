@@ -23,10 +23,6 @@ public class FragmentMain extends Fragment {
     private Fragment currentFragment;
     private FragmentTransaction fragmentTransaction;
 
-    private TextView percents_done;
-    private TextView completed_questions;
-    private TextView total_questions;
-
     private CardView learnTickets;
     private CardView testYourself;
     private CardView chooseTopic;
@@ -36,8 +32,6 @@ public class FragmentMain extends Fragment {
         (this.getActivity().findViewById(R.id.spinner)).setEnabled(true);
         currentFragment = getFragmentManager().findFragmentById(R.id.fragment_container);
         fragmentTransaction = getFragmentManager().beginTransaction();
-        completed_questions.setText(String.valueOf(dataBase.getCompletedAnswers()));
-        total_questions.setText(dataBase.getNote(dataBase.getAnswersCount()));
         super.onStart();
     }
 
@@ -66,12 +60,8 @@ public class FragmentMain extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentLearnTickets).addToBackStack("main_fragment").commit();
             }
         });
-        percents_done = root.findViewById(R.id.percentage_done);
-        completed_questions = root.findViewById(R.id.completed_questions_exam);
-        total_questions = root.findViewById(R.id.total_questions);
         dataBase = new DataBase(getContext());
         dataBase.open();
-        percents_done.setText("0");
         return root;
     }
 }

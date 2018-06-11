@@ -170,7 +170,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray" />
+            android:background="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -239,7 +239,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="3dp"
-            android:background="@color/gray" />
+            android:background="@color/white" />
 
     </LinearLayout>
 

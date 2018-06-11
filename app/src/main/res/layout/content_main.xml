@@ -1,339 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view_tickets_learn"
-        style="@style/CardView."
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="10dp"
-        android:elevation="4dp"
-        app:cardCornerRadius="30dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/blue"
-            android:orientation="vertical">
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.6">
-
-                <ImageView
-                    android:id="@+id/image_learn_ticket"
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/ic_checklist_paper_sheet_handmade_symbol" />
-
-                <TextView
-                    android:id="@+id/text_learn_tickets"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginStart="2dp"
-                    android:layout_toEndOf="@id/image_learn_ticket"
-                    android:layout_toRightOf="@id/image_learn_ticket"
-                    android:fontFamily="@font/roboto_bold"
-                    android:gravity="center"
-                    android:text="@string/learn_tickets_rus"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                    android:textColor="@color/white"
-                    android:textSize="30sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/white" />
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.3">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/percentage_done"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="28dp"
-                            android:layout_marginStart="28dp"
-                            android:fontFamily="@font/roboto_bold"
-                            android:gravity="center"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                            android:textColor="@color/white"
-                            android:textSize="25sp" />
-
-                        <TextView
-                            android:id="@+id/text_view_percent_symbol"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_toEndOf="@id/percentage_done"
-                            android:layout_toRightOf="@id/percentage_done"
-                            android:fontFamily="@font/roboto_bold"
-                            android:gravity="center"
-                            android:text="%"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                            android:textColor="@color/white"
-                            android:textSize="25sp" />
-
-                        <TextView
-                            android:id="@+id/percentage_done_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="3dp"
-                            android:layout_marginStart="3dp"
-                            android:layout_toEndOf="@id/text_view_percent_symbol"
-                            android:layout_toRightOf="@id/text_view_percent_symbol"
-                            android:fontFamily="@font/roboto_bold"
-                            android:gravity="center"
-                            android:text="@string/ready_to_exam_text"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                            android:textColor="@color/white"
-                            android:textSize="13sp" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/completed_questions_exam"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="18dp"
-                            android:layout_marginStart="18dp"
-                            android:fontFamily="@font/roboto_bold"
-                            android:gravity="center"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                            android:textColor="@color/white"
-                            android:textSize="25sp" />
-
-                        <TextView
-                            android:id="@+id/total_questions_exam"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="3dp"
-                            android:layout_marginStart="3dp"
-                            android:layout_toEndOf="@id/completed_questions_exam"
-                            android:layout_toRightOf="@id/completed_questions_exam"
-                            android:fontFamily="@font/roboto_bold"
-                            android:gravity="center"
-                            android:text="@string/completed_questions_text"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                            android:textColor="@color/white"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:id="@+id/total_questions"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="3dp"
-                            android:layout_marginStart="3dp"
-                            android:layout_toEndOf="@id/total_questions_exam"
-                            android:layout_toRightOf="@id/total_questions_exam"
-                            android:fontFamily="@font/roboto_bold"
-                            android:gravity="center"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                            android:textColor="@color/white"
-                            android:textSize="25sp" />
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/second_card_view"
-        style="@style/CardView."
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@id/card_view_tickets_learn"
-        android:layout_marginTop="10dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="35dp"
+        android:layout_weight="0.2"
+        android:background="@color/white"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.CardView
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view_tickets_learn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="2dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
-            android:background="@color/red"
-            android:elevation="4dp"
-            app:cardCornerRadius="30dp">
+            app:cardCornerRadius="11dp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp">
 
-            <RelativeLayout
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/red">
+                android:scaleType="fitXY"
+                android:src="@drawable/gradient" />
 
-                <ImageView
-                    android:id="@+id/image_view_test_yourself"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/ic_open_book" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/image_view_test_yourself"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/roboto_bold"
-                    android:gravity="center"
-                    android:text="Проверь себя"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-            </RelativeLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:src="@drawable/ic_learn_tickets" />
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="45dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
-            app:cardCornerRadius="30dp">
+            app:cardCornerRadius="11dp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp">
 
-            <RelativeLayout
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/orange">
+                android:scaleType="fitXY"
+                android:src="@drawable/gradient" />
 
-                <ImageView
-                    android:id="@+id/image_view_learn_more"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/ic_hand_writing_with_ballpen"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/image_view_learn_more"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/roboto_bold"
-                    android:gravity="center"
-                    android:text="Ошибки"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-            </RelativeLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:src="@drawable/ic_my_mistakes" />
 
         </android.support.v7.widget.CardView>
 
     </LinearLayout>
 
     <LinearLayout
-        style="@style/CardView."
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@id/second_card_view"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="0.04"
+        android:background="@color/white">
 
-        <android.support.v7.widget.CardView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="30dp"
+            android:layout_marginLeft="49dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginStart="49dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Учить билеты"
+            android:textColor="@color/black_spec"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Мои ошибки"
+            android:textColor="@color/black_spec"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:background="@color/white">
+
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
-            android:elevation="4dp"
-            app:cardBackgroundColor="@color/blue"
-            app:cardCornerRadius="30dp">
+            app:cardCornerRadius="11dp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp">
 
-            <RelativeLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/gradient" />
 
-                <ImageView
-                    android:id="@+id/stats_bar_icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_financial_bars_stats" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/stats_bar_icon"
-                    android:layout_marginBottom="2dp"
-                    android:fontFamily="@font/roboto_bold"
-                    android:gravity="center"
-                    android:text="Статистика"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-            </RelativeLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:src="@drawable/ic_test_yourself" />
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="45dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
-            android:elevation="4dp"
-            app:cardBackgroundColor="@color/blue"
-            app:cardCornerRadius="30dp">
+            app:cardCornerRadius="11dp"
+            app:cardElevation="0dp"
+            app:cardMaxElevation="0dp">
 
-            <RelativeLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/gradient" />
 
-                <ImageView
-                    android:id="@+id/hand_writing"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_solution" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/hand_writing"
-                    android:layout_marginBottom="2dp"
-                    android:fontFamily="@font/roboto_bold"
-                    android:gravity="center"
-                    android:text="@string/share_with_friends"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-            </RelativeLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:src="@drawable/ic_stats" />
 
         </android.support.v7.widget.CardView>
 
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.07">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="30dp"
+            android:layout_marginLeft="49dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginStart="49dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Проверь себя"
+            android:textColor="@color/black_spec"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Статистика"
+            android:textColor="@color/black_spec"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="ca-app-pub-1703600089536161/4044189706">
+
+    </com.google.android.gms.ads.AdView>
+
+</LinearLayout>
