@@ -23,8 +23,6 @@ import java.util.List;
 
 public class FragmentLearnTickets extends Fragment {
 
-    private FragmentManager fragmentManager;
-    private FragmentWebView fragmentWebView;
 
     private RecyclerView ticketsList;
     private TicketListAdapter adapter;
@@ -120,11 +118,11 @@ public class FragmentLearnTickets extends Fragment {
             listTicketsViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    fragmentWebView = new FragmentWebView();
+                    FragmentWebView fragmentWebView = new FragmentWebView();
                     Bundle testId = new Bundle();
                     testId.putInt("test_id", ticketList.get(position).getId());
                     fragmentWebView.setArguments(testId);
-                    fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     timeStart = System.currentTimeMillis();
                     fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentWebView, "webView").addToBackStack("Tickets List").commit();
                 }

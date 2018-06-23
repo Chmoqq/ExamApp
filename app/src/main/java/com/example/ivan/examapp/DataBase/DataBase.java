@@ -103,9 +103,9 @@ public class DataBase {
         return 0;
     }
 
-    public List<Integer> getAnswers(int test_id, int list_length) {
+    public List<String> getAnswers(int test_id, int list_length) {
         dbHelper.onOpen(database);
-        List<Integer> values = new ArrayList<>();
+        List<String> values = new ArrayList<>();
         String query = "SELECT answer_1, answer_2, answer_3, answer_4 FROM answers WHERE test_id=" + test_id + " AND question_id=" + list_length;
         Cursor cursor = database.rawQuery(query, null);
         if (cursor.moveToFirst()) {
@@ -113,7 +113,7 @@ public class DataBase {
                 for (int i = 1; i <= 4; i++) {
                     int column_index = cursor.getColumnIndex(String.format("answer_%s", i));
 
-                    values.add(cursor.isNull(column_index) ? null : cursor.getInt(column_index));
+                    values.add(cursor.isNull(column_index) ? null : cursor.getString(column_index));
                 }
 
                 cursor.moveToNext();
@@ -123,7 +123,7 @@ public class DataBase {
         return values;
     }
 
-    public void userAnswerInsert(int test_id, int question_id, List<Integer> userAns) {
+    public void userAnswerInsert(int test_id, int question_id, List<String> userAns) {
         database.execSQL(
                 "INSERT INTO user_answers (answer_id, test_id, question_id, answer_1, answer_2, answer_3, answer_4) VALUES (NULL, ?, ?, ?, ?, ?, ?)",
                 new Object[]{test_id, question_id, userAns.get(0), userAns.get(1), userAns.get(2), userAns.get(3)}

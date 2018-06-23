@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
-import com.example.ivan.examapp.Spinner.SpinnerAdapter;
+import com.example.ivan.examapp.SpinnerMain.SpinnerAdapter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -58,6 +58,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             initUI();
+        }
+        try {
+            copyDB();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -142,17 +147,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 + "/databases/answers";
 
         File f = new File(destPath);
-        InputStream in = getAssets().open("answers");
-        OutputStream out = new FileOutputStream(destPath);
+        if (!f.exists()) {
+            InputStream in = getAssets().open("answers");
+            OutputStream out = new FileOutputStream(destPath);
 
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = in.read(buffer)) > 0) {
-            out.write(buffer, 0, length);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = in.read(buffer)) > 0) {
+                out.write(buffer, 0, length);
+            }
+            in.close();
+            out.close();
         }
-        in.close();
-        out.close();
-
     }
 
 }

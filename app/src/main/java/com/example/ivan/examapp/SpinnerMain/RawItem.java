@@ -1,4 +1,4 @@
-package com.example.ivan.examapp.Spinner;
+package com.example.ivan.examapp.SpinnerMain;
 
 public class RawItem {
     private int imageid;
