@@ -18,9 +18,12 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.ivan.examapp.DataBase.DataBase;
+import com.example.ivan.examapp.SpinnerMain.SpinnerAdapter;
+import com.example.ivan.examapp.SpinnerWebView.SpinnerWebViewAdapter;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -60,6 +63,8 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
 
     private AdView adView;
 
+    private Spinner spinner;
+
     private RadioGroup radioGroup1;
     private RadioGroup radioGroup2;
     private RadioGroup radioGroup3;
@@ -68,6 +73,9 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
     private EditText editText1;
     private EditText editText2;
     private EditText editText3;
+
+    private TextView truee;
+    private TextView falsee;
 
     private List<List<String>> userAnswersList = new ArrayList<>();
 
@@ -162,9 +170,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         if (args.containsKey("questNum"))
             questNum = args.getInt("questNum");
         fileList = getContext().getAssets().list(String.valueOf(test_id));
-//        String query = "SELECT answer_2 FROM answers WHERE test_id=" + test_id + " AND question_id=" + (questNum + 1);
         rightAnswers = getRightAnswers();
-//        isSimpleAnswer = dataBase.getNote(query) == null;
         final View root = inflater.from(getContext()).inflate(setLayoutType(), container, false
         );
         root.setTag(setLayoutType());
@@ -192,14 +198,23 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         editText2 = root.findViewById(R.id.edit_text2);
         editText3 = root.findViewById(R.id.edit_text3);
 
+        truee = root.findViewById(R.id.textview_webview_t);
+        falsee = root.findViewById(R.id.textview_webview_f);
+
         switch ((Integer) root.getTag()) {
             case R.layout.webview_fragment_grid:
                 radioGroup2.setOnCheckedChangeListener(this);
                 radioGroup3.setOnCheckedChangeListener(this);
                 radioGroup4.setOnCheckedChangeListener(this);
+            case R.layout.webview_fragment_true_false:
             case R.layout.webview_fragment:
                 radioGroup1.setOnCheckedChangeListener(this);
                 break;
+        }
+        spinner = root.findViewById(R.id.webview_spinner_textview);
+        SpinnerWebViewAdapter spinnerAdapter = new SpinnerWebViewAdapter(getContext());
+        if (spinner != null) {
+            spinner.setAdapter(spinnerAdapter);
         }
     }
 
@@ -292,11 +307,21 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                     }
                 }
                 break;
-            case 303:
-            case 300:
             case 302:
                 if (String.valueOf(questNum).matches("re{7,11}")) {
-                    //FIXME
+                    truee.setText("verdaderas");
+                    falsee.setText("falsas");
+                    return R.layout.webview_fragment_true_false;
+                }
+            case 300:
+                if (String.valueOf(questNum).matches("re{7,11}")) {
+                    truee.setText("richtig");
+                    falsee.setText("falsch");
+                    return R.layout.webview_fragment_true_false;
+                }
+            case 303:
+                if (String.valueOf(questNum).matches("re{7,11}")) {
+                    return R.layout.webview_fragment_true_false;
                 } else if (String.valueOf(questNum).matches("re{17,21}") ||
                         String.valueOf(questNum).matches("re{27,38}")) {
                     return R.layout.spinner_webview_item;
@@ -305,6 +330,12 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                     return R.layout.webview_fragment_abcd;
                 } else {
                     //FIXME
+                }
+            case 301:
+                if (String.valueOf(questNum).matches("re{32,38}")) {
+                    return R.layout.spinner_webview_item;
+                } else {
+                    return R.layout.webview_fragment_abcd;
                 }
 
         }
@@ -408,7 +439,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
             add(null);
         }};
         RadioGroup[] radioGroups = new RadioGroup[]{radioGroup1, radioGroup2, radioGroup3, radioGroup4};
-        if (root.getTag().equals(R.layout.webview_fragment)) {
+        if (root.getTag().equals(R.layout.webview_fragment) || root.getTag().equals(R.layout.webview_fragment_abcd)) {
             for (int i = 0; i < 1; i++) {
                 RadioGroup radioGroup = radioGroups[i];
                 RadioButton radioButton = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
@@ -427,32 +458,27 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                 answerValues.set(i, String.valueOf(radioGroup.indexOfChild(radioButton)));
             }
         } else if (root.getTag().equals(R.layout.webview_fragment_edittext_three)) {
-            String answer1 = editText1.getText().toString();
-            answerValues.set(1, answer1);
-            String answer2 = editText2.getText().toString();
-            answerValues.set(2, answer2);
-            String answer3 = editText3.getText().toString();
-            answerValues.set(3, answer3);
+            answerValues.set(0, editText1.getText().toString());
+            answerValues.set(1, editText2.getText().toString());
+            answerValues.set(2, editText3.getText().toString());
         } else if (root.getTag().equals(R.layout.webview_fragment_edittext_two)) {
-            try {
-                String answer1 = editText1.getText().toString();
-                answerValues.set(1, answer1);
-                String answer2 = editText2.getText().toString();
-                answerValues.set(2, answer2);
-            } catch (NumberFormatException e) {
-                android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(getContext()).create();
-                alertDialog.setTitle("Alert");
-                alertDialog.setMessage("Ты чо пидар???");
-                alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                alertDialog.show();
-            }
+            answerValues.set(0, editText1.getText().toString());
+            answerValues.set(1, editText2.getText().toString());
         } else if (root.getTag().equals(R.layout.webview_fragment_skip)) {
-            answerValues.set(1, "");
+            answerValues.set(0, "");
+        } else if (root.getTag().equals(R.layout.webview_fragment_edittext)) {
+            answerValues.set(1, editText1.getText().toString());
+        } else if (root.getTag().equals(R.layout.webview_fragment_true_false)) {
+            for (int i = 0; i < 1; i++) {
+                RadioGroup radioGroup = radioGroups[i];
+                RadioButton radioButton = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
+                if (radioGroup.indexOfChild(radioButton) == -1)
+                    continue;
+
+                answerValues.set(i, String.valueOf(radioGroup.indexOfChild(radioButton)));
+            }
+        } else if (root.getTag().equals(R.layout.webview_fragment_spinner)) {
+            answerValues.set(0, String.valueOf(spinner.getSelectedItemPosition()));
         }
         return answerValues;
     }
