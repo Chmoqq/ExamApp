@@ -4,10 +4,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 
 import com.example.ivan.examapp.MainActivity;
 import com.example.ivan.examapp.Ticket;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +25,11 @@ public class DataBase {
 
     public DataBase(Context context) {
         dbHelper = new DataBaseHelper(context);
+        try {
+            copyDB(context);
+        } catch (IOException e) {
+            System.out.println("ЕБАААААТЬ!!!!!!!!!!!!!!");
+        }
     }
 
     public void open() throws SQLException {
@@ -79,48 +90,69 @@ public class DataBase {
         return "SELECT COUNT(question_id) FROM answers WHERE test_id in (" + stringBuilder.toString() + ")";
     }
 
-    public int getCompletedAnswers() {
-        String query = "SELECT id FROM tests WHERE subject_id=" + MainActivity.getCurSubjectId();
-        List<String> values = new ArrayList<>();
+    public float getCompletedAnswers(int test_id) {
+        String query = "select count(*) as total_answers from user_answers join answers on answers.question_id = user_answers.question_id and answers.test_id = user_answers.test_id where user_answers.test_id = " + test_id;
         Cursor cursor = database.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                String subjectName = cursor.getString(cursor.getColumnIndex("id"));
-                values.add(subjectName);
-                cursor.moveToNext();
-            }
-        }
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < values.size(); i++) {
-            stringBuilder.append("'" + values.get(i) + "'" + ", ");
-        }
-        stringBuilder.setLength(stringBuilder.length() - 2);
-        cursor = database.rawQuery("SELECT DISTINCT(answer_id) FROM user_answers GROUP BY question_id HAVING test_id in(" + stringBuilder.toString() + ") ORDER BY answer_id LIMIT 1", null);
-        if (cursor.moveToFirst()) {
-            return cursor.getInt(0);
-        }
-        cursor.close();
-        return 0;
+
+        cursor.moveToFirst();
+
+        int total_answers = cursor.getInt(cursor.getColumnIndex("total_answers"));
+        if (total_answers == 0)
+            return 0;
+
+        query = "select count(*) as valid_answers from user_answers join answers on answers.question_id = user_answers.question_id and answers.test_id = user_answers.test_id where user_answers.test_id = " + test_id + " and user_answers.answer_1 = answers.answer_1 and user_answers.answer_2 = answers.answer_2 and user_answers.answer_3 = answers.answer_3 and user_answers.answer_4 = answers.answer_4";
+        cursor = database.rawQuery(query, null);
+
+        cursor.moveToFirst();
+
+        int valid_answers = cursor.getInt(cursor.getColumnIndex("valid_answers"));
+        return valid_answers / total_answers;
     }
 
-    public List<String> getAnswers(int test_id, int list_length) {
+    private void copyDB(Context context) throws IOException {
+
+        String destPath = "/data/data/" + context.getPackageName()
+                + "/databases/answers";
+
+        File f = new File(destPath);
+        if (!f.exists()) {
+            OutputStream out = new FileOutputStream(f);
+            InputStream in = context.getAssets().open("answers");
+            int size = in.available();
+            byte[] buffer = new byte[size];
+            int length;
+            while ((length = in.read(buffer)) > 0) {
+                out.write(buffer, 0, length);
+            }
+            out.flush();
+            in.close();
+            out.close();
+        }
+    }
+
+    public List<List<String>> getAnswers(int test_id) {
+        List<List<String>> values1 = new ArrayList<>();
+        Cursor cursor;
+
         dbHelper.onOpen(database);
-        List<String> values = new ArrayList<>();
-        String query = "SELECT answer_1, answer_2, answer_3, answer_4 FROM answers WHERE test_id=" + test_id + " AND question_id=" + list_length;
-        Cursor cursor = database.rawQuery(query, null);
+        String query = "SELECT answer_1, answer_2, answer_3, answer_4 FROM answers WHERE test_id=" + test_id;
+        cursor = database.rawQuery(query, null);
         if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
+            do {
+                List<String> values = new ArrayList<>();
+
                 for (int i = 1; i <= 4; i++) {
                     int column_index = cursor.getColumnIndex(String.format("answer_%s", i));
 
                     values.add(cursor.isNull(column_index) ? null : cursor.getString(column_index));
-                }
 
-                cursor.moveToNext();
-            }
+
+                }
+                values1.add(values);
+            } while (cursor.moveToNext());
         }
         cursor.close();
-        return values;
+        return values1;
     }
 
     public void userAnswerInsert(int test_id, int question_id, List<String> userAns) {

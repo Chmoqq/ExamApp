@@ -83,7 +83,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
 
     private String[] files;
     private String[] fileList;
-    List<List<String>> rightAnswers = new ArrayList<>();
+    List<List<String>> rightAnswers;
 
     private int questNum;
     private int test_id;
@@ -170,7 +170,9 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         if (args.containsKey("questNum"))
             questNum = args.getInt("questNum");
         fileList = getContext().getAssets().list(String.valueOf(test_id));
-        rightAnswers = getRightAnswers();
+        if (rightAnswers == null) {
+            rightAnswers = dataBase.getAnswers(test_id);
+        }
         final View root = inflater.from(getContext()).inflate(setLayoutType(), container, false
         );
         root.setTag(setLayoutType());
@@ -465,7 +467,7 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
             answerValues.set(0, editText1.getText().toString());
             answerValues.set(1, editText2.getText().toString());
         } else if (root.getTag().equals(R.layout.webview_fragment_skip)) {
-            answerValues.set(0, "");
+            answerValues.set(0, null);
         } else if (root.getTag().equals(R.layout.webview_fragment_edittext)) {
             answerValues.set(1, editText1.getText().toString());
         } else if (root.getTag().equals(R.layout.webview_fragment_true_false)) {
@@ -515,11 +517,12 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
             List<String> rightQuestAns = rightAnswers.get(i);
 
             boolean is_wrong = false;
-            for (int b = 0; b < userQuestAns.size(); b++) {
+            for (int b = 0; b < 4; b++) {
                 if (userQuestAns.get(b) == null) {
                     userQuestAns.set(b, "");
                 }
-                if (rightQuestAns.get(0) == null || rightQuestAns.get(0).equals("")) {
+                if (rightQuestAns.get(0).equals("")) {
+                    userQuestAns.set(0, null);
                     is_wrong = true;
                     break;
                 }
@@ -528,7 +531,31 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                 }
                 if (!userQuestAns.get(b).equals(rightQuestAns.get(b))) {
                     is_wrong = true;
+                    for (int c = 0; c < 4; c++) {
+                        if (userQuestAns.get(c) != null) {
+                            if (userQuestAns.get(c).equals("")) {
+                                userQuestAns.set(c, null);
+                            }
+                        }
+                        if (rightQuestAns.get(c) != null) {
+                            if (rightQuestAns.get(c).equals("")) {
+                                rightQuestAns.set(c, null);
+                            }
+                        }
+                    }
                     break;
+                }
+                for (int c = 0; c < 4; c++) {
+                    if (userQuestAns.get(c) != null) {
+                        if (userQuestAns.get(c).equals("")) {
+                            userQuestAns.set(c, null);
+                        }
+                    }
+                    if (rightQuestAns.get(c) != null) {
+                        if (rightQuestAns.get(c).equals("")) {
+                            rightQuestAns.set(c, null);
+                        }
+                    }
                 }
             }
 
@@ -539,14 +566,6 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         args.putString("total", String.valueOf(fileList.length));
         args.putString("right", String.valueOf(rightAns));
         return args;
-    }
-
-    private List<List<String>> getRightAnswers() {
-        List<List<String>> rightAnswers = new ArrayList<>();
-        for (int i = 1; i <= fileList.length; i++) {
-            rightAnswers.add(dataBase.getAnswers(test_id, i));
-        }
-        return rightAnswers;
     }
 
     private void btnsSetCheck() {

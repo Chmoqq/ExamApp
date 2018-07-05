@@ -19,6 +19,7 @@ import com.example.ivan.examapp.DataBase.DataBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public class FragmentLearnTickets extends Fragment {
@@ -40,13 +41,11 @@ public class FragmentLearnTickets extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
     }
 
     @Override
@@ -110,11 +109,13 @@ public class FragmentLearnTickets extends Fragment {
         }
 
         private void viewHolder2(RecyclerView.ViewHolder holder, final int position) {
+            float rating = 0;
+            rating = dataBase.getCompletedAnswers(ticketList.get(position).getId());
             ListTicketsViewHolder listTicketsViewHolder = (ListTicketsViewHolder) holder;
             listTicketsViewHolder.textView.setText(ticketList.get(position).getName());
-            listTicketsViewHolder.imageView1.setImageResource(R.drawable.ic_star_filled);
-            listTicketsViewHolder.imageView2.setImageResource(R.drawable.ic_star_filled);
-            listTicketsViewHolder.imageView3.setImageResource(R.drawable.ic_star_empty);
+            listTicketsViewHolder.imageView1.setImageResource(rating >= 0.33 ? R.drawable.ic_star_filled : R.drawable.ic_star_empty);
+            listTicketsViewHolder.imageView2.setImageResource(rating >= 0.66 ? R.drawable.ic_star_filled : R.drawable.ic_star_empty);
+            listTicketsViewHolder.imageView3.setImageResource(rating >= 1 ? R.drawable.ic_star_filled : R.drawable.ic_star_empty);
             listTicketsViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

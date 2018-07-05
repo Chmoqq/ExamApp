@@ -68,7 +68,7 @@ public class FragmentTestInfo extends Fragment {
         int rating = rightQuestint / totalQuestint;
         star1.setImageDrawable(rating >= 0.33 ? getResources().getDrawable(R.drawable.ic_star_filled) : getResources().getDrawable(R.drawable.ic_star_empty));
         star2.setImageDrawable(rating >= 0.66 ? getResources().getDrawable(R.drawable.ic_star_filled) : getResources().getDrawable(R.drawable.ic_star_empty));
-        star3.setImageDrawable(rating >= 0.1 ? getResources().getDrawable(R.drawable.ic_star_filled) : getResources().getDrawable(R.drawable.ic_star_empty));
+        star3.setImageDrawable(rating >= 1 ? getResources().getDrawable(R.drawable.ic_star_filled) : getResources().getDrawable(R.drawable.ic_star_empty));
         backToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -23,11 +23,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
 
     private List<String> elements = Arrays.asList("Украинский язык", "Математика", "История Украины", "География",
             "Биология", "Физика", "Химия", "Английский язык", "Немемцкий язык",
@@ -56,21 +60,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            initUI();
-        }
-        try {
-            copyDB();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        initUI();
+
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        FragmentWebView fragmentWebView = (FragmentWebView) getSupportFragmentManager().findFragmentByTag("webView");
-        fragmentWebView.setArguments(savedInstanceState);
     }
 
     @Override
@@ -141,24 +137,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         manager.beginTransaction().add(R.id.fragment_container, fragmentMain).commit();
     }
 
-    private void copyDB() throws IOException {
-
-        String destPath = "/data/data/" + getPackageName()
-                + "/databases/answers";
-
-        File f = new File(destPath);
-        if (!f.exists()) {
-            InputStream in = getAssets().open("answers");
-            OutputStream out = new FileOutputStream(destPath);
-
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = in.read(buffer)) > 0) {
-                out.write(buffer, 0, length);
-            }
-            in.close();
-            out.close();
-        }
-    }
-
 }
+
