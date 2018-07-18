@@ -20,9 +20,11 @@ android {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
     implementation group: 'commons-io', name: 'commons-io', version: '2.4'

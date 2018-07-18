@@ -17,4 +17,6 @@
     <color name="red_test_info">#e74242</color>
     <color name="gradient_end">#62addc</color>
     <color name="gradient_start">#4b7f9f</color>
+    <color name="blue_stats">#1B445E</color>
+    <color name="specblue_stats">#4f80ac</color>
 </resources>

@@ -200,6 +200,8 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
         editText2 = root.findViewById(R.id.edit_text2);
         editText3 = root.findViewById(R.id.edit_text3);
 
+        spinner = root.findViewById(R.id.spinner_webview);
+
         truee = root.findViewById(R.id.textview_webview_t);
         falsee = root.findViewById(R.id.textview_webview_f);
 
@@ -213,7 +215,6 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                 radioGroup1.setOnCheckedChangeListener(this);
                 break;
         }
-        spinner = root.findViewById(R.id.webview_spinner_textview);
         SpinnerWebViewAdapter spinnerAdapter = new SpinnerWebViewAdapter(getContext());
         if (spinner != null) {
             spinner.setAdapter(spinnerAdapter);

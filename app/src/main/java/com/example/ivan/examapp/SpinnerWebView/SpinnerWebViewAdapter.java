@@ -1,5 +1,6 @@
 package com.example.ivan.examapp.SpinnerWebView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +18,12 @@ import java.util.List;
 public class SpinnerWebViewAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
-    String[] lettersMass = {"a", "b", "c", "d", "e", "f", "g", "h"};
-    private List<String> letters = Arrays.asList(lettersMass);
+    private Context context;
+    String[] lettersMass = {"A", "B", "C", "D", "E", "F", "G", "H"};
 
     public SpinnerWebViewAdapter(Context context) {
-        this.layoutInflater = (LayoutInflater.from(context));
+        this.context = context;
+        layoutInflater = (LayoutInflater.from(context));
     }
 
     @Override
@@ -40,11 +42,12 @@ public class SpinnerWebViewAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("ViewHolder")
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(R.layout.spinner_webview_item, null);
         TextView letter = view.findViewById(R.id.webview_spinner_textview);
-        letter.setText(letters.get(i));
+        letter.setText(lettersMass[i]);
         return view;
     }
 }

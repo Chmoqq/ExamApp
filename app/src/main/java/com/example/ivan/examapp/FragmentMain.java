@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdView;
 public class FragmentMain extends Fragment {
 
     private FragmentLearnTickets fragmentLearnTickets;
+    private StatsFragment statsFragment;
     private FragmentManager fragmentManager;
     private DataBase dataBase;
 
@@ -26,6 +27,7 @@ public class FragmentMain extends Fragment {
     private CardView learnTickets;
     private CardView testYourself;
     private CardView chooseTopic;
+    private CardView stats;
 
     @Override
     public void onStart() {
@@ -53,6 +55,15 @@ public class FragmentMain extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             final View root = inflater.from(getContext()).inflate(R.layout.content_main, container, false);
             learnTickets = root.findViewById(R.id.card_view_tickets_learn);
+            stats = root.findViewById(R.id.stats_cardview);
+            stats.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    statsFragment = new StatsFragment();
+                    fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, statsFragment).addToBackStack("stats_fragment").commit();
+                }
+            });
             learnTickets.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
