@@ -19,4 +19,6 @@
     <color name="gradient_start">#4b7f9f</color>
     <color name="blue_stats">#1B445E</color>
     <color name="specblue_stats">#4f80ac</color>
+    <color name="pink">#d82d65</color>
+    <color name="gray">#f3f3f3</color>
 </resources>

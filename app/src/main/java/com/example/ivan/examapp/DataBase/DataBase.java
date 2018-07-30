@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 
 import com.example.ivan.examapp.MainActivity;
 import com.example.ivan.examapp.Ticket;
@@ -15,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -91,7 +91,7 @@ public class DataBase {
     }
 
     public float getCompletedAnswers(int test_id) {
-        String query = "select count(*) as total_answers from user_answers join answers on answers.question_id = user_answers.question_id and answers.test_id = user_answers.test_id where user_answers.test_id = " + test_id;
+        String query = "select count(*) as total_answers from user_answers where test_id = " + test_id;
         Cursor cursor = database.rawQuery(query, null);
 
         cursor.moveToFirst();
@@ -145,8 +145,6 @@ public class DataBase {
                     int column_index = cursor.getColumnIndex(String.format("answer_%s", i));
 
                     values.add(cursor.isNull(column_index) ? null : cursor.getString(column_index));
-
-
                 }
                 values1.add(values);
             } while (cursor.moveToNext());
@@ -156,10 +154,70 @@ public class DataBase {
     }
 
     public void userAnswerInsert(int test_id, int question_id, List<String> userAns) {
+        long time = System.currentTimeMillis();
         database.execSQL(
-                "INSERT INTO user_answers (answer_id, test_id, question_id, answer_1, answer_2, answer_3, answer_4) VALUES (NULL, ?, ?, ?, ?, ?, ?)",
-                new Object[]{test_id, question_id, userAns.get(0), userAns.get(1), userAns.get(2), userAns.get(3)}
+                "INSERT INTO user_answers (answer_id, test_id, question_id, answer_1, answer_2, answer_3, answer_4, date_finished) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)",
+                new Object[]{test_id, question_id, userAns.get(0), userAns.get(1), userAns.get(2), userAns.get(3), time}
         );
+    }
+
+    public int[] getStats(int subject_id, int type) {
+        Cursor cursor;
+
+        List<Long> points = Arrays.asList(864000000L, 1728000000L, 2592000000L);
+
+        String right_answers_query;
+        String total_answers_query;
+
+        switch (type) {
+            case 1:
+                total_answers_query = "select count(*) as total_answers from user_answers join answers on answers.question_id = user_answers.question_id and answers.test_id = user_answers.test_id" +
+                        " where user_answers.test_id in (select id from tests where subject_id = " + subject_id + ") and user_answers.date_finished > " + (System.currentTimeMillis() - points.get(2)) + " and" +
+                        " user_answers.answer_1 is not answers.answer_1 and user_answers.answer_2 is not answers.answer_2" +
+                        " and user_answers.answer_3 is not answers.answer_3 and user_answers.answer_4 is not answers.answer_4";
+                right_answers_query = "select count(*) as valid_answers from user_answers join answers on answers.question_id = user_answers.question_id and answers.test_id = user_answers.test_id" +
+                        " where user_answers.test_id in (select id from tests where subject_id = " + subject_id + ") and user_answers.date_finished > " + (System.currentTimeMillis() - points.get(2)) + " and" +
+                        " user_answers.answer_1 is answers.answer_1 and user_answers.answer_2 is answers.answer_2" +
+                        " and user_answers.answer_3 is answers.answer_3 and user_answers.answer_4 is answers.answer_4";
+                cursor = database.rawQuery(total_answers_query, null);
+                cursor.moveToFirst();
+                int total = cursor.getInt(cursor.getColumnIndex("total_answers"));
+
+                cursor = database.rawQuery(right_answers_query, null);
+                cursor.moveToFirst();
+                int valid = cursor.getInt(cursor.getColumnIndex("valid_answers"));
+
+                return new int[]{total, valid};
+            case 2:
+                String query = "select count(*) as total_answers from user_answers join answers on answers.question_id = user_answers.question_id and answers.test_id = user_answers.test_id" +
+                        " where user_answers.test_id in (select id from tests where subject_id = " + subject_id + ") and user_answers.date_finished > " + (System.currentTimeMillis() - points.get(2)) + " and user_answers.date_finished < " + (System.currentTimeMillis() - points.get(1)) +
+                        " and" +
+                        " user_answers.answer_1 is not answers.answer_1 and user_answers.answer_2 is not answers.answer_2" +
+                        " and user_answers.answer_3 is not answers.answer_3 and user_answers.answer_4 is not answers.answer_4";
+                cursor = database.rawQuery(query, null);
+                cursor.moveToFirst();
+                int first = cursor.getInt(cursor.getColumnIndex("total_answers"));
+
+                query = "select count(*) as total_answers from user_answers join answers on answers.question_id = user_answers.question_id and answers.test_id = user_answers.test_id" +
+                        " where user_answers.test_id in (select id from tests where subject_id = " + subject_id + ") and user_answers.date_finished > " + (System.currentTimeMillis() - points.get(1)) + " and user_answers.date_finished < " + (System.currentTimeMillis() - points.get(0)) +
+                        " and" +
+                        " user_answers.answer_1 is not answers.answer_1 and user_answers.answer_2 is not answers.answer_2" +
+                        " and user_answers.answer_3 is not answers.answer_3 and user_answers.answer_4 is not answers.answer_4";
+                cursor = database.rawQuery(query, null);
+                cursor.moveToFirst();
+                int second = cursor.getInt(cursor.getColumnIndex("total_answers"));
+
+                query = "select count(*) as total_answers from user_answers join answers on answers.question_id = user_answers.question_id and answers.test_id = user_answers.test_id" +
+                        " where user_answers.test_id in (select id from tests where subject_id = " + subject_id + ") and user_answers.date_finished > " + (System.currentTimeMillis() - points.get(0)) + " and user_answers.date_finished < " + System.currentTimeMillis() +
+                        " and " +
+                        " user_answers.answer_1 is not answers.answer_1 and user_answers.answer_2 is not answers.answer_2" +
+                        " and user_answers.answer_3 is not answers.answer_3 and user_answers.answer_4 is not answers.answer_4";
+                cursor = database.rawQuery(query, null);
+                cursor.moveToFirst();
+                int third = cursor.getInt(cursor.getColumnIndex("total_answers"));
+                return new int[]{first, second, third};
+        }
+        return null;
     }
 
 }
