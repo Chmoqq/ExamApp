@@ -44,6 +44,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 
 public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedChangeListener {
 
@@ -76,17 +77,22 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
 
     private TextView truee;
     private TextView falsee;
+    private TextView endTest;
 
     private List<List<String>> userAnswersList = new ArrayList<>();
+    private List<Ticket> ticketList = new ArrayList<>();
+    List<List<String>> rightAnswers = new ArrayList<>();
+    List<int[]> questionData = new ArrayList<>();
 
-    private TextView endTest;
+
+    private Ticket ticket;
 
     private String[] files;
     private String[] fileList;
-    List<List<String>> rightAnswers;
 
     private int questNum;
     private int test_id;
+    private int testCounter;
 
     private String mime = "text/html";
     private String encoding = "utf-8";
@@ -169,10 +175,18 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
             test_id = args.getInt("test_id");
         if (args.containsKey("questNum"))
             questNum = args.getInt("questNum");
-        fileList = getContext().getAssets().list(String.valueOf(test_id));
-        if (rightAnswers == null) {
-            rightAnswers = dataBase.getAnswers(test_id);
+        if (args.containsKey("test_yourself")) {
+            ticketList = dataBase.getTicket();
+            ticket = ticketList.get(new Random().nextInt(ticketList.size()));
+            test_id = ticket.getId();
+            questNum = new Random().nextInt(ticket.getSize() - 1);
+            rightAnswers.add(dataBase.getAnswer(test_id, questNum));
+        } else {
+            if (rightAnswers.size() == 0) {
+                rightAnswers = dataBase.getAnswers(test_id);
+            }
         }
+        fileList = getContext().getAssets().list(String.valueOf(test_id));
         final View root = inflater.from(getContext()).inflate(setLayoutType(), container, false
         );
         root.setTag(setLayoutType());
@@ -223,31 +237,13 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
 
     @Nullable
     private int setLayoutType() {
-        switch (test_id) {
-            case 191:
-            case 247:
-            case 298:
-            case 256:
-                if (rightAnswers.get(questNum).get(0).matches("[01234]") && rightAnswers.get(questNum).get(1) == null) {
-                    return R.layout.webview_fragment;
-                } else if (rightAnswers.get(questNum).get(3) != null) {
-                    return R.layout.webview_fragment_grid;
-                } else if (rightAnswers.get(questNum).get(1) != null && rightAnswers.get(questNum).get(2) == null) {
-                    return R.layout.webview_fragment_edittext_two;
-                } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
-                    return R.layout.webview_fragment_skip;
-                } else if (!rightAnswers.get(questNum).get(0).matches("[01234]")) {
-                    return R.layout.webview_fragment_edittext;
-                }
-                break;
-            case 299:
-            case 240:
-            case 254:
-            case 189:
-                if (String.valueOf(questNum).matches("re{11,23}") || String.valueOf(questNum).matches("re{34,58}")) {
-                    if (rightAnswers.get(questNum).get(2) != null && rightAnswers.get(questNum).get(3) == null) {
-                        return R.layout.webview_fragment_edittext_three;
-                    } else if (rightAnswers.get(questNum).get(0).matches("[0123]") && rightAnswers.get(questNum).get(1) == null) {
+        if (!getArguments().containsKey("test_yourself")) {
+            switch (test_id) {
+                case 191:
+                case 247:
+                case 298:
+                case 256:
+                    if (rightAnswers.get(questNum).get(0).matches("[01234]") && rightAnswers.get(questNum).get(1) == null) {
                         return R.layout.webview_fragment;
                     } else if (rightAnswers.get(questNum).get(3) != null) {
                         return R.layout.webview_fragment_grid;
@@ -258,103 +254,257 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                     } else if (!rightAnswers.get(questNum).get(0).matches("[01234]")) {
                         return R.layout.webview_fragment_edittext;
                     }
-                } else {
-                    if (rightAnswers.get(questNum).get(2) != null && rightAnswers.get(questNum).get(3) == null) {
+                    break;
+                case 299:
+                case 240:
+                case 254:
+                case 189:
+                    if (String.valueOf(questNum).matches("re{11,23}") || String.valueOf(questNum).matches("re{34,58}")) {
+                        if (rightAnswers.get(questNum).get(2) != null && rightAnswers.get(questNum).get(3) == null) {
+                            return R.layout.webview_fragment_edittext_three;
+                        } else if (rightAnswers.get(questNum).get(0).matches("[0123]") && rightAnswers.get(questNum).get(1) == null) {
+                            return R.layout.webview_fragment;
+                        } else if (rightAnswers.get(questNum).get(3) != null) {
+                            return R.layout.webview_fragment_grid;
+                        } else if (rightAnswers.get(questNum).get(1) != null && rightAnswers.get(questNum).get(2) == null) {
+                            return R.layout.webview_fragment_edittext_two;
+                        } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
+                            return R.layout.webview_fragment_skip;
+                        } else if (!rightAnswers.get(questNum).get(0).matches("[01234]")) {
+                            return R.layout.webview_fragment_edittext;
+                        }
+                    } else {
+                        if (rightAnswers.get(questNum).get(2) != null && rightAnswers.get(questNum).get(3) == null) {
+                            return R.layout.webview_fragment_edittext_three;
+                        } else if (rightAnswers.get(questNum).get(0).matches("[0123]") && rightAnswers.get(questNum).get(1) == null) {
+                            return R.layout.webview_fragment;
+                        } else if (rightAnswers.get(questNum).get(3) != null) {
+                            return R.layout.webview_fragment_grid;
+                        } else if (rightAnswers.get(questNum).get(1) != null && rightAnswers.get(questNum).get(2) == null) {
+                            return R.layout.webview_fragment_edittext_two;
+                        } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
+                            return R.layout.webview_fragment_skip;
+                        } else if (!rightAnswers.get(questNum).get(0).matches("[01234]")) {
+                            return R.layout.webview_fragment_edittext;
+                        }
+                    }
+                    break;
+                case 250:
+                case 258:
+                case 200:
+                    if (String.valueOf(questNum).matches("re{47,50}")) {
                         return R.layout.webview_fragment_edittext_three;
-                    } else if (rightAnswers.get(questNum).get(0).matches("[0123]") && rightAnswers.get(questNum).get(1) == null) {
-                        return R.layout.webview_fragment;
-                    } else if (rightAnswers.get(questNum).get(3) != null) {
-                        return R.layout.webview_fragment_grid;
-                    } else if (rightAnswers.get(questNum).get(1) != null && rightAnswers.get(questNum).get(2) == null) {
-                        return R.layout.webview_fragment_edittext_two;
-                    } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
-                        return R.layout.webview_fragment_skip;
-                    } else if (!rightAnswers.get(questNum).get(0).matches("[01234]")) {
-                        return R.layout.webview_fragment_edittext;
+                    } else {
+                        if (rightAnswers.get(questNum).get(0).matches("[01234]") && rightAnswers.get(questNum).get(1) == null) {
+                            return R.layout.webview_fragment_abcd;
+                        } else if (rightAnswers.get(questNum).get(3) != null) {
+                            return R.layout.webview_fragment_grid;
+                        } else if (rightAnswers.get(questNum).get(1) != null && rightAnswers.get(questNum).get(2) == null) {
+                            return R.layout.webview_fragment_edittext_two;
+                        } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
+                            return R.layout.webview_fragment_skip;
+                        } else if (!rightAnswers.get(questNum).get(0).matches("[01234]")) {
+                            return R.layout.webview_fragment_edittext;
+                        }
                     }
-                }
-                break;
-            case 250:
-            case 258:
-            case 200:
-                if (String.valueOf(questNum).matches("re{47,50}")) {
-                    return R.layout.webview_fragment_edittext_three;
-                } else {
-                    if (rightAnswers.get(questNum).get(0).matches("[01234]") && rightAnswers.get(questNum).get(1) == null) {
+                    break;
+                case 304:
+                    if (String.valueOf(questNum).matches("re{45,48}")) {
+                        return R.layout.webview_fragment_edittext_three;
+                    } else {
+                        if (rightAnswers.get(questNum).get(0).matches("[01234]") && rightAnswers.get(questNum).get(1) == null) {
+                            return R.layout.webview_fragment_abcd;
+                        } else if (rightAnswers.get(questNum).get(3) != null) {
+                            return R.layout.webview_fragment_grid;
+                        } else if (rightAnswers.get(questNum).get(1) != null && rightAnswers.get(questNum).get(2) == null) {
+                            return R.layout.webview_fragment_edittext_two;
+                        } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
+                            return R.layout.webview_fragment_skip;
+                        } else if (!rightAnswers.get(questNum).get(0).matches("[01234]")) {
+                            return R.layout.webview_fragment_edittext;
+                        }
+                    }
+                    break;
+                case 302:
+                    if (String.valueOf(questNum).matches("re{7,11}")) {
+                        truee.setText("verdaderas");
+                        falsee.setText("falsas");
+                        return R.layout.webview_fragment_true_false;
+                    }
+                case 300:
+                    if (String.valueOf(questNum).matches("re{7,11}")) {
+                        truee.setText("richtig");
+                        falsee.setText("falsch");
+                        return R.layout.webview_fragment_true_false;
+                    }
+                case 303:
+                    if (String.valueOf(questNum).matches("re{7,11}")) {
+                        return R.layout.webview_fragment_true_false;
+                    } else if (String.valueOf(questNum).matches("re{17,21}") ||
+                            String.valueOf(questNum).matches("re{27,38}")) {
+                        return R.layout.spinner_webview_item;
+                    } else if (String.valueOf(questNum).matches("re{39,58}") ||
+                            String.valueOf(questNum).matches("re{22,26}")) {
                         return R.layout.webview_fragment_abcd;
-                    } else if (rightAnswers.get(questNum).get(3) != null) {
-                        return R.layout.webview_fragment_grid;
-                    } else if (rightAnswers.get(questNum).get(1) != null && rightAnswers.get(questNum).get(2) == null) {
-                        return R.layout.webview_fragment_edittext_two;
-                    } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
-                        return R.layout.webview_fragment_skip;
-                    } else if (!rightAnswers.get(questNum).get(0).matches("[01234]")) {
-                        return R.layout.webview_fragment_edittext;
+                    } else {
+                        //FIXME
                     }
-                }
-                break;
-            case 304:
-                if (String.valueOf(questNum).matches("re{45,48}")) {
-                    return R.layout.webview_fragment_edittext_three;
-                } else {
-                    if (rightAnswers.get(questNum).get(0).matches("[01234]") && rightAnswers.get(questNum).get(1) == null) {
+                case 301:
+                    if (String.valueOf(questNum).matches("re{32,38}")) {
+                        return R.layout.spinner_webview_item;
+                    } else {
                         return R.layout.webview_fragment_abcd;
-                    } else if (rightAnswers.get(questNum).get(3) != null) {
-                        return R.layout.webview_fragment_grid;
-                    } else if (rightAnswers.get(questNum).get(1) != null && rightAnswers.get(questNum).get(2) == null) {
-                        return R.layout.webview_fragment_edittext_two;
-                    } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
-                        return R.layout.webview_fragment_skip;
-                    } else if (!rightAnswers.get(questNum).get(0).matches("[01234]")) {
-                        return R.layout.webview_fragment_edittext;
                     }
-                }
-                break;
-            case 302:
-                if (String.valueOf(questNum).matches("re{7,11}")) {
-                    truee.setText("verdaderas");
-                    falsee.setText("falsas");
-                    return R.layout.webview_fragment_true_false;
-                }
-            case 300:
-                if (String.valueOf(questNum).matches("re{7,11}")) {
-                    truee.setText("richtig");
-                    falsee.setText("falsch");
-                    return R.layout.webview_fragment_true_false;
-                }
-            case 303:
-                if (String.valueOf(questNum).matches("re{7,11}")) {
-                    return R.layout.webview_fragment_true_false;
-                } else if (String.valueOf(questNum).matches("re{17,21}") ||
-                        String.valueOf(questNum).matches("re{27,38}")) {
-                    return R.layout.spinner_webview_item;
-                } else if (String.valueOf(questNum).matches("re{39,58}") ||
-                        String.valueOf(questNum).matches("re{22,26}")) {
-                    return R.layout.webview_fragment_abcd;
-                } else {
-                    //FIXME
-                }
-            case 301:
-                if (String.valueOf(questNum).matches("re{32,38}")) {
-                    return R.layout.spinner_webview_item;
-                } else {
-                    return R.layout.webview_fragment_abcd;
-                }
 
+            }
+            if (rightAnswers.get(0).get(2) != null && rightAnswers.get(0).get(3) == null) {
+                return R.layout.webview_fragment_edittext_three;
+            } else if (rightAnswers.get(0).get(0).matches("[01234]") && rightAnswers.get(0).get(1) == null) {
+                return R.layout.webview_fragment_abcd;
+            } else if (rightAnswers.get(0).get(3) != null) {
+                return R.layout.webview_fragment_grid;
+            } else if (rightAnswers.get(0).get(1) != null && rightAnswers.get(0).get(2) == null) {
+                return R.layout.webview_fragment_edittext_two;
+            } else if (rightAnswers.get(0).get(0) == null || rightAnswers.get(0).get(0).equals("")) {
+                return R.layout.webview_fragment_skip;
+            } else if (!rightAnswers.get(0).get(0).matches("[01234]")) {
+                return R.layout.webview_fragment_edittext;
+            }
+        } else {
+            switch (test_id) {
+                case 191:
+                case 247:
+                case 298:
+                case 256:
+                    if (rightAnswers.get(0).get(0).matches("[01234]") && rightAnswers.get(0).get(1) == null) {
+                        return R.layout.webview_fragment;
+                    } else if (rightAnswers.get(0).get(3) != null) {
+                        return R.layout.webview_fragment_grid;
+                    } else if (rightAnswers.get(0).get(1) != null && rightAnswers.get(0).get(2) == null) {
+                        return R.layout.webview_fragment_edittext_two;
+                    } else if (rightAnswers.get(0).get(0) == null || rightAnswers.get(0).get(0).equals("")) {
+                        return R.layout.webview_fragment_skip;
+                    } else if (!rightAnswers.get(0).get(0).matches("[01234]")) {
+                        return R.layout.webview_fragment_edittext;
+                    }
+                    break;
+                case 299:
+                case 240:
+                case 254:
+                case 189:
+                    if (String.valueOf(0).matches("re{11,23}") || String.valueOf(0).matches("re{34,58}")) {
+                        if (rightAnswers.get(0).get(2) != null && rightAnswers.get(0).get(3) == null) {
+                            return R.layout.webview_fragment_edittext_three;
+                        } else if (rightAnswers.get(0).get(0).matches("[0123]") && rightAnswers.get(0).get(1) == null) {
+                            return R.layout.webview_fragment;
+                        } else if (rightAnswers.get(0).get(3) != null) {
+                            return R.layout.webview_fragment_grid;
+                        } else if (rightAnswers.get(0).get(1) != null && rightAnswers.get(0).get(2) == null) {
+                            return R.layout.webview_fragment_edittext_two;
+                        } else if (rightAnswers.get(0).get(0) == null || rightAnswers.get(0).get(0).equals("")) {
+                            return R.layout.webview_fragment_skip;
+                        } else if (!rightAnswers.get(0).get(0).matches("[01234]")) {
+                            return R.layout.webview_fragment_edittext;
+                        }
+                    } else {
+                        if (rightAnswers.get(0).get(2) != null && rightAnswers.get(0).get(3) == null) {
+                            return R.layout.webview_fragment_edittext_three;
+                        } else if (rightAnswers.get(0).get(0).matches("[0123]") && rightAnswers.get(0).get(1) == null) {
+                            return R.layout.webview_fragment;
+                        } else if (rightAnswers.get(0).get(3) != null) {
+                            return R.layout.webview_fragment_grid;
+                        } else if (rightAnswers.get(0).get(1) != null && rightAnswers.get(0).get(2) == null) {
+                            return R.layout.webview_fragment_edittext_two;
+                        } else if (rightAnswers.get(0).get(0) == null || rightAnswers.get(0).get(0).equals("")) {
+                            return R.layout.webview_fragment_skip;
+                        } else if (!rightAnswers.get(0).get(0).matches("[01234]")) {
+                            return R.layout.webview_fragment_edittext;
+                        }
+                    }
+                    break;
+                case 250:
+                case 258:
+                case 200:
+                    if (String.valueOf(0).matches("re{47,50}")) {
+                        return R.layout.webview_fragment_edittext_three;
+                    } else {
+                        if (rightAnswers.get(0).get(0).matches("[01234]") && rightAnswers.get(0).get(1) == null) {
+                            return R.layout.webview_fragment_abcd;
+                        } else if (rightAnswers.get(0).get(3) != null) {
+                            return R.layout.webview_fragment_grid;
+                        } else if (rightAnswers.get(0).get(1) != null && rightAnswers.get(0).get(2) == null) {
+                            return R.layout.webview_fragment_edittext_two;
+                        } else if (rightAnswers.get(0).get(0) == null || rightAnswers.get(0).get(0).equals("")) {
+                            return R.layout.webview_fragment_skip;
+                        } else if (!rightAnswers.get(0).get(0).matches("[01234]")) {
+                            return R.layout.webview_fragment_edittext;
+                        }
+                    }
+                    break;
+                case 304:
+                    if (String.valueOf(0).matches("re{45,48}")) {
+                        return R.layout.webview_fragment_edittext_three;
+                    } else {
+                        if (rightAnswers.get(0).get(0).matches("[01234]") && rightAnswers.get(0).get(1) == null) {
+                            return R.layout.webview_fragment_abcd;
+                        } else if (rightAnswers.get(0).get(3) != null) {
+                            return R.layout.webview_fragment_grid;
+                        } else if (rightAnswers.get(0).get(1) != null && rightAnswers.get(0).get(2) == null) {
+                            return R.layout.webview_fragment_edittext_two;
+                        } else if (rightAnswers.get(0).get(0) == null || rightAnswers.get(0).get(0).equals("")) {
+                            return R.layout.webview_fragment_skip;
+                        } else if (!rightAnswers.get(0).get(0).matches("[01234]")) {
+                            return R.layout.webview_fragment_edittext;
+                        }
+                    }
+                    break;
+                case 302:
+                    if (String.valueOf(0).matches("re{7,11}")) {
+                        truee.setText("verdaderas");
+                        falsee.setText("falsas");
+                        return R.layout.webview_fragment_true_false;
+                    }
+                case 300:
+                    if (String.valueOf(0).matches("re{7,11}")) {
+                        truee.setText("richtig");
+                        falsee.setText("falsch");
+                        return R.layout.webview_fragment_true_false;
+                    }
+                case 303:
+                    if (String.valueOf(0).matches("re{7,11}")) {
+                        return R.layout.webview_fragment_true_false;
+                    } else if (String.valueOf(0).matches("re{17,21}") ||
+                            String.valueOf(0).matches("re{27,38}")) {
+                        return R.layout.spinner_webview_item;
+                    } else if (String.valueOf(0).matches("re{39,58}") ||
+                            String.valueOf(0).matches("re{22,26}")) {
+                        return R.layout.webview_fragment_abcd;
+                    } else {
+                        //FIXME
+                    }
+                case 301:
+                    if (String.valueOf(0).matches("re{32,38}")) {
+                        return R.layout.spinner_webview_item;
+                    } else {
+                        return R.layout.webview_fragment_abcd;
+                    }
+
+            }
+            if (rightAnswers.get(0).get(2) != null && rightAnswers.get(0).get(3) == null) {
+                return R.layout.webview_fragment_edittext_three;
+            } else if (rightAnswers.get(0).get(0).matches("[01234]") && rightAnswers.get(0).get(1) == null) {
+                return R.layout.webview_fragment_abcd;
+            } else if (rightAnswers.get(0).get(3) != null) {
+                return R.layout.webview_fragment_grid;
+            } else if (rightAnswers.get(0).get(1) != null && rightAnswers.get(0).get(2) == null) {
+                return R.layout.webview_fragment_edittext_two;
+            } else if (rightAnswers.get(0).get(0) == null || rightAnswers.get(0).get(0).equals("")) {
+                return R.layout.webview_fragment_skip;
+            } else if (!rightAnswers.get(0).get(0).matches("[01234]")) {
+                return R.layout.webview_fragment_edittext;
+            }
         }
-        if (rightAnswers.get(questNum).get(2) != null && rightAnswers.get(questNum).get(3) == null) {
-            return R.layout.webview_fragment_edittext_three;
-        } else if (rightAnswers.get(questNum).get(0).matches("[01234]") && rightAnswers.get(questNum).get(1) == null) {
-            return R.layout.webview_fragment_abcd;
-        } else if (rightAnswers.get(questNum).get(3) != null) {
-            return R.layout.webview_fragment_grid;
-        } else if (rightAnswers.get(questNum).get(1) != null && rightAnswers.get(questNum).get(2) == null) {
-            return R.layout.webview_fragment_edittext_two;
-        } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
-            return R.layout.webview_fragment_skip;
-        } else if (!rightAnswers.get(questNum).get(0).matches("[01234]")) {
-            return R.layout.webview_fragment_edittext;
-        }
+
         return 0;
     }
 
@@ -391,46 +541,114 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
 
 
     private void btnsInit(final View root) {
-        if (questNum == fileList.length - 1) {
-            endTest.setText("Завершить");
-        } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
-            endTest.setText("Пропустить");
-        } else {
-            endTest.setText("Ответить");
-        }
-        nextQuest.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("DefaultLocale")
-            @Override
-            public void onClick(View view) {
-                if (questNum != fileList.length - 1) {
-                    questNum += 1;
-                    fragmentTransaction.detach(currentFragment);
-                    fragmentTransaction.attach(currentFragment);
-                    fragmentTransaction.commit();
-
-                    if (userAnswersList.size() > questNum) {
-                        userAnswersList.set(questNum, userAnswerGetter(root));
-                    } else {
-                        userAnswersList.add(userAnswerGetter(root));
-                    }
-                } else if (questNum == fileList.length - 1) {
-                    userAnswersList.add(userAnswerGetter(root));
-                    interstitialAd.show();
-                    fragmentTestInfo.setArguments(answerControl());
-                }
-                btnsSetCheck();
+        if (!getArguments().containsKey("test_yourself")) {
+            if (questNum == fileList.length - 1) {
+                endTest.setText("Завершить");
+            } else if (rightAnswers.get(questNum).get(0) == null || rightAnswers.get(questNum).get(0).equals("")) {
+                endTest.setText("Пропустить");
+            } else {
+                endTest.setText("Ответить");
             }
-        });
-        if (questNum != 0) {
-            prevQuest.setOnClickListener(new View.OnClickListener() {
+            nextQuest.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("DefaultLocale")
                 @Override
                 public void onClick(View view) {
-                    questNum = Math.max(0, questNum - 1);
-                    fragmentTransaction.detach(currentFragment);
-                    fragmentTransaction.attach(currentFragment);
-                    fragmentTransaction.commit();
+                    if (getArguments().containsKey("test_yourself")) {
+                        questionData.add(new int[]{test_id, questNum});
+                        if (testCounter != 20) {
+                            testCounter += 1;
+                            fragmentTransaction.detach(currentFragment);
+                            fragmentTransaction.attach(currentFragment);
+                            fragmentTransaction.commit();
+                            userAnswersList.add(userAnswerGetter(root));
+                        } else {
+                            userAnswersList.add(userAnswerGetter(root));
+                            interstitialAd.show();
+                            fragmentTestInfo.setArguments(answerControl());
+                        }
+                    } else {
+                        if (questNum != fileList.length - 1) {
+                            questNum += 1;
+                            fragmentTransaction.detach(currentFragment);
+                            fragmentTransaction.attach(currentFragment);
+                            fragmentTransaction.commit();
+
+                            if (userAnswersList.size() > questNum) {
+                                userAnswersList.set(questNum, userAnswerGetter(root));
+                            } else {
+                                userAnswersList.add(userAnswerGetter(root));
+                            }
+                        } else if (questNum == fileList.length - 1) {
+                            userAnswersList.add(userAnswerGetter(root));
+                            interstitialAd.show();
+                            fragmentTestInfo.setArguments(answerControl());
+                        }
+                        btnsSetCheck();
+                    }
                 }
+
             });
+        } else {
+            if (testCounter == 20) {
+                endTest.setText("Завершить");
+            } else if (rightAnswers.get(0).get(0) == null || rightAnswers.get(0).get(0).equals("")) {
+                endTest.setText("Пропустить");
+            } else {
+                endTest.setText("Ответить");
+            }
+            nextQuest.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("DefaultLocale")
+                @Override
+                public void onClick(View view) {
+                    if (getArguments().containsKey("test_yourself")) {
+                        questionData.add(new int[]{test_id, questNum});
+                        if (testCounter != 20) {
+                            testCounter += 1;
+                            fragmentTransaction.detach(currentFragment);
+                            fragmentTransaction.attach(currentFragment);
+                            fragmentTransaction.commit();
+                            userAnswersList.add(userAnswerGetter(root));
+                        } else {
+                            userAnswersList.add(userAnswerGetter(root));
+                            interstitialAd.show();
+                            fragmentTestInfo.setArguments(answerControl());
+                        }
+                    } else {
+                        if (questNum != fileList.length - 1) {
+                            questNum += 1;
+                            fragmentTransaction.detach(currentFragment);
+                            fragmentTransaction.attach(currentFragment);
+                            fragmentTransaction.commit();
+
+                            if (userAnswersList.size() > questNum) {
+                                userAnswersList.set(questNum, userAnswerGetter(root));
+                            } else {
+                                userAnswersList.add(userAnswerGetter(root));
+                            }
+                        } else if (questNum == fileList.length - 1) {
+                            userAnswersList.add(userAnswerGetter(root));
+                            interstitialAd.show();
+                            fragmentTestInfo.setArguments(answerControl());
+                        }
+                        btnsSetCheck();
+                    }
+                }
+
+            });
+        }
+        if (questNum != 0) {
+            if (getArguments().containsKey("test_yourself")) {
+            } else {
+                prevQuest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        questNum = Math.max(0, questNum - 1);
+                        fragmentTransaction.detach(currentFragment);
+                        fragmentTransaction.attach(currentFragment);
+                        fragmentTransaction.commit();
+                    }
+                });
+            }
         }
     }
 
@@ -564,7 +782,11 @@ public class FragmentWebView extends Fragment implements RadioGroup.OnCheckedCha
                 rightAns += 1;
             dataBase.userAnswerInsert(test_id, i + 1, userQuestAns);
         }
-        args.putString("total", String.valueOf(fileList.length));
+        if (!getArguments().containsKey("test_yourself")) {
+            args.putString("total", String.valueOf(fileList.length));
+        } else {
+            args.putString("total", String.valueOf(20));
+        }
         args.putString("right", String.valueOf(rightAns));
         return args;
     }

@@ -22,6 +22,7 @@ import com.google.android.gms.ads.AdView;
 public class FragmentMain extends Fragment {
 
     private FragmentLearnTickets fragmentLearnTickets;
+    private FragmentWebView fragmentWebView;
     private FragmentStats fragmentStats;
     private FragmentManager fragmentManager;
     private DataBase dataBase;
@@ -59,6 +60,7 @@ public class FragmentMain extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.from(getContext()).inflate(R.layout.content_main, container, false);
         learnTickets = root.findViewById(R.id.card_view_tickets_learn);
+        testYourself = root.findViewById(R.id.test_yourself_btn);
         stats = root.findViewById(R.id.stats_cardview);
         dataBase = new DataBase(getContext());
         dataBase.open();
@@ -91,6 +93,17 @@ public class FragmentMain extends Fragment {
                 fragmentLearnTickets = new FragmentLearnTickets();
                 fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentLearnTickets).addToBackStack("main_fragment").commit();
+            }
+        });
+        testYourself.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("test_yourself", "surprise");
+                fragmentWebView = new FragmentWebView();
+                fragmentWebView.setArguments(bundle);
+                fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, fragmentWebView).addToBackStack("test_yourself").commit();
             }
         });
         adView = root.findViewById(R.id.main_page_ad);

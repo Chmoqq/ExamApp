@@ -54,14 +54,16 @@ public class DataBase {
         return super_answer;
     }
 
-    public List<Ticket> getTicket(String select) {
+    public List<Ticket> getTicket() {
+        String select = "select  test_id, max(question_id) as quest_count, tests.name from answers join tests on answers.test_id = tests.id WHERE tests.subject_id=" + MainActivity.getCurSubjectId() + " GROUP by test_id";
         List<Ticket> values = new ArrayList<>();
         Cursor cursor = database.rawQuery(select, null);
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 String subjectName = cursor.getString(cursor.getColumnIndex("name"));
-                int currentValue = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
-                Ticket currentTicket = new Ticket(subjectName, currentValue);
+                int currentValue = Integer.parseInt(cursor.getString(cursor.getColumnIndex("test_id")));
+                int questCount = Integer.parseInt(cursor.getString(cursor.getColumnIndex("quest_count")));
+                Ticket currentTicket = new Ticket(subjectName, currentValue, questCount);
                 values.add(currentTicket);
                 cursor.moveToNext();
             }
@@ -151,6 +153,22 @@ public class DataBase {
         }
         cursor.close();
         return values1;
+    }
+
+    public List<String> getAnswer(int test_id, int questNum) {
+        Cursor cursor;
+
+        dbHelper.onOpen(database);
+        String query = "SELECT answer_1, answer_2, answer_3, answer_4 FROM answers WHERE test_id=" + test_id + " and question_id=" + questNum;
+        cursor = database.rawQuery(query, null);
+        cursor.moveToFirst();
+        List<String> values = new ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            int column_index = cursor.getColumnIndex(String.format("answer_%s", i));
+
+            values.add(cursor.isNull(column_index) ? null : cursor.getString(column_index));
+        }
+        return values;
     }
 
     public void userAnswerInsert(int test_id, int question_id, List<String> userAns) {

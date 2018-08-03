@@ -61,7 +61,7 @@ public class FragmentLearnTickets extends Fragment {
         final View root = inflater.from(getContext()).inflate(R.layout.fragment_learn_tickets, container, false);
         dataBase = new DataBase(getActivity());
         dataBase.open();
-        ticketList = dataBase.getTicket("SELECT * FROM tests WHERE subject_id=" + MainActivity.getCurSubjectId());
+        ticketList = dataBase.getTicket();
         ticketsList = root.findViewById(R.id.list_tickets);
         adapter = new TicketListAdapter();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
